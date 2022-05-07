@@ -30,8 +30,9 @@ export const appRoutes = {
   ],
   PUBLIC_ROUTES: [
     { id: 9999, path: '/test', component: <TestPage /> },
-    { id: 9998, path: '/payment', component: <Payment /> },
     { id: 9997, path: '/payment/vnpay_return', component: <PaymentVnPayReturn /> },
+    { id: 9998, path: '/payment', component: <Payment /> },
+
     {
       id: 9,
       path: '/login',
