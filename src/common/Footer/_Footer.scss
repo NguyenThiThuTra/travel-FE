@@ -1,0 +1,9 @@
+.footer {
+  position: relative;
+  &:before {
+    content: '';
+    display: block;
+    margin: 0 4rem;
+    border-top: 1px solid #f1f2f4;
+  }
+}

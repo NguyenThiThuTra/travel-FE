@@ -1,0 +1,275 @@
+/* @import '../common/ButtonUI/_button.css'; */
+
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  /* box-sizing: inherit; */
+}
+html {
+  font-size: 62.5%;
+}
+body {
+  box-sizing: border-box;
+}
+body {
+  font-size: 1.6rem;
+  line-height: 1.7;
+  font-family: 'Poppins', sans-serif;
+  color: #23232c;
+  // overflow-x: hidden;
+}
+//ant -row
+.ant-row {
+  // overflow-x: hidden;
+  // margin: 0 !important;
+}
+@media screen and (max-width: 991.98px) {
+  .ant-row {
+    // margin: 0 !important;
+  }
+}
+@media screen and (max-width: 424.98px) {
+  .ant-pagination {
+    margin-left: -1rem;
+    margin-right: -1rem;
+  }
+}
+
+//end ant row
+/*
+::-webkit-scrollbar {
+  width: 1px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+a {
+  text-decoration: none;
+} */
+
+/* css  */
+/* form login_register   */
+
+.error_message {
+  margin-top: 5px;
+  color: #bf1650;
+}
+
+.error_message::before {
+  display: inline;
+  content: '⚠ ';
+  margin-top: 5px;
+}
+.form-group {
+  margin-bottom: 25px;
+}
+
+.form-label {
+  display: inline-block;
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: 500;
+  margin-bottom: 10px;
+  cursor: pointer;
+  letter-spacing: 1px;
+}
+
+.form-input {
+  display: block;
+  width: 100%;
+  padding: 15px;
+  border-radius: 12px;
+  background-color: #f8f9fb;
+  border: 0;
+  color: #212144;
+  font-size: 13px;
+  transition: all 0.25s ease;
+}
+
+.form-input:focus {
+  background-color: white;
+  box-shadow: 0 10px 20px -5px rgba(163, 165, 178, 0.4);
+  -webkit-box-shadow: 0 10px 20px -5px rgba(163, 165, 178, 0.4);
+  outline: 0;
+}
+
+.form-input::-webkit-input-placeholder {
+  color: #a3a5b2;
+}
+
+.btn {
+  display: inline-block;
+  border: 0;
+  border-radius: 10px;
+  text-align: center;
+  font-size: 14px;
+  padding: 15px;
+  text-transform: uppercase;
+  background-color: transparent;
+}
+
+.btn--gradient {
+  background-image: linear-gradient(to bottom, #ff1d75, #f8902f);
+  width: 100%;
+  color: white;
+}
+
+.tab {
+  align-self: center;
+  display: inline-flex;
+  padding: 5px;
+  background-color: #f8f9fb;
+  border-radius: 10px;
+  margin-bottom: 50px;
+}
+
+.tab-item {
+  text-transform: uppercase;
+  font-size: 14px;
+  padding: 7.5px 15px;
+  border-radius: inherit;
+  cursor: pointer;
+  text-align: center;
+  font-weight: 300;
+}
+
+.tab-item.is-active {
+  background-image: linear-gradient(to bottom, #ff1d75, #f8902f);
+  color: white;
+}
+
+.signin_signup {
+  width: 100%;
+  max-width: 1200px;
+  height: 100%;
+  background-color: white;
+  position: relative;
+  z-index: 2;
+  border-radius: 40px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  overflow: hidden;
+}
+
+.signin_signup-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.signin_signup-container {
+  padding: 100px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.signin_signup-heading {
+  font-size: 45px;
+  font-weight: bold;
+  color: #212144;
+  margin-bottom: 30px;
+}
+
+.signin_signup-form {
+  width: 100%;
+}
+
+.signin_signup-term {
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.6;
+}
+
+.signin_signup-term-link {
+  color: #2979ff;
+}
+
+@media screen and (max-width: 1023px) {
+  body:before,
+  body:after {
+    display: none;
+  }
+
+  .signin_signup {
+    display: block;
+  }
+
+  .signin_signup-container {
+    padding: 50px 20px;
+  }
+
+  .signin_signup-image {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .signin_signup-container {
+    max-width: 100%;
+  }
+}
+/* end form  */
+/* Custom Tabs antd */
+.product {
+  .ant-tabs-top > .ant-tabs-nav::before,
+  .ant-tabs-bottom > .ant-tabs-nav::before,
+  .ant-tabs-top > div > .ant-tabs-nav::before,
+  .ant-tabs-bottom > div > .ant-tabs-nav::before {
+    border: 0;
+  }
+  .ant-tabs-tab:hover {
+    color: #ba55d3;
+  }
+  .ant-tabs.ant-tabs-top {
+    align-items: center;
+  }
+  .ant-tabs-tab {
+    color: #667;
+    font-weight: 600;
+    font-size: 1.6rem;
+    text-transform: capitalize;
+  }
+  .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+    color: #9900cc;
+    font-weight: 600;
+  }
+  .ant-tabs-ink-bar {
+    position: absolute;
+    background: #9900cc;
+    pointer-events: none;
+  }
+  .ant-tabs-nav-wrap {
+    justify-content: center;
+  }
+}
+
+/* end tabs antd */
+//image ant
+.ant-image{
+  display:flex
+}
+
+
+// map
+.leaflet-container {
+  height: 500px;
+  width: 100%;
+}

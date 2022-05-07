@@ -1,0 +1,68 @@
+#table-product {
+  .ant-table-cell {
+    vertical-align: top;
+  }
+  tr > td:last-child {
+    border-width: 0;
+  }
+  tr:last-child td:last-child {
+    border-width: 1px;
+  }
+  .room-type {
+    font-size: 1.6rem;
+    text-decoration: underline;
+  }
+  .room_seperator {
+    font-size: 1.6rem;
+  }
+  .old_price {
+    font-size: 1.3rem;
+    text-decoration: line-through;
+    color: #c00;
+  }
+  .price-wrap {
+    margin-bottom: 1rem;
+  }
+  .new_price {
+    color: #333;
+    font-weight: 700;
+    font-size: 1.8rem;
+  }
+  .maker-helper {
+    display: inline;
+    color: #6b6b6b;
+    font-size: 1.2rem;
+    font-weight: 500;
+    padding: 0.8rem 0.2rem;
+    background-color: rgb(240, 240, 240);
+  }
+  .desc-helper {
+    margin-top: 2rem;
+    padding: 0.8rem 0.5rem;
+    background-color: #008009;
+    color: #fff;
+  }
+  .options {
+    &__eat {
+      color: #008009;
+    }
+    span {
+      color: currentColor;
+      font-weight: 700;
+    }
+    &__description {
+      color: #a30000;
+    }
+  }
+  .booking-ticker {
+    margin-top: 1rem;
+    margin-left: 2rem;
+  }
+  .booking-des {
+    margin-bottom: 1rem;
+    &__item {
+      color: red;
+      font-size: 1.8rem;
+    }
+  }
+}

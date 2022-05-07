@@ -1,0 +1,86 @@
+.description {
+  padding: 0 3rem;
+  h1 {
+    margin-bottom: 0;
+  }
+}
+.price {
+  display: flex;
+  &__amount:first-child {
+    margin-right: 2rem;
+    opacity: 0.8;
+  }
+  &__amount {
+    font-size: 2.5rem;
+    color: #9a9a9a;
+  }
+  &__currencySymbol {
+    margin-right: 0.5rem;
+    font-size: 2rem;
+    vertical-align: top;
+  }
+}
+.content {
+  p {
+    color: #9a9a9a;
+  }
+}
+.quantity {
+  display: flex;
+  border: 1px solid #1bbc9b;
+  margin-right: 1rem;
+  input {
+    border: 0;
+    width: 8rem;
+    border-left: 1px solid #89d4f1;
+    border-right: 1px solid #89d4f1;
+    text-align: center;
+    &:focus-visible {
+      outline: 1px solid #1bbc9b;
+    }
+  }
+  &__key {
+    text-align: center;
+    width: 5rem;
+  }
+}
+.product_meta {
+  margin-top: 2.5rem;
+  .posted_in {
+    margin-bottom: 1rem;
+  }
+  span {
+    font-size: 1.5rem;
+    margin-right: 1rem;
+  }
+}
+//tabPane
+.tabPane {
+  &__title {
+    font-size: 2rem;
+    line-height: 2rem;
+    margin: 1.5rem 0;
+    font-weight: bold;
+  }
+}
+.reviews {
+  .ant-comment-content {
+    position: relative;
+  }
+  &__rate {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+}
+//related
+.related {
+  margin: 0 -12px;
+  &__title {
+    margin: 12px;
+    color: #4b4747;
+    font-size: 2rem;
+    line-height: 2.7rem;
+    font-weight: bold;
+  }
+}

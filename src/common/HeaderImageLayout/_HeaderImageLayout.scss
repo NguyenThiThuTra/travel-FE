@@ -1,0 +1,42 @@
+.HeaderImageLayout {
+  // height: 40rem;
+  margin: 0 auto;
+  &__content {
+    max-width: 1192px;
+    margin: 0 auto;
+    height: 100%;
+    padding: 1.5rem 2.4rem;
+    padding-top: 20rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+  &__title {
+    display: flex;
+    flex-direction: column;
+    .h1 {
+      text-align: left;
+    }
+
+    &--sub {
+      color: #ffffff !important;
+      letter-spacing: 2px;
+      font-weight: normal;
+      margin: 1.5rem 0;
+      text-transform: uppercase;
+    }
+  }
+  &__filters-wrap {
+    display: flex;
+  }
+  &__filters {
+    color: #fff;
+    letter-spacing: 2px;
+    &:hover {
+      color: aquamarine;
+    }
+  }
+  &__filters:first-child {
+    margin-right: 2rem;
+  }
+}
