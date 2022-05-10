@@ -1,0 +1,67 @@
+.payment-page {
+  padding: 6rem 1.2rem;
+}
+.payment-info {
+  width: fit-content;
+  margin: 20px 0;
+}
+.payment-methods {
+  &__main {
+    padding: 2rem;
+    border: 1px solid #c5bdbd;
+  }
+  &__item {
+    display: flex;
+    align-items: center;
+  }
+  &__img {
+    margin-right: 10px;
+  }
+  &__name {
+  }
+  &__btn-payment {
+    margin-top: 2rem;
+    button {
+    }
+  }
+}
+.booking-info {
+  &__item {
+    margin-bottom: 1rem;
+  }
+  &__label {
+    font-size: 1.2rem;
+    line-height: 1.4rem;
+    margin-bottom: 0.5rem;
+  }
+  &__value {
+    font-size: 1.6rem;
+    line-height: 1.8rem;
+  }
+}
+.booking-info-orders {
+  &__item {
+    display: flex;
+    align-items: center;
+  }
+  &__label {
+    margin-right: 5px;
+    font-size: 1.4rem;
+    line-height: 1.6rem;
+    &--totalPrice {
+     font-size: 1.6rem;
+     line-height: 1.8rem;
+     font-weight: 600;
+    }
+  }
+  &__value {
+    margin-right: 5px;
+    font-size: 1.6rem;
+    line-height: 1.8rem;
+    font-weight: 500;
+    &--totalPrice {
+      color: #1890ff;
+      font-weight: 600;
+    }
+  }
+}

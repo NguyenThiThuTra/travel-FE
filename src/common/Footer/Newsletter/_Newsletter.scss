@@ -1,0 +1,41 @@
+.Newsletter {
+  padding: 2rem 3rem;
+  text-align: center;
+  &__title {
+    margin: 2rem 3rem 4rem;
+  }
+  &__content {
+    font-size: 1.4rem;
+  }
+}
+.form_support {
+  margin: 4rem auto 2rem;
+  display: flex;
+  max-width: 90rem;
+  &__input_form {
+    background-color: transparent;
+    border-radius: 0;
+    border-bottom: 2px solid #e4e6eb;
+    transition: border 0.5s;
+    &:hover {
+      border-bottom: 2px solid #23232c;
+    }
+    &:focus {
+      border-bottom: 2px solid #23232c;
+    }
+  }
+  &__btn {
+    transition: border 0.5s;
+    border-bottom: 2px solid #e4e6eb;
+    border-radius: 0;
+    margin-left: 2rem;
+    &:hover {
+      border-bottom: 2px solid #23232c;
+      transition: border 0.5s;
+    }
+    &:focus {
+      outline: 0;
+      border-bottom: 2px solid #23232c;
+    }
+  }
+}
