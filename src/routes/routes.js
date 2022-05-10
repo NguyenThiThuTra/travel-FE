@@ -11,8 +11,8 @@ import HomestayDetailPage from 'pages/HomestayDetail/HomestayDetailPage';
 import RoomPage from 'pages/Room/RoomPage';
 import ProductsDetailsPage from 'pages/ProductsDetails/ProductDetailPage';
 import TestPage from 'pages/Test/TestPage';
-import Payment from 'pages/Payment/Payment';
 import PaymentVnPayReturn from 'pages/PaymentVnPayReturn/PaymentVnPayReturn';
+import PaymentPage from 'pages/Payment/PaymentPage';
 
 export const appRoutes = {
   ADMIN_ROUTES: [{ id: 0, path: '/admin', component: <Admin /> }],
@@ -31,7 +31,7 @@ export const appRoutes = {
   PUBLIC_ROUTES: [
     { id: 9999, path: '/test', component: <TestPage /> },
     { id: 9997, path: '/payment/vnpay_return', component: <PaymentVnPayReturn /> },
-    { id: 9998, path: '/payment', component: <Payment /> },
+    { id: 9998, path: '/payment', component: <PaymentPage /> },
 
     {
       id: 9,

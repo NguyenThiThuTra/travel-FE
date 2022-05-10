@@ -18,6 +18,7 @@ import UsersPage from 'components/Admin/Users/Users';
 import ActionFormUser from 'components/Admin/Users/ActionFormUser';
 import TestPage from 'pages/Test/TestPage';
 import AdminCategoryPage from 'components/Admin/Category/Category';
+import PaymentPage from 'pages/Payment/PaymentPage';
 
 export const RouteConstant = {
   TestPage: {
@@ -119,5 +120,9 @@ export const RouteConstant = {
   AdminCategoryPage: {
     path: '/admin/category',
     component: <AdminCategoryPage />,
+  },
+  PaymentPage: {
+    path: '/payment',
+    component: <PaymentPage />,
   },
 };

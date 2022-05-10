@@ -1,4 +1,5 @@
 import { Button, DatePicker, Form, Input, List } from 'antd';
+import { RouteConstant } from 'constants/RouteConstant';
 import moment from 'moment';
 import queryString from 'query-string';
 import React, { useEffect, useState } from 'react';
@@ -28,7 +29,6 @@ export const AddCartForm = ({ orders, onCloseModal }) => {
   useEffect(() => {
     if (!querySearch) return;
 
-
     if (querySearch?.from_date && querySearch?.to_date) {
       setRangePickerValue([querySearch.from_date, querySearch.to_date]);
     }
@@ -47,9 +47,7 @@ export const AddCartForm = ({ orders, onCloseModal }) => {
     });
   });
 
-
   const onFinish = async (values) => {
-
     const from_date = rangePickerValue?.[0];
     const to_date = rangePickerValue?.[1];
 
@@ -70,10 +68,15 @@ export const AddCartForm = ({ orders, onCloseModal }) => {
       homestay_id,
       user_id,
       order: booking,
+      orders
     };
     try {
-      await dispatch(addOrder(orderDataForm)).unwrap();
-      history.replace('/history');
+      // await dispatch(addOrder(orderDataForm)).unwrap();
+      // history.replace('/history');
+      history.push({
+        pathname: RouteConstant.PaymentPage.path,
+        state: { orderDataForm },
+      });
     } catch (error) {
       console.log(error);
     }
