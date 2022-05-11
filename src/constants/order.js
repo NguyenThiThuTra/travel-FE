@@ -15,6 +15,10 @@ export const ORDER_STATUS = {
     en: 'canceled',
     vi: 'Đã huỷ',
   },
+  holding: {
+    en: 'holding',
+    vi: 'Đang chờ xử lý',
+  },
 };
 export const ORDER_STATUS_COLOR = {
   pending: '#ffc107',
@@ -22,9 +26,9 @@ export const ORDER_STATUS_COLOR = {
   rejected: '#dc3545',
   canceled: '#6c757d',
 };
-export const ORDER_STATUS_VALUE ={
+export const ORDER_STATUS_VALUE = {
   pending: 0,
   approved: 1,
   rejected: 2,
   canceled: 3,
-}
+};

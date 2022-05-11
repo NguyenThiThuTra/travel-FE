@@ -18,6 +18,8 @@ import { useHistory, useLocation } from 'react-router-dom';
 import VNPAY from 'assets/images/vnpay/vnpay.png';
 
 import './_PaymentPage.scss';
+import { addOrder } from 'features/Order/OrderSlice';
+import { ORDER_STATUS } from 'constants/order';
 
 const { Title } = Typography;
 
@@ -30,6 +32,8 @@ const PaymentPage = () => {
   const [componentSize, setComponentSize] = useState('default');
   const [paymentMethod, setPaymentMethod] = useState('');
 
+  const [bookingStatus, setBookingStatus] = useState(false);
+
   const orderDataForm = location?.state?.orderDataForm;
   const orders = orderDataForm?.orders;
 
@@ -38,20 +42,28 @@ const PaymentPage = () => {
   };
 
   const handleGoPayment = async (values) => {
+    if (!orderDataForm) {
+      return;
+    }
     switch (paymentMethod) {
       case 'vnpay':
-        const {  bankCode, orderDescription } = values;
+        const { bankCode, orderDescription } = values;
         // const payload = { amount, bankCode, orderDescription, orderType };
         const payload = {
           amount: orders.totalPriceOrders,
           bankCode,
           orderDescription,
           orderType: 'other',
-          language: "vn",
+          language: 'vn',
         };
         try {
+          const { orders, ...payloadAddOrder } = orderDataForm;
+          await dispatch(
+            addOrder({ ...payloadAddOrder, status: ORDER_STATUS.holding.en })
+          ).unwrap();
           const response = await dispatch(createVNPayment(payload)).unwrap();
-          await window.open(response?.vnpUrl);
+          setBookingStatus(true);
+          window.open(response?.vnpUrl);
           // history.replace('/history');
         } catch (error) {
           console.log(error);
@@ -95,55 +107,57 @@ const PaymentPage = () => {
 
           <Row gutter={[24, 24]}>
             <Col className="gutter-row" span={16}>
-              <div className="payment-methods">
-                <Title level={4}> Phương thức thanh toán</Title>
-                <div className="payment-methods__main">
-                  <Radio.Group
-                    style={{ width: '100%' }}
-                    onChange={onChangePaymentMethod}
-                    value={paymentMethod}
-                  >
-                    <Space direction="vertical" style={{ width: '100%' }}>
-                      <Radio value="vnpay">
-                        <div className="payment-methods__item">
-                          <span className="payment-methods__img">
-                            <img src={VNPAY} width="80px" alt="vnpay" />
-                          </span>
-                          <div className="payment-methods__name">
-                            Thanh toán VNPAY
+              {!bookingStatus && (
+                <div className="payment-methods">
+                  <Title level={4}> Phương thức thanh toán</Title>
+                  <div className="payment-methods__main">
+                    <Radio.Group
+                      style={{ width: '100%' }}
+                      onChange={onChangePaymentMethod}
+                      value={paymentMethod}
+                    >
+                      <Space direction="vertical" style={{ width: '100%' }}>
+                        <Radio value="vnpay">
+                          <div className="payment-methods__item">
+                            <span className="payment-methods__img">
+                              <img src={VNPAY} width="80px" alt="vnpay" />
+                            </span>
+                            <div className="payment-methods__name">
+                              Thanh toán VNPAY
+                            </div>
                           </div>
-                        </div>
-                        {paymentMethod === 'vnpay' && (
-                          <div>
-                            <Form.Item
-                              rules={[
-                                {
-                                  required: true,
-                                  message: 'Xin vui lòng nhập chọn ngân hàng!',
-                                },
-                              ]}
-                              name="bankCode"
-                              label="Chọn ngân hàng"
-                            >
-                              <Select>
-                                <Select.Option value="NCB">NCB</Select.Option>
-                              </Select>
-                            </Form.Item>
+                          {paymentMethod === 'vnpay' && (
+                            <div>
+                              <Form.Item
+                                rules={[
+                                  {
+                                    required: true,
+                                    message:
+                                      'Xin vui lòng nhập chọn ngân hàng!',
+                                  },
+                                ]}
+                                name="bankCode"
+                                label="Chọn ngân hàng"
+                              >
+                                <Select>
+                                  <Select.Option value="NCB">NCB</Select.Option>
+                                </Select>
+                              </Form.Item>
 
-                            <Form.Item
-                              name="orderDescription"
-                              label="Nội dung chuyển khoản"
-                              rules={[
-                                {
-                                  required: true,
-                                  message:
-                                    'Xin vui lòng nhập nội dung chuyển khoản!',
-                                },
-                              ]}
-                            >
-                              <Input />
-                            </Form.Item>
-                            {/* <Form.Item
+                              <Form.Item
+                                name="orderDescription"
+                                label="Nội dung chuyển khoản"
+                                rules={[
+                                  {
+                                    required: true,
+                                    message:
+                                      'Xin vui lòng nhập nội dung chuyển khoản!',
+                                  },
+                                ]}
+                              >
+                                <Input />
+                              </Form.Item>
+                              {/* <Form.Item
                               name="orderType"
                               label="OrderType"
                               // rules={[
@@ -155,14 +169,16 @@ const PaymentPage = () => {
                             >
                               <Input />
                             </Form.Item> */}
-                          </div>
-                        )}
-                      </Radio>
-                      <Radio value="visa-card">Thẻ thanh toán quốc tế</Radio>
-                    </Space>
-                  </Radio.Group>
+                            </div>
+                          )}
+                        </Radio>
+                        <Radio value="visa-card">Thẻ thanh toán quốc tế</Radio>
+                      </Space>
+                    </Radio.Group>
+                  </div>
                 </div>
-              </div>
+              )}
+              {bookingStatus && 'Đặt xử lí đơn hàng !'}
             </Col>
             <Col className="gutter-row" span={8}>
               <div className="payment-contact">
