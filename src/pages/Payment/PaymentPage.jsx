@@ -49,22 +49,29 @@ const PaymentPage = () => {
       case 'vnpay':
         const { bankCode, orderDescription } = values;
         // const payload = { amount, bankCode, orderDescription, orderType };
-        const payload = {
-          amount: orders.totalPriceOrders,
-          bankCode,
-          orderDescription,
-          orderType: 'other',
-          language: 'vn',
-        };
+
         try {
           const { orders, ...payloadAddOrder } = orderDataForm;
-          await dispatch(
-            addOrder({ ...payloadAddOrder, status: ORDER_STATUS.holding.en })
+          const result = await dispatch(
+            addOrder({
+              ...payloadAddOrder,
+              status: ORDER_STATUS.holding.en,
+              payment: 'vnpay',
+            })
           ).unwrap();
+          console.log({ result });
+          const payload = {
+            amount: orders.totalPriceOrders,
+            bankCode,
+            orderDescription,
+            orderType: 'other',
+            language: 'vn',
+            orderId: result?.data?._id,
+          };
           const response = await dispatch(createVNPayment(payload)).unwrap();
           setBookingStatus(true);
-          window.open(response?.vnpUrl);
-          // history.replace('/history');
+          window.location.href = response?.vnpUrl
+          // window.open(response?.vnpUrl);
         } catch (error) {
           console.log(error);
         }

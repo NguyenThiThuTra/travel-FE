@@ -1,16 +1,25 @@
 import { LikeFilled, LikeOutlined } from '@ant-design/icons';
-import { Collapse, Image, Tabs, Tooltip } from 'antd';
+import { Button, Collapse, Image, Tabs, Tooltip } from 'antd';
 import { CommentList } from 'common/CommentList/CommentList';
 import HeaderImageLayout from 'common/HeaderImageLayout/HeaderImageLayout';
 import { TableProduct } from 'common/TableProduct/TableProduct';
-import { getHomestay } from 'features/Homestay/HomestaySlice';
+import { useCurrentUserSelector } from 'features/Auth/AuthSlice';
+import {
+  setOpenPopupChatBox,
+  setReceiver,
+} from 'features/ChatBox/ChatBoxSlice';
+import {
+  getHomestay,
+  useHomestaySelector,
+} from 'features/Homestay/HomestaySlice';
 import { fetchAllRooms, useRoomsSelector } from 'features/Rooms/RoomsSlice';
 import { groupBy } from 'helpers/groupBy';
 import queryString from 'query-string';
-import React, { createElement, useEffect, useState } from 'react';
+import React, { createElement, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useParams } from 'react-router-dom';
 import './_HomestayDetail.scss';
+
 const { TabPane } = Tabs;
 const { Panel } = Collapse;
 const HomestayDetailPage = () => {
@@ -18,6 +27,10 @@ const HomestayDetailPage = () => {
   let { id } = useParams();
   let dispatch = useDispatch();
 
+  const currentUser = useSelector(useCurrentUserSelector);
+  const homestay = useSelector(useHomestaySelector);
+  const dataHomestay = useMemo(() => homestay?.data, [homestay]);
+  console.log({ dataHomestay, currentUser });
   const rooms = useSelector(useRoomsSelector);
 
   const [dataGroupByCategory, setDataGroupByCategory] = useState([]);
@@ -76,8 +89,11 @@ const HomestayDetailPage = () => {
 
   //end review
 
-  //end filter
-
+  // open chat box
+  const handleOpenChatBox = () => {
+    dispatch(setReceiver(dataHomestay));
+    dispatch(setOpenPopupChatBox(true));
+  };
   return (
     <div className="ProductsDetailsPage">
       <HeaderImageLayout title_ul={rooms?.data?.[0]?.homestay_id?.name} />
@@ -88,7 +104,12 @@ const HomestayDetailPage = () => {
           padding: '5rem 1.5rem',
         }}
       >
-        <h1>{rooms?.data?.[0]?.homestay_id?.name}</h1>
+        <div className="homestay-detail__header">
+          <h1>{rooms?.data?.[0]?.homestay_id?.name}</h1>
+          <Button onClick={handleOpenChatBox} type="primary" danger>
+            Chat Ngay
+          </Button>
+        </div>
         <div className="gallery">
           <Image
             style={{ objectFit: 'cover' }}

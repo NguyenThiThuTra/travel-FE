@@ -11,6 +11,7 @@ import authReducer from 'features/Auth/AuthSlice';
 import orderReducer from 'features/Order/OrderSlice';
 import commentReducer from 'features/Comment/CommentSlice';
 import paymentReducer from 'features/Payment/PaymentSlice';
+import chatBoxReducer from 'features/ChatBox/ChatBoxSlice';
 const rootReducer = combineReducers({
   users: usersReducer,
   homestay: homestayReducer,
@@ -20,6 +21,7 @@ const rootReducer = combineReducers({
   order: orderReducer,
   comments: commentReducer,
   payment: paymentReducer,
+  chatBox: chatBoxReducer,
 });
 
 export const resetAction = createAction('reset');

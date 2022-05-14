@@ -11,16 +11,20 @@ import {
   HIDDEN_HEADER,
   HIDDEN_NEWSLETTER,
 } from 'constants/pathnameSpecial';
+import { useCurrentUserSelector } from 'features/Auth/AuthSlice';
+import { useSelector } from 'react-redux';
+import PopupChat from 'common/PopupChat/PopupChat';
+import { useOpenPopupChatBoxSelector } from 'features/ChatBox/ChatBoxSlice';
 
 export default function AppLayout({ children }) {
   let location = useLocation();
+
+  const currentUser = useSelector(useCurrentUserSelector);
   return (
     <React.StrictMode>
       <div className="App">
-      {!flagPathname(HIDDEN_HEADER, location.pathname) && (
-          <Header />
-        )}
-       
+        {!flagPathname(HIDDEN_HEADER, location.pathname) && <Header />}
+
         {/* LIST_ROUTE    */}
         {children}
         {/*End LIST_ROUTE    */}
@@ -33,7 +37,10 @@ export default function AppLayout({ children }) {
           />
         )}
 
-        <BackTop>
+        {/* popup chat admin */}
+        {currentUser && <PopupChat />}
+
+        <BackTop style={{ bottom: '100px' }}>
           <div
             style={{
               height: 40,
@@ -44,8 +51,6 @@ export default function AppLayout({ children }) {
               color: '#fff',
               textAlign: 'center',
               fontSize: 14,
-              bottom: '100px',
-              position: 'absolute',
             }}
           >
             <ArrowUpOutlined />
