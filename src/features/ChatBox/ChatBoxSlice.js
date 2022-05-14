@@ -4,7 +4,7 @@ const initialState = {
   messages: null,
   listHomestayChatBox: null,
   receiver: null,
-  openPopupChatBox: true,
+  openPopupChatBox: false,
 };
 const chatBoxSlices = createSlice({
   name: 'chatBox',
