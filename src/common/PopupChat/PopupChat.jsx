@@ -33,8 +33,11 @@ export default function PopupChat() {
   const currentUser = useSelector(useCurrentUserSelector);
 
   const conversationsRef = firestore.collection('conversations');
-  const queryConversations = conversationsRef
-    .where('members', 'array-contains', currentUser?.data?._id)
+  const queryConversations = conversationsRef.where(
+    'members',
+    'array-contains',
+    currentUser?.data?._id
+  );
 
   const [conversations, loadingConversations] = useCollectionData(
     queryConversations,
@@ -73,14 +76,33 @@ export default function PopupChat() {
     }
   }, [currentConversation]);
 
+  // useEffect(() => {
+  //   if (!currentConversation) return;
+  //   const getMessages = async () => {
+  //     firestore
+  //       .collection('messages')
+  //       .where('conversation_id', '==', currentConversation?.id || null)
+  //       .orderBy('createdAt', 'desc')
+  //       .onSnapshot((snapshot) => {
+  //         console.log({ snapshot });
+  //         const messages = snapshot.docs.map((doc) => ({
+  //           ...doc.data(),
+  //           id: doc.id,
+  //         }));
+  //         console.log({ messagesmessagesmessages: messages });
+  //         // setMessages(messages);
+  //       });
+  //   };
+  //   getMessages();
+  // }, [currentConversation]);
   const messageRef = firestore.collection('messages');
   const query = messageRef
-    .where('conversation_id', '==', currentConversation?.id || 'no-data')
-    // .orderBy('createdAt')
+    .where('conversation_id', '==', currentConversation?.id || null)
+    .orderBy('createdAt', 'desc')
     .limit(25);
   const [messages] = useCollectionData(query);
 
-  // console.log({ messages, receiver, conversations, currentConversation });
+  console.log({ messages, receiver, conversations, currentConversation });
   const [formValue, setFormValue] = useState();
 
   const handleSwitchPopupChat = () => {

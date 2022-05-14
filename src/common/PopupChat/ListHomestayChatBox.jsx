@@ -14,7 +14,7 @@ export default function ListHomestayChatBox({
         [ITEM] Danh sách homestay
       </div>
 
-      <ul class="ul-list-item-homestay">
+      <ul className="ul-list-item-homestay">
         {data?.map((item) => (
           <li
             onClick={() => handleChangeCurrentConversation(item.id)}
