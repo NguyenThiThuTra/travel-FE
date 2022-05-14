@@ -102,7 +102,7 @@ export default function PopupChat() {
     .limit(25);
   const [messages] = useCollectionData(query);
 
-  console.log({ messages, receiver, conversations, currentConversation });
+  // console.log({ messages, receiver, conversations, currentConversation });
   const [formValue, setFormValue] = useState();
 
   const handleSwitchPopupChat = () => {
