@@ -1,17 +1,13 @@
 import { List, Typography } from 'antd';
 import React, { Fragment } from 'react';
 
-export default function ListHomestayChatBox() {
-  const data = [
-    'Racing car sprays burning fuel into crowd.',
-    'Japanese princess to wed commoner.',
-    'Australian walks 100km after outback crash.',
-    'Man charged over missing wedding girl.',
-    'Los Angeles battles huge wildfires.',
-    'Los Angeles battles huge wildfires.',
-    'Los Angeles battles huge wildfires.',
-    'Los Angeles battles huge wildfiresEnd.',
-  ];
+export default function ListHomestayChatBox({
+  data,
+  onChangeCurrentConversation,
+}) {
+  const handleChangeCurrentConversation = (conversation_id) => {
+    onChangeCurrentConversation(conversation_id);
+  };
   return (
     <Fragment>
       <div className="ul-list-item-homestay__title" mark>
@@ -20,8 +16,11 @@ export default function ListHomestayChatBox() {
 
       <ul class="ul-list-item-homestay">
         {data?.map((item) => (
-          <li key={item}>
-            <Typography.Text mark>[ITEM] {item}</Typography.Text>
+          <li
+            onClick={() => handleChangeCurrentConversation(item.id)}
+            key={item}
+          >
+            <Typography.Text mark>[ITEM] {'s'}</Typography.Text>
           </li>
         ))}
       </ul>

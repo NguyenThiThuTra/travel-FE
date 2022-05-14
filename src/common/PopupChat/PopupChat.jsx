@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
 import ChatIcon from 'assets/images/chat.png';
 import { Avatar, Empty, Input } from 'antd';
 import { useCurrentUserSelector } from 'features/Auth/AuthSlice';
@@ -6,16 +6,18 @@ import { useDispatch, useSelector } from 'react-redux';
 import { firestore, firebase } from 'configs/firebase/config';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 import { ChatMessage } from './ChatMessage';
-import './_PopupChat.scss';
+import { v4 as uuidv4 } from 'uuid';
 import {
   setOpenPopupChatBox,
+  setReceiver,
   toggleOpenPopupChatBox,
   useOpenPopupChatBoxSelector,
   useReceiverChatBoxSelector,
 } from 'features/ChatBox/ChatBoxSlice';
 import ListHomestayChatBox from './ListHomestayChatBox';
+import './_PopupChat.scss';
 
-export default function PopupChat({ receiver_id = 'asfs' }) {
+export default function PopupChat() {
   const dispatch = useDispatch();
   // popup chat with admin
   const dummy = useRef();
@@ -29,13 +31,56 @@ export default function PopupChat({ receiver_id = 'asfs' }) {
   const receiver = useSelector(useReceiverChatBoxSelector);
 
   const currentUser = useSelector(useCurrentUserSelector);
-  console.log({ receiver });
+
+  const conversationsRef = firestore.collection('conversations');
+  const queryConversations = conversationsRef
+    .where('members', 'array-contains', currentUser?.data?._id)
+
+  const [conversations, loadingConversations] = useCollectionData(
+    queryConversations,
+    { idField: 'id' }
+  );
+
+  const [currentConversation, setCurrentConversation] = useState(null);
+
+  const onChangeCurrentConversation = (conversation_id) => {
+    setCurrentConversation(
+      conversations?.find((conversation) =>
+        conversation.id.includes(conversation_id)
+      )
+    );
+  };
+
+  useEffect(() => {
+    if (conversations && receiver) {
+      setCurrentConversation(
+        conversations?.find((conversation) =>
+          conversation.members.includes(receiver?.user_id)
+        )
+      );
+    }
+  }, [conversations, receiver]);
+
+  useEffect(() => {
+    if (currentConversation) {
+      dispatch(
+        setReceiver({
+          user_id: currentConversation.members.find(
+            (member) => member !== currentUser?.data?._id
+          ),
+        })
+      );
+    }
+  }, [currentConversation]);
 
   const messageRef = firestore.collection('messages');
-  const query = messageRef.orderBy('createdAt', 'desc').limit(25);
+  const query = messageRef
+    .where('conversation_id', '==', currentConversation?.id || 'no-data')
+    // .orderBy('createdAt')
+    .limit(25);
+  const [messages] = useCollectionData(query);
 
-  const [messages] = useCollectionData(query, { idField: 'id' });
-  console.log({ messages });
+  // console.log({ messages, receiver, conversations, currentConversation });
   const [formValue, setFormValue] = useState();
 
   const handleSwitchPopupChat = () => {
@@ -45,12 +90,21 @@ export default function PopupChat({ receiver_id = 'asfs' }) {
   const sendMessage = (e) => {
     e.preventDefault();
 
+    const conversation_id = uuidv4();
+    if (!currentConversation) {
+      const conversation = {
+        members: [currentUser?.data?._id, receiver?.user_id],
+        id: conversation_id,
+      };
+      conversationsRef.add(conversation);
+    }
+
     const message = {
+      conversation_id: currentConversation?.id || conversation_id,
       user_id: currentUser?.data?._id,
       sender_id: currentUser?.data?._id,
       sender_name: currentUser?.data?.name,
-      receiver_id: receiver?._id,
-      receiver_name: receiver?.name,
+      receiver_id: receiver?.user_id,
       text: formValue,
       // createdAt: new Date(),
       createdAt: new Date().getTime(),
@@ -61,10 +115,10 @@ export default function PopupChat({ receiver_id = 'asfs' }) {
   };
 
   useEffect(() => {
-    if (receiver) {
+    if (receiver || currentConversation) {
       dummy.current.scrollIntoView({ behavior: 'smooth' });
     }
-  }, [messages, receiver]);
+  }, [messages, receiver, currentConversation]);
 
   useEffect(() => {
     if (receiver) {
@@ -109,7 +163,7 @@ export default function PopupChat({ receiver_id = 'asfs' }) {
             </span>
           </div>
           <div className="chat-box__main">
-            {(receiver || receiver) && (
+            {(receiver || currentConversation) && (
               <div className="chat-box__receiver">
                 <div className="chat-box__receiver__name" mark>
                   Tra Nguyen Homestay
@@ -137,7 +191,7 @@ export default function PopupChat({ receiver_id = 'asfs' }) {
                 </form>
               </div>
             )}
-            {!receiver && (
+            {!receiver && !currentConversation && (
               <div
                 style={{
                   flex: 1,
@@ -151,7 +205,10 @@ export default function PopupChat({ receiver_id = 'asfs' }) {
             )}
 
             <div className="chat-box__listHomestay">
-              <ListHomestayChatBox />
+              <ListHomestayChatBox
+                data={conversations}
+                onChangeCurrentConversation={onChangeCurrentConversation}
+              />
             </div>
           </div>
         </div>
