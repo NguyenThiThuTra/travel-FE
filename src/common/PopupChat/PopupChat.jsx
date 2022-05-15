@@ -54,7 +54,6 @@ export default function PopupChat() {
     );
   };
 
-  
   useEffect(() => {
     if (conversations && receiver) {
       setCurrentConversation(
@@ -65,17 +64,17 @@ export default function PopupChat() {
     }
   }, [conversations, receiver]);
 
-  useEffect(() => {
-    if (currentConversation) {
-      dispatch(
-        setReceiver({
-          user_id: currentConversation.members.find(
-            (member) => member !== currentUser?.data?._id
-          ),
-        })
-      );
-    }
-  }, [currentConversation]);
+  // useEffect(() => {
+  //   if (currentConversation) {
+  //     dispatch(
+  //       setReceiver({
+  //         user_id: currentConversation.members.find(
+  //           (member) => member !== currentUser?.data?._id
+  //         ),
+  //       })
+  //     );
+  //   }
+  // }, [currentConversation]);
 
   // useEffect(() => {
   //   if (!currentConversation) return;
@@ -103,7 +102,7 @@ export default function PopupChat() {
     .limit(25);
   const [messages] = useCollectionData(query);
 
-  // console.log({ messages, receiver, conversations, currentConversation });
+  console.log({ messages, receiver, conversations, currentConversation });
   const [formValue, setFormValue] = useState();
 
   const handleSwitchPopupChat = () => {
@@ -126,8 +125,6 @@ export default function PopupChat() {
       conversation_id: currentConversation?.id || conversation_id,
       user_id: currentUser?.data?._id,
       sender_id: currentUser?.data?._id,
-      sender_name: currentUser?.data?.name,
-      receiver_id: receiver?.user_id,
       text: formValue,
       // createdAt: new Date(),
       createdAt: new Date().getTime(),
@@ -136,6 +133,8 @@ export default function PopupChat() {
     messageRef.add(message);
     setFormValue('');
   };
+
+  // animation
 
   useEffect(() => {
     if (receiver || currentConversation) {
@@ -153,7 +152,6 @@ export default function PopupChat() {
   const openChatBox = () => {
     dispatch(setOpenPopupChatBox(true));
   };
-
   return (
     <div className="popup-chat">
       <div
@@ -189,7 +187,7 @@ export default function PopupChat() {
             {(receiver || currentConversation) && (
               <div className="chat-box__receiver">
                 <div className="chat-box__receiver__name" mark>
-                  Tra Nguyen Homestay
+                  {receiver?.name}
                 </div>
                 <div className="chat-box__content">
                   <span ref={dummy}></span>
