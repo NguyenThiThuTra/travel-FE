@@ -104,7 +104,7 @@ export default function PopupChat() {
     .limit(25);
   const [messages] = useCollectionData(query);
 
-  console.log({ messages, receiver, conversations, currentConversation });
+  // console.log({ messages, receiver, conversations, currentConversation });
   const [formValue, setFormValue] = useState();
 
   const handleSwitchPopupChat = () => {
@@ -189,6 +189,13 @@ export default function PopupChat() {
             </span>
           </div>
           <div className="chat-box__main">
+            <div className="chat-box__listHomestay">
+              <ListHomestayChatBox
+                data={conversations}
+                currentConversation={currentConversation}
+                onChangeCurrentConversation={onChangeCurrentConversation}
+              />
+            </div>
             {(receiver || currentConversation) && (
               <div className="chat-box__receiver">
                 <div className="chat-box__receiver__name" mark>
@@ -233,14 +240,6 @@ export default function PopupChat() {
                 <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
               </div>
             )}
-
-            <div className="chat-box__listHomestay">
-              <ListHomestayChatBox
-                data={conversations}
-                currentConversation={currentConversation}
-                onChangeCurrentConversation={onChangeCurrentConversation}
-              />
-            </div>
           </div>
         </div>
       )}

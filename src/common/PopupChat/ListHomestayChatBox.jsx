@@ -10,7 +10,7 @@ export default function ListHomestayChatBox({
   return (
     <Fragment>
       <div className="ul-list-item-homestay__title" mark>
-        [ITEM] Danh sách homestay
+        Danh sách homestay
       </div>
       <ul className="ul-list-item-homestay">
         {data?.map((conversation) => (
