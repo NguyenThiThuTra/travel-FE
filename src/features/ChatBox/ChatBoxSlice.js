@@ -1,4 +1,17 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import userApi from 'api/userApi';
+
+export const getUser = createAsyncThunk(
+  'auth/get-receiver',
+  async (payload, { rejectWithValue }) => {
+    try {
+      const response = await userApi.getUser(payload);
+      return response?.data;
+    } catch (error) {
+      return rejectWithValue(error?.response.data);
+    }
+  }
+);
 
 const initialState = {
   messages: null,
@@ -23,7 +36,14 @@ const chatBoxSlices = createSlice({
       state.openPopupChatBox = !state.openPopupChatBox;
     },
   },
-  extraReducers: {},
+  extraReducers: {
+    [getUser.fulfilled]: (state, action) => {
+      state.receiver = action.payload;
+    },
+    [getUser.rejected]: (state, action) => {
+      state.receiver = null;
+    },
+  },
 });
 //actions
 export const chatBoxActions = chatBoxSlices.actions;

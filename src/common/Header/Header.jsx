@@ -14,6 +14,10 @@ import ModalLogin from './ModalLogin/ModalLogin';
 import UserProfile from './UserProfile/UserProfile';
 import './_Header.scss';
 import { resetAction } from 'app/store';
+import {
+  toggleModalLogin,
+  visibleModalLoginSelector,
+} from 'features/commonSlice';
 
 const Header = () => {
   let location = useLocation();
@@ -45,15 +49,11 @@ const Header = () => {
 
   //end show info
   //modal login
-  const [visibleModalLogin, setVisibleModalLogin] = useState(false);
-
-  const showModalLogin = () => {
-    setVisibleModalLogin(true);
+  const visibleModalLogin = useSelector(visibleModalLoginSelector);
+  const handleToggleModalLogin = () => {
+    dispatch(toggleModalLogin());
   };
 
-  const hideModalLogin = () => {
-    setVisibleModalLogin(false);
-  };
   const handleLogout = async () => {
     try {
       dispatch(resetAction());
@@ -89,7 +89,7 @@ const Header = () => {
     </Menu>
   ) : (
     <Menu>
-      <Menu.Item onClick={showModalLogin}>
+      <Menu.Item onClick={handleToggleModalLogin}>
         <div>Đăng nhập / Đăng ký</div>
       </Menu.Item>
     </Menu>
@@ -173,7 +173,7 @@ const Header = () => {
             <ModalLogin
               title="Title"
               visible={visibleModalLogin}
-              hideModalLogin={hideModalLogin}
+              hideModalLogin={handleToggleModalLogin}
             />
           </ul>
         </Col>

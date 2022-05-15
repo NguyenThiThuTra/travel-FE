@@ -54,6 +54,7 @@ export default function PopupChat() {
     );
   };
 
+  
   useEffect(() => {
     if (conversations && receiver) {
       setCurrentConversation(
@@ -138,13 +139,13 @@ export default function PopupChat() {
 
   useEffect(() => {
     if (receiver || currentConversation) {
-      dummy.current.scrollIntoView({ behavior: 'smooth' });
+      dummy?.current?.scrollIntoView({ behavior: 'smooth' });
     }
   }, [messages, receiver, currentConversation]);
 
   useEffect(() => {
     if (receiver) {
-      inputMessageRef.current.focus();
+      inputMessageRef?.current?.focus();
     }
   }, [receiver]);
 
@@ -169,7 +170,7 @@ export default function PopupChat() {
       {openPopupChatBox && (
         <div
           ref={chatBoxRef}
-          onMouseEnter={() => chatBoxRef.current.focus()}
+          onMouseEnter={() => chatBoxRef?.current?.focus()}
           className="chat-box"
         >
           <div className="chat-box__header">

@@ -1,16 +1,25 @@
 import { LikeFilled, LikeOutlined } from '@ant-design/icons';
-import { Button, Collapse, Image, Tabs, Tooltip } from 'antd';
+import {
+  Button,
+  Collapse,
+  Image, Popconfirm,
+  Tabs,
+  Tooltip
+} from 'antd';
 import { CommentList } from 'common/CommentList/CommentList';
 import HeaderImageLayout from 'common/HeaderImageLayout/HeaderImageLayout';
 import { TableProduct } from 'common/TableProduct/TableProduct';
 import { useCurrentUserSelector } from 'features/Auth/AuthSlice';
 import {
   setOpenPopupChatBox,
-  setReceiver,
+  setReceiver
 } from 'features/ChatBox/ChatBoxSlice';
 import {
+  toggleModalLogin
+} from 'features/commonSlice';
+import {
   getHomestay,
-  useHomestaySelector,
+  useHomestaySelector
 } from 'features/Homestay/HomestaySlice';
 import { fetchAllRooms, useRoomsSelector } from 'features/Rooms/RoomsSlice';
 import { groupBy } from 'helpers/groupBy';
@@ -30,7 +39,7 @@ const HomestayDetailPage = () => {
   const currentUser = useSelector(useCurrentUserSelector);
   const homestay = useSelector(useHomestaySelector);
   const dataHomestay = useMemo(() => homestay?.data, [homestay]);
-  console.log({ dataHomestay, currentUser });
+
   const rooms = useSelector(useRoomsSelector);
 
   const [dataGroupByCategory, setDataGroupByCategory] = useState([]);
@@ -90,7 +99,23 @@ const HomestayDetailPage = () => {
   //end review
 
   // open chat box
+  const [visiblePopupNotification, setVisiblePopupNotification] =
+    useState(false);
+  function confirmNotification(e) {
+    // message.success('Click on Yes');
+    setVisiblePopupNotification(false);
+    dispatch(toggleModalLogin());
+  }
+
+  function cancelNotification(e) {
+    // message.error('Click on No');
+    setVisiblePopupNotification(false);
+  }
+
   const handleOpenChatBox = () => {
+    if (!currentUser) {
+      return setVisiblePopupNotification(true);
+    }
     dispatch(setReceiver(dataHomestay));
     dispatch(setOpenPopupChatBox(true));
   };
@@ -106,9 +131,18 @@ const HomestayDetailPage = () => {
       >
         <div className="homestay-detail__header">
           <h1>{rooms?.data?.[0]?.homestay_id?.name}</h1>
-          <Button onClick={handleOpenChatBox} type="primary" danger>
-            Chat Ngay
-          </Button>
+          <Popconfirm
+            visible={visiblePopupNotification}
+            title="Bạn cần đăng nhập để thực hiện chức năng này ?"
+            onConfirm={confirmNotification}
+            onCancel={cancelNotification}
+            okText="Yes"
+            cancelText="No"
+          >
+            <Button onClick={handleOpenChatBox} type="primary" danger>
+              Chat Ngay
+            </Button>
+          </Popconfirm>
         </div>
         <div className="gallery">
           <Image

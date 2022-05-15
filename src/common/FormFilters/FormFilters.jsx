@@ -47,7 +47,6 @@ const FormFilters = () => {
     console.log(`selected ${value}`);
     setProvinceCode(value);
   }
-  console.log({ match });
 
   function Search() {
     console.log({ rangePickerValue, provinceCode });
