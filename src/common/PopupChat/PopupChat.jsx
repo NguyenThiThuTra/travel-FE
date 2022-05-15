@@ -16,6 +16,8 @@ import {
 } from 'features/ChatBox/ChatBoxSlice';
 import ListHomestayChatBox from './ListHomestayChatBox';
 import './_PopupChat.scss';
+import { BsChatFill } from 'react-icons/bs';
+import { AiOutlineCloseCircle, AiOutlineSend } from 'react-icons/ai';
 
 export default function PopupChat() {
   const dispatch = useDispatch();
@@ -111,6 +113,9 @@ export default function PopupChat() {
 
   const sendMessage = (e) => {
     e.preventDefault();
+    if (!formValue) {
+      return;
+    }
 
     const conversation_id = uuidv4();
     if (!currentConversation) {
@@ -172,15 +177,15 @@ export default function PopupChat() {
           className="chat-box"
         >
           <div className="chat-box__header">
-            <Avatar style={{ verticalAlign: 'middle' }}>Me</Avatar>
+            <BsChatFill color="#ee4d2d" fontSize={20} />
             <span className="chat-box__title">
-              <strong>Admin</strong>
+              <strong>Chat</strong>
             </span>
             <span
               onClick={() => dispatch(toggleOpenPopupChatBox())}
               className="chat-box__close"
             >
-              X
+              <AiOutlineCloseCircle color="#ee4d2d" fontSize={25} />
             </span>
           </div>
           <div className="chat-box__main">
@@ -192,7 +197,11 @@ export default function PopupChat() {
                 <div className="chat-box__content">
                   <span ref={dummy}></span>
                   {messages?.map((message, index) => (
-                    <ChatMessage message={message} key={message.updatedAt} />
+                    <ChatMessage
+                      currentUser={currentUser}
+                      message={message}
+                      key={message.updatedAt}
+                    />
                   ))}
                 </div>
 
@@ -203,10 +212,10 @@ export default function PopupChat() {
                       value={formValue}
                       onChange={(e) => setFormValue(e.target.value)}
                       type="text"
-                      placeholder="Type a message"
+                      placeholder="Gửi tin nhắn"
                     />
                     <button type="submit" className="chat-box__btn-send">
-                      Send
+                      <AiOutlineSend />
                     </button>
                   </div>
                 </form>
@@ -228,6 +237,7 @@ export default function PopupChat() {
             <div className="chat-box__listHomestay">
               <ListHomestayChatBox
                 data={conversations}
+                currentConversation={currentConversation}
                 onChangeCurrentConversation={onChangeCurrentConversation}
               />
             </div>
