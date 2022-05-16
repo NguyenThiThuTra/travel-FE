@@ -1,10 +1,10 @@
-import { Button, Col, DatePicker, Row, Select } from 'antd';
+import { Button, Col, DatePicker, Input, Row, Select } from 'antd';
 import provincesOpenApi from 'api/provincesOpenApi';
 import { PublicRouteFormFilter } from 'constants/PublicRouteFormFilter';
 import { RouteConstant } from 'constants/RouteConstant';
 import moment from 'moment';
 import queryString from 'query-string';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useHistory, useLocation, useRouteMatch } from 'react-router-dom';
 import './_FormFilters.scss';
 const { RangePicker } = DatePicker;
@@ -12,6 +12,8 @@ const FormFilters = () => {
   const history = useHistory();
   const match = useRouteMatch();
   const location = useLocation();
+
+  const nameHomestayRef = useRef('');
 
   const querySearch = queryString.parse(location.search);
 
@@ -53,6 +55,10 @@ const FormFilters = () => {
     const from_date = moment(rangePickerValue[0]).format('YYYY-MM-DD');
     const to_date = moment(rangePickerValue[1]).format('YYYY-MM-DD');
     const query = {};
+    console.log({ nameHomestayRef: nameHomestayRef.current.value });
+    if (nameHomestayRef.current.value) {
+      query.search = nameHomestayRef.current.value;
+    }
     if (provinceCode) {
       query.province_code = provinceCode;
     }
@@ -161,6 +167,16 @@ const FormFilters = () => {
                 ],
               }}
               onChange={onChangeDate}
+            />
+          </div>
+        </Col>
+        <Col span={8} xs={24} sm={24} md={24} lg={8}>
+          <div className="form-filters__col">
+            <div className="form-filters__title">Tìm kiếm Homestay</div>
+            <input
+              className="form-filters__search"
+              ref={nameHomestayRef}
+              placeholder="Tìm kiếm homestay ?"
             />
           </div>
         </Col>
