@@ -1,12 +1,32 @@
 import { Image } from 'antd';
-import React from 'react';
+import { fetchAllCategory } from 'features/Rooms/RoomsSlice';
+import React, { useEffect, useState } from 'react';
 import { BsFillHeartFill } from 'react-icons/bs';
 import { GoLocation } from 'react-icons/go';
+import { useDispatch } from 'react-redux';
 import ButtonUI from '../ButtonUI/ButtonUI';
 import './_HomestayItem.scss';
 
-
 const HomestayItem = ({ size, homestay, handleRedirectHomestayDetail }) => {
+  const dispatch = useDispatch();
+
+  const [category, setCategory] = useState(null);
+  useEffect(() => {
+    const getCategory = async () => {
+      if (homestay?._id) {
+        const payload = {
+          filters: {
+            homestay_id: homestay?._id,
+          },
+          limit: 1,
+          sort: 'price',
+        };
+        const category = await dispatch(fetchAllCategory(payload)).unwrap();
+        setCategory(category?.data?.[0]);
+      }
+    };
+    getCategory();
+  }, [homestay]);
   return (
     <div className="package-box">
       <div className="package-box__top">
@@ -78,13 +98,19 @@ const HomestayItem = ({ size, homestay, handleRedirectHomestayDetail }) => {
             {homestay?.description}
           </div>
         </div>
-        <div style={{ marginTop: 'auto' }}>
-          <ButtonUI
-            onClick={handleRedirectHomestayDetail}
-            text="Chi tiết"
-            color="#fff"
-            bg="#f76570"
-          />
+        <div style={{ marginTop: 'auto', width: '100%' }}>
+          <div className="package-box__bottom">
+            <ButtonUI
+              onClick={handleRedirectHomestayDetail}
+              text="Chi tiết"
+              color="#fff"
+              bg="#f76570"
+            />
+
+            <div className="package-box__min-price">
+              {category?.price?.toLocaleString()}đ
+            </div>
+          </div>
         </div>
       </div>
     </div>

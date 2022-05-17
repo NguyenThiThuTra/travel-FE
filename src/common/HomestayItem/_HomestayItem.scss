@@ -128,4 +128,17 @@
       text-decoration: line-through;
     }
   }
+  &__bottom{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+  }
+  &__min-price {
+    color: #f76570;
+    font-size: 1.8rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    line-height: 1.5rem;
+    cursor: pointer;
+  }
 }
