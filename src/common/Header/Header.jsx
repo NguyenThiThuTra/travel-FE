@@ -169,12 +169,13 @@ const Header = () => {
                 visibleUserProfile={visibleUserProfile}
               />
             )}
-
-            <ModalLogin
-              title="Title"
-              visible={visibleModalLogin}
-              hideModalLogin={handleToggleModalLogin}
-            />
+            {visibleModalLogin && (
+              <ModalLogin
+                title="Title"
+                visible={visibleModalLogin}
+                hideModalLogin={handleToggleModalLogin}
+              />
+            )}
           </ul>
         </Col>
       </Row>

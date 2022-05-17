@@ -69,7 +69,7 @@ const FormFilters = () => {
 
     const searchParams = queryString.stringify(query);
     if (match.path === RouteConstant.HomestayDetailPage.path) {
-      return window.open(match.url + '?' + searchParams);
+      return window.open(RouteConstant.HomestayPage.path + '?' + searchParams);
     }
     history.push({
       pathname: match.url,
