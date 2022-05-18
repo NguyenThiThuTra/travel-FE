@@ -8,11 +8,12 @@ import {
   Input,
   Radio,
   Row,
-  Upload
+  Upload,
 } from 'antd';
 import ImgCrop from 'antd-img-crop';
 import React, { Fragment, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { getBase64 } from 'utils/getBase64';
 import { getCurrentUser } from '../../../features/Auth/AuthSlice';
 import { updateUser } from '../../../features/Users/UsersSlice';
 //end upload avatar
@@ -37,35 +38,42 @@ const UserProfile = (props) => {
   //handle image
   const [fileList, setFileList] = useState([]);
   const [fileAvatar, setFileAvatar] = useState();
+  const [stateAvatar, setStateAvatar] = useState({
+    previewVisible: false,
+    previewImage: '',
+    previewTitle: '',
+  });
+  const handleCancel = () => this.setState({ previewVisible: false });
+
+  const handlePreview = async (file) => {};
+
   const onRemove = () => {
     setFileAvatar(null);
   };
-  const onChange = ({ file, fileList }) => {
+  const onChange = async ({ file, fileList }) => {
     setFileList((prev) => fileList);
-    let originFileObj = file.originFileObj;
     // console.log({ originFileObj });
-    originFileObj.preview = URL.createObjectURL(originFileObj);
-    setFileAvatar((prev) => originFileObj);
-  };
-  //previewImage
-  useEffect(() => {
-    return () => {
-      fileAvatar && URL.revokeObjectURL(fileAvatar.preview);
-    };
-  }, [fileAvatar]);
-  const onPreview = async (file) => {
-    let src = file.url;
-    if (!src) {
-      src = await new Promise((resolve) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file.originFileObj);
-        reader.onload = () => resolve(reader.result);
-      });
+    if (!file.url && !file.preview) {
+      file.preview = await getBase64(file);
     }
-    const image = new Image();
-    image.src = src;
-    const imgWindow = window.open(src);
-    imgWindow.document.write(image.outerHTML);
+    setFileAvatar((prev) => file);
+    setStateAvatar({
+      ...stateAvatar,
+      previewImage: file.url || file.preview,
+    });
+  };
+
+  const onPreview = async (file) => {
+    if (!file.url && !file.preview) {
+      file.preview = await getBase64(file.originFileObj);
+    }
+
+    setStateAvatar({
+      previewImage: file.url || file.preview,
+      previewVisible: true,
+      previewTitle:
+        file.name || file.url.substring(file.url.lastIndexOf('/') + 1),
+    });
   };
   //onSubmit form
   const onFinish = async (values) => {
@@ -159,6 +167,7 @@ const UserProfile = (props) => {
                     onChange={onChange}
                     onRemove={onRemove}
                     onPreview={onPreview}
+                    beforeUpload={() => false}
                   >
                     {fileList.length < 1 && '+ Upload'}
                   </Upload>

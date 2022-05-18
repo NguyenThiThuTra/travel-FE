@@ -69,7 +69,7 @@ export default function ActionFormHomestay() {
 
   const onChangeAvatar = ({ file, fileList }) => {
     setFileList((prev) => fileList);
-    let originFileObj = file.originFileObj;
+    let originFileObj = file;
     originFileObj.preview = URL.createObjectURL(originFileObj);
     setFileAvatar((prev) => originFileObj);
     // setValue('avatar', originFileObj.preview);
@@ -593,6 +593,7 @@ export default function ActionFormHomestay() {
             listType="picture-card"
             onChange={onChangeAvatar}
             onPreview={onPreview}
+            beforeUpload={() => false}
           >
             {fileList.length < 1 && '+ Upload'}
           </Upload>
