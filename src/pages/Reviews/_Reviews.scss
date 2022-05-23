@@ -1,0 +1,15 @@
+.reviews-page {
+  padding: 6rem 4rem;
+}
+.form-review{
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+.btn-review {
+  display: flex;
+  align-items: center;
+  span {
+    margin-left: 0.5rem;
+  }
+}

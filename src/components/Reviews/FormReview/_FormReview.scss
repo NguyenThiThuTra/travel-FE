@@ -1,0 +1,18 @@
+.form-review {
+  &__title {
+    font-size: 1.6rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+    color: #3578e5;
+  }
+}
+.ui-form-control{
+    margin-bottom: 1.5rem;
+    display:flex; 
+    flex-direction: column;
+    &__label{
+        font-size: 1.6rem;
+        font-weight: bold;
+        margin-bottom: 1.5rem;
+    }
+}

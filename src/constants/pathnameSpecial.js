@@ -5,6 +5,7 @@ export const HIDDEN_FOOTER = [
   '/history',
   '/test',
   '/payment',
+  '/reviews'
 ];
 export const HIDDEN_NEWSLETTER = [
   '/admin',

@@ -13,6 +13,7 @@ import ProductsDetailsPage from 'pages/ProductsDetails/ProductDetailPage';
 import TestPage from 'pages/Test/TestPage';
 import PaymentVnPayReturn from 'pages/PaymentVnPayReturn/PaymentVnPayReturn';
 import PaymentPage from 'pages/Payment/PaymentPage';
+import ReviewsPage from 'pages/Reviews/ReviewsPage';
 
 export const appRoutes = {
   ADMIN_ROUTES: [{ id: 0, path: '/admin', component: <Admin /> }],
@@ -30,9 +31,22 @@ export const appRoutes = {
   ],
   PUBLIC_ROUTES: [
     { id: 9999, path: '/test', component: <TestPage /> },
-    { id: 9997, path: '/payment/vnpay_return', component: <PaymentVnPayReturn /> },
+    {
+      id: 9997,
+      path: '/payment/vnpay_return',
+      component: <PaymentVnPayReturn />,
+    },
     { id: 9998, path: '/payment', component: <PaymentPage /> },
-
+    {
+      id: 11,
+      path: '/reviews/:id',
+      component: <DestinationsDetailsPage />,
+    },
+    {
+      id: 10,
+      path: '/reviews',
+      component: <ReviewsPage />,
+    },
     {
       id: 9,
       path: '/login',
