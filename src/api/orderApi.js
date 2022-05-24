@@ -17,5 +17,9 @@ const orderApi = {
     const url = `/orders/${payload.id}`;
     return axiosClient.patch(url, payload.order);
   },
+  getDestinationsOrderByUser(payload) {
+    const url = `/orders/destinations/${payload}`;
+    return axiosClient.get(url);
+  },
 };
 export default orderApi;

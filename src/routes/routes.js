@@ -14,6 +14,7 @@ import TestPage from 'pages/Test/TestPage';
 import PaymentVnPayReturn from 'pages/PaymentVnPayReturn/PaymentVnPayReturn';
 import PaymentPage from 'pages/Payment/PaymentPage';
 import ReviewsPage from 'pages/Reviews/ReviewsPage';
+import ReviewDetailPage from 'pages/ReviewDetail/ReviewDetailPage';
 
 export const appRoutes = {
   ADMIN_ROUTES: [{ id: 0, path: '/admin', component: <Admin /> }],
@@ -40,7 +41,7 @@ export const appRoutes = {
     {
       id: 11,
       path: '/reviews/:id',
-      component: <DestinationsDetailsPage />,
+      component: <ReviewDetailPage />,
     },
     {
       id: 10,

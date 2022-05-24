@@ -2,10 +2,11 @@ import { Button, Col, Row, Select } from 'antd';
 import provincesOpenApi from 'api/provincesOpenApi';
 import TravelDestinationBox from 'common/TravelDestinationBox/TravelDestinationBox';
 import FormReview from 'components/Reviews/FormReview/FormReview';
+import { useCurrentUserSelector } from 'features/Auth/AuthSlice';
 import React, { Fragment, useEffect, useState } from 'react';
 import { AiFillPlusCircle } from 'react-icons/ai';
-import { useDispatch } from 'react-redux';
-import { useHistory, useLocation, useRouteMatch } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory, useLocation } from 'react-router-dom';
 import './_Reviews.scss';
 
 const ReviewsPage = () => {
@@ -13,6 +14,8 @@ const ReviewsPage = () => {
   let location = useLocation();
 
   const dispatch = useDispatch();
+
+  const currentUser = useSelector(useCurrentUserSelector);
 
   function onChangeProvince(value) {
     console.log(`selected ${value}`);

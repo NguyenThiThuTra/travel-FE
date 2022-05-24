@@ -25,4 +25,5 @@ export const HEADER_BACKGROUND_DARK = [
   '/my-homestay',
   '/history',
   '/test',
+  '/reviews'
 ];
