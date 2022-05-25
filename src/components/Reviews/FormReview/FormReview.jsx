@@ -34,11 +34,21 @@ export default function FormReview({
   const onFinish = (values) => {
     console.log('Received values of form:', values);
 
-    let payload = values;
+    let { schedule, ...payload } = values;
+    schedule = schedule
+      .map((item) => {
+        return Object.values(item);
+      })
+      .flat();
     let formData = objectToFormData(payload);
-    fileListImageReview.forEach((file) => {
+    const filesImage = fileListImageReview.map((file) => file.originFileObj);
+    filesImage.forEach((file) => {
       formData.append('images', file);
     });
+    for (let i = 0; i < schedule.length; i++) {
+      formData.append(`schedule[day${i + 1}]`, schedule[i]);
+    }
+    // formData.append('schedule', schedule);
     reviewApi.postReview(formData).then((res) => {
       console.log(res);
       handleOk();
@@ -61,6 +71,7 @@ export default function FormReview({
   const [destinationOrderByUser, setDestinationOrderByUser] = useState(null);
   useEffect(() => {
     if (!provinces) return;
+
     if (!currentUser) {
       setDestinationOrderByUser(null);
       return;
@@ -76,7 +87,6 @@ export default function FormReview({
     }
     getProvinces();
   }, [provinces, currentUser]);
-
   useEffect(() => {
     if (!provinces) return;
     if (!destinationOrderByUser) {
@@ -85,7 +95,6 @@ export default function FormReview({
     const arrProvinceHomestay = destinationOrderByUser?.data?.map(
       (order) => order?.addresses?.province?.code
     );
-    console.log({ arrProvinceHomestay });
     const dataProvinceBooking = provinces?.filter((province) =>
       arrProvinceHomestay.includes(province?.code)
     );
@@ -115,7 +124,7 @@ export default function FormReview({
   const [previewImageImageReview, setPreviewImageImageReview] = useState('');
   const [previewTitleImageReview, setPreviewTitleImageReview] = useState('');
   const [fileListImageReview, setFileListImageReview] = useState([]);
-  console.log({ fileListImageReview });
+
   const handleCancelImageReview = () => setPreviewVisibleImageReview(false);
 
   const handlePreviewImageReview = async (file) => {

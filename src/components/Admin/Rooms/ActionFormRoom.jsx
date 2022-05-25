@@ -118,7 +118,6 @@ export default function ActionFormRoom() {
     async function fetchDataDetail() {
       try {
         const originalPromiseResult = await dispatch(getRoom(id)).unwrap();
-        console.log({ originalPromiseResult });
         // handle result here
         setDataDetail(originalPromiseResult?.data);
         const homestay = originalPromiseResult?.data?.homestay_id;

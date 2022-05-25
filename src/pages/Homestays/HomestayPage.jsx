@@ -21,7 +21,6 @@ const HomestayPage = () => {
   const homestays = useSelector(useHomestaysSelector);
 
   useEffect(() => {
-    console.log({querySearch});
     dispatch(fetchAllHomestaySearch(querySearch));
     /* eslint-disable */
   }, [location]);

@@ -54,7 +54,7 @@ const FormFilters = () => {
     const from_date = moment(rangePickerValue[0]).format('YYYY-MM-DD');
     const to_date = moment(rangePickerValue[1]).format('YYYY-MM-DD');
     const query = {};
-    console.log({ nameHomestayRef: nameHomestayRef.current.value });
+    
     if (nameHomestayRef.current.value) {
       query.search = nameHomestayRef.current.value;
     }

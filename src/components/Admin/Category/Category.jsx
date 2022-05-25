@@ -33,7 +33,6 @@ export default function AdminCategoryPage(props) {
   const currentUser = useSelector(useCurrentUserSelector);
   const roomRemoved = useSelector(useRoomRemovedSelector);
   const category = useSelector(useCategorySelector);
-console.log({category})
   useEffect(() => {
     const role = currentUser?.data?.roles;
     if (role) {

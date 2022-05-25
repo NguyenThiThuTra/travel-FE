@@ -24,7 +24,7 @@ export const AddCartForm = ({ orders, onCloseModal }) => {
     querySearch.from_date,
     querySearch.to_date,
   ]);
-  console.log({ rangePickerValue });
+  
   // default filter query search
   useEffect(() => {
     if (!querySearch) return;

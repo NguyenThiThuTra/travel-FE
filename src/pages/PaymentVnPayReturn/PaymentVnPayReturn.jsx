@@ -23,7 +23,6 @@ export default function PaymentVnPayReturn() {
       const payload = { query: location.search };
       const querySearch = querystring.parse(location.search);
       const order_id = querySearch?.vnp_TxnRef;
-      console.log({ querySearch });
       const response = await dispatch(returnVNPayment(payload)).unwrap();
       setResponseVNPayment(response);
       if (response?.code === '00') {

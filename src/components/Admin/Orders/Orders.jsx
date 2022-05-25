@@ -37,10 +37,7 @@ export default function OrdersPage(props) {
   const currentUser = useSelector(useCurrentUserSelector);
   const loading = useSelector((state) => state.order.loading);
   const deleteOrder = useSelector(useDeleteOrderSelector);
-  console.log({
-    order,
-    currentUser,
-  });
+
 
   useEffect(() => {
     const getOrderHomestayById = async () => {
@@ -56,7 +53,6 @@ export default function OrdersPage(props) {
           fetchAllHomestays(queryAllHomestay)
         ).unwrap();
         const homestay_id = resultAction?.data?.[0]?._id;
-        console.log({ resultAction });
 
         // if (role === 'user') {
         if (homestay_id) {
