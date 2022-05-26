@@ -1,5 +1,5 @@
 .review-detail-page {
-  padding: 6rem 3rem;
+  padding: 7rem 3rem;
 }
 .review-detail {
   display: flex;
@@ -13,6 +13,7 @@
   &-main {
     flex-grow: 1;
     padding-right: 2rem;
+    max-width: 550px;
   }
   &__header {
     display: flex;
@@ -24,17 +25,21 @@
     font-weight: 500;
   }
   &__location {
-    font-size: 1.4rem;
+    margin-top: 1rem;
+    font-size: 1.2rem;
     color: #888888;
   }
 
   &__content {
-    margin-top: 2rem;
-    padding-left: 1rem;
+    margin-top: 1.5rem;
+  }
+  &__list-schedule{
+    padding-left: 2rem;
   }
   &__action {
     display: flex;
     align-items: center;
     margin-top: 2rem;
+    cursor: pointer;
   }
 }

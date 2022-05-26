@@ -17,6 +17,7 @@ import storage from 'redux-persist/lib/storage';
 import { persistReducer, persistStore } from 'redux-persist';
 import logger from 'redux-logger';
 import commonReducer from 'features/commonSlice';
+import reviewsReducer from 'features/Reviews/ReviewsSlice';
 
 let middleware = [];
 if (process.env.REACT_APP_NODE_ENV !== 'production') {
@@ -39,6 +40,7 @@ const persistConfig = {
 };
 
 const rootReducer = combineReducers({
+  common: commonReducer,
   users: usersReducer,
   homestay: homestayReducer,
   destination: destinationsReducer,
@@ -48,7 +50,7 @@ const rootReducer = combineReducers({
   comments: commentReducer,
   payment: paymentReducer,
   chatBox: chatBoxReducer,
-  common: commonReducer,
+  reviews: reviewsReducer,
 });
 
 export const resetAction = createAction('reset');

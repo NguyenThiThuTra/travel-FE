@@ -15,10 +15,11 @@ import './_FormReview.scss';
 import provincesOpenApi from 'api/provincesOpenApi';
 import orderApi from 'api/orderApi';
 import { useCurrentUserSelector } from 'features/Auth/AuthSlice';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getBase64 } from 'utils/getBase64';
 import { objectToFormData } from 'helpers/ConvertObjectToFormData';
 import reviewApi from 'api/reviewApi';
+import { postReview } from 'features/Reviews/ReviewsSlice';
 
 const { TextArea } = Input;
 const { Title } = Typography;
@@ -29,30 +30,38 @@ export default function FormReview({
   handleCancel,
   loading,
 }) {
+  const dispatch = useDispatch();
+
   const currentUser = useSelector(useCurrentUserSelector);
 
-  const onFinish = (values) => {
+  const onFinish = async (values) => {
     console.log('Received values of form:', values);
 
-    let { schedule, ...payload } = values;
-    schedule = schedule
-      .map((item) => {
-        return Object.values(item);
-      })
-      .flat();
+    let { schedule, ...rest } = values;
+    const payload = { ...rest, user_id: currentUser?.data?._id };
+
     let formData = objectToFormData(payload);
     const filesImage = fileListImageReview.map((file) => file.originFileObj);
     filesImage.forEach((file) => {
       formData.append('images', file);
     });
-    for (let i = 0; i < schedule.length; i++) {
-      formData.append(`schedule[day${i + 1}]`, schedule[i]);
+    if (schedule) {
+      schedule = schedule
+        .map((item) => {
+          return Object.values(item);
+        })
+        .flat();
+      for (let i = 0; i < schedule.length; i++) {
+        formData.append(`schedule[day${i + 1}]`, schedule[i]);
+      }
     }
-    // formData.append('schedule', schedule);
-    reviewApi.postReview(formData).then((res) => {
-      console.log(res);
-      handleOk();
-    });
+
+    try {
+      await dispatch(postReview(formData)).unwrap();
+      await handleOk();
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   // lấy danh sách các tỉnh thành

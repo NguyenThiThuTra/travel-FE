@@ -23,7 +23,7 @@
     text-transform: uppercase;
     &__text {
       text-transform: uppercase;
-      max-width: 16rem;
+      max-width: fit-content;
       display: flex;
       justify-content: center;
       margin: 0 auto;

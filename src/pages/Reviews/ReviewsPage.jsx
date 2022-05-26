@@ -3,7 +3,11 @@ import provincesOpenApi from 'api/provincesOpenApi';
 import TravelDestinationBox from 'common/TravelDestinationBox/TravelDestinationBox';
 import FormReview from 'components/Reviews/FormReview/FormReview';
 import { useCurrentUserSelector } from 'features/Auth/AuthSlice';
-import React, { Fragment, useEffect, useState } from 'react';
+import {
+  getAllReviews,
+  useDataReviewsSelector,
+} from 'features/Reviews/ReviewsSlice';
+import React, { Fragment, useEffect, useMemo, useState } from 'react';
 import { AiFillPlusCircle } from 'react-icons/ai';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
@@ -17,14 +21,26 @@ const ReviewsPage = () => {
 
   const currentUser = useSelector(useCurrentUserSelector);
 
-  function onChangeProvince(value) {
-    console.log(`selected ${value}`);
-    setProvinceCode(value);
-  }
+  const reviews = useSelector(useDataReviewsSelector);
+
+  useEffect(() => {
+    dispatch(getAllReviews());
+  }, []);
 
   // lấy danh sách các tỉnh thành
   const [provinces, setProvinces] = useState(null);
+
   const [provinceCode, setProvinceCode] = useState(null);
+
+  const dataReviews = useMemo(() => {
+    if (provinceCode) {
+      return reviews?.data?.filter(
+        (review) => review.province === provinceCode
+      );
+    }
+    return reviews?.data;
+  }, [provinceCode, reviews]);
+
   useEffect(() => {
     async function getProvinces() {
       const response = await provincesOpenApi.getAllProvinces();
@@ -32,6 +48,12 @@ const ReviewsPage = () => {
     }
     getProvinces();
   }, []);
+
+  function onChangeProvince(value) {
+    if (provinceCode === value) return;
+    console.log(`selected ${value}`);
+    setProvinceCode(value);
+  }
 
   function onBlurProvince() {
     console.log('blur');
@@ -63,6 +85,10 @@ const ReviewsPage = () => {
   const handleCancel = () => {
     setVisible(false);
   };
+
+  const getDestination = (code) => {
+    return provinces?.find((province) => province?.code === code);
+  };
   return (
     <Fragment>
       <div className="reviews-page">
@@ -70,8 +96,8 @@ const ReviewsPage = () => {
           <div className="form-filters__col">
             <div className="form-filters__title">Chọn địa điểm bạn muốn :</div>
             <Select
+              allowClear
               value={provinceCode}
-              className=""
               onChange={onChangeProvince}
               onFocus={onFocusProvince}
               onBlur={onBlurProvince}
@@ -110,9 +136,9 @@ const ReviewsPage = () => {
 
         <div>
           <Row gutter={[24, 24]}>
-            {new Array(6).fill(null).map((_, index) => (
+            {dataReviews?.map((review, index) => (
               <Col
-                key={index}
+                key={review?._id}
                 className="gutter-row"
                 span={4}
                 xs={24}
@@ -122,7 +148,10 @@ const ReviewsPage = () => {
                 xl={8}
                 xxl={8}
               >
-                <TravelDestinationBox />
+                <TravelDestinationBox
+                  destination={getDestination(review?.province)}
+                  onClick={() => history.push(`/reviews/${review?._id}`)}
+                />
               </Col>
             ))}
           </Row>

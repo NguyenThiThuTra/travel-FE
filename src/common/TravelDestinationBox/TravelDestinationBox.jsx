@@ -3,13 +3,15 @@ import React from 'react';
 import { Link, useHistory, useLocation } from 'react-router-dom';
 import ButtonUI from '../ButtonUI/ButtonUI';
 import './_TravelDestinationBox.scss';
-const TravelDestinationBox = ({ id="123" }) => {
+const TravelDestinationBox = ({ onClick, destination }) => {
   // location
   let history = useHistory();
   let location = useLocation();
 
   function handleRedirectReviewDetail() {
-    history.push(`/reviews/${id}`);
+    if (onClick) {
+      onClick();
+    }
   }
 
   return (
@@ -18,19 +20,17 @@ const TravelDestinationBox = ({ id="123" }) => {
         style={{ objectFit: 'cover' }}
         height={235}
         className="travel_destination__img"
-        src={ ''}
+        src={''}
         fallback="https://res.cloudinary.com/dulich/image/upload/v1619010475/travel/destination-11_ewvbau.jpg"
         alt="avatar"
       />
 
       <div className="travel_destination__tag">
-        <div className="travel_destination__tag__text">
-          {'Tag name '}
-        </div>
+        <div className="travel_destination__tag__text">{destination?.name}</div>
       </div>
       <div className="travel_destination__description">
-        <h3>{'NAME'}</h3>
-        <h6>{2} Packages</h6>
+        <h3>{destination?.name}</h3>
+        {/* <h6>{2} Packages</h6> */}
       </div>
       <div className="travel_destination__packages">
         <div className="travel_destination__content">
