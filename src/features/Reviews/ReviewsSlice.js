@@ -15,6 +15,19 @@ export const getAllReviews = createAsyncThunk(
   }
 );
 
+export const getAllReviewDestination = createAsyncThunk(
+  'reviews/getAllReviewDestination',
+  async (payload, { rejectWithValue }) => {
+    try {
+      const response = await reviewApi.getAllReviewDestination(payload);
+      return response;
+    } catch (error) {
+      message.error(error?.response?.data?.message);
+      return rejectWithValue(error?.response.data);
+    }
+  }
+);
+
 export const getReview = createAsyncThunk(
   'reviews/getReview',
   async (payload, { rejectWithValue }) => {
@@ -41,9 +54,24 @@ export const postReview = createAsyncThunk(
   }
 );
 
+export const updateLikeReview = createAsyncThunk(
+  'reviews/likeReview',
+  async (payload, { rejectWithValue }) => {
+    try {
+      const response = await reviewApi.likeReview(payload);
+      return response;
+    } catch (error) {
+      message.error(error?.response?.data?.message);
+      return rejectWithValue(error?.response.data);
+    }
+  }
+);
+
 const initialState = {
   reviews: null,
   review: null,
+  reviewDestination: null,
+  likeReview: null,
 };
 const reviewsSlices = createSlice({
   name: 'reviews',
@@ -64,6 +92,20 @@ const reviewsSlices = createSlice({
     [getReview.rejected]: (state, action) => {
       state.review = null;
     },
+    // getAllReviewDestination
+    [getAllReviewDestination.fulfilled]: (state, action) => {
+      state.reviewDestination = action.payload;
+    },
+    [getAllReviewDestination.rejected]: (state, action) => {
+      state.reviewDestination = null;
+    },
+    // updateLikeReview
+    [updateLikeReview.fulfilled]: (state, action) => {
+      state.likeReview = action.payload;
+    },
+    [updateLikeReview.rejected]: (state, action) => {
+      state.likeReview = null;
+    },
   },
 });
 //actions
@@ -72,6 +114,9 @@ export const reviewsActions = reviewsSlices.actions;
 //selectors
 export const useReviewsSelector = (state) => state.reviews;
 export const useDataReviewsSelector = (state) => state.reviews.reviews;
+export const useReviewDestinationSelector = (state) =>
+  state.reviews.reviewDestination;
+export const useLikeReviewSelector = (state) => state.reviews.likeReview;
 export const useDataReviewSelector = (state) => state.reviews.review;
 
 //reducer

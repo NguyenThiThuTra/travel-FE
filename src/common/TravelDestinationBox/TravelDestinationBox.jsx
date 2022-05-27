@@ -1,12 +1,8 @@
 import { Image } from 'antd';
 import React from 'react';
-import { Link, useHistory, useLocation } from 'react-router-dom';
 import ButtonUI from '../ButtonUI/ButtonUI';
 import './_TravelDestinationBox.scss';
 const TravelDestinationBox = ({ onClick, destination }) => {
-  // location
-  let history = useHistory();
-  let location = useLocation();
 
   function handleRedirectReviewDetail() {
     if (onClick) {

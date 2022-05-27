@@ -1,19 +1,28 @@
 .review-detail-page {
   padding: 7rem 3rem;
+  min-width: 100vw;
+  min-height: 100vh;
+  background-color: #fafafa;
 }
 .review-detail {
-  display: flex;
-  align-items: center;
+  // display: flex;
+  // align-items: center;
 }
 
 .review-box {
   display: flex;
   justify-content: space-between;
   width: 100%;
+  margin-bottom: 2rem;
+  padding: 12px;
+  border-radius: 10px;
+  background-color: #fff;
   &-main {
     flex-grow: 1;
     padding-right: 2rem;
     max-width: 550px;
+    display: flex;
+    flex-direction: column;
   }
   &__header {
     display: flex;
@@ -32,14 +41,15 @@
 
   &__content {
     margin-top: 1.5rem;
+    margin-bottom: 1rem;
   }
-  &__list-schedule{
+  &__list-schedule {
     padding-left: 2rem;
   }
   &__action {
     display: flex;
     align-items: center;
-    margin-top: 2rem;
+    margin-top: auto;
     cursor: pointer;
   }
 }

@@ -2,10 +2,11 @@ import { Button, Col, Row, Select } from 'antd';
 import provincesOpenApi from 'api/provincesOpenApi';
 import TravelDestinationBox from 'common/TravelDestinationBox/TravelDestinationBox';
 import FormReview from 'components/Reviews/FormReview/FormReview';
-import { useCurrentUserSelector } from 'features/Auth/AuthSlice';
 import {
+  getAllReviewDestination,
   getAllReviews,
   useDataReviewsSelector,
+  useReviewDestinationSelector,
 } from 'features/Reviews/ReviewsSlice';
 import React, { Fragment, useEffect, useMemo, useState } from 'react';
 import { AiFillPlusCircle } from 'react-icons/ai';
@@ -19,12 +20,14 @@ const ReviewsPage = () => {
 
   const dispatch = useDispatch();
 
-  const currentUser = useSelector(useCurrentUserSelector);
-
   const reviews = useSelector(useDataReviewsSelector);
-
+  const reviewDestination = useSelector(useReviewDestinationSelector);
   useEffect(() => {
     dispatch(getAllReviews());
+  }, []);
+
+  useEffect(() => {
+    dispatch(getAllReviewDestination());
   }, []);
 
   // lấy danh sách các tỉnh thành
@@ -32,14 +35,23 @@ const ReviewsPage = () => {
 
   const [provinceCode, setProvinceCode] = useState(null);
 
-  const dataReviews = useMemo(() => {
+  const [destinations, setDestination] = useState(null);
+
+  useEffect(() => {
+    if (!provinces || !reviewDestination) return;
+    setDestination(
+      provinces.filter((item) => reviewDestination?.data.includes(item.code))
+    );
+  }, [provinces, reviewDestination]);
+
+  const destinationsFilter = useMemo(() => {
     if (provinceCode) {
-      return reviews?.data?.filter(
-        (review) => review.province === provinceCode
+      return destinations?.filter(
+        (destination) => destination.code === provinceCode
       );
     }
-    return reviews?.data;
-  }, [provinceCode, reviews]);
+    return destinations;
+  }, [provinceCode, destinations]);
 
   useEffect(() => {
     async function getProvinces() {
@@ -86,9 +98,6 @@ const ReviewsPage = () => {
     setVisible(false);
   };
 
-  const getDestination = (code) => {
-    return provinces?.find((province) => province?.code === code);
-  };
   return (
     <Fragment>
       <div className="reviews-page">
@@ -136,9 +145,9 @@ const ReviewsPage = () => {
 
         <div>
           <Row gutter={[24, 24]}>
-            {dataReviews?.map((review, index) => (
+            {destinationsFilter?.map((destination, index) => (
               <Col
-                key={review?._id}
+                key={destination?.code}
                 className="gutter-row"
                 span={4}
                 xs={24}
@@ -149,8 +158,8 @@ const ReviewsPage = () => {
                 xxl={8}
               >
                 <TravelDestinationBox
-                  destination={getDestination(review?.province)}
-                  onClick={() => history.push(`/reviews/${review?._id}`)}
+                  destination={destination}
+                  onClick={() => history.push(`/reviews/${destination?.code}`)}
                 />
               </Col>
             ))}
