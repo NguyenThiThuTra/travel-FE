@@ -1,15 +1,19 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { message } from 'antd';
+import { setLoadingApp } from 'features/commonSlice';
 import orderApi from '../../api/orderApi';
 
 export const addOrder = createAsyncThunk(
   'order/addOrder',
-  async (payload, { rejectWithValue }) => {
+  async (payload, { rejectWithValue, dispatch }) => {
     try {
+      dispatch(setLoadingApp(true));
       const response = await orderApi.add(payload);
       message.success('Đặt hàng thành công');
+      dispatch(setLoadingApp(false));
       return response;
     } catch (error) {
+      dispatch(setLoadingApp(false));
       message.success('Đặt hàng thất bại');
       return rejectWithValue(error?.response.data);
     }
@@ -18,11 +22,14 @@ export const addOrder = createAsyncThunk(
 
 export const getOrder = createAsyncThunk(
   'order/getOrder',
-  async (payload, { rejectWithValue }) => {
+  async (payload, { rejectWithValue, dispatch }) => {
     try {
+      dispatch(setLoadingApp(true));
       const response = await orderApi.getOne(payload);
+      dispatch(setLoadingApp(false));
       return response;
     } catch (error) {
+      dispatch(setLoadingApp(false));
       message.error('Lấy đơn hàng chi tiết thất bại');
       return rejectWithValue(error?.response.data);
     }
@@ -31,12 +38,15 @@ export const getOrder = createAsyncThunk(
 
 export const updateOrder = createAsyncThunk(
   'order/updateOrder',
-  async (payload, { rejectWithValue }) => {
+  async (payload, { rejectWithValue, dispatch }) => {
     try {
+      dispatch(setLoadingApp(true));
       const response = await orderApi.updateOne(payload);
       message.success('Cập nhật trạng thái đơn hàng thành công');
+      dispatch(setLoadingApp(false));
       return response;
     } catch (error) {
+      dispatch(setLoadingApp(false));
       message.error('Cập nhật trạng thái đơn hàng thất bại');
       return rejectWithValue(error?.response.data);
     }
@@ -45,7 +55,22 @@ export const updateOrder = createAsyncThunk(
 
 export const getAllOrder = createAsyncThunk(
   'order/getAllOrder',
-  async (payload, { rejectWithValue }) => {
+  async (payload, { rejectWithValue, dispatch }) => {
+    try {
+      dispatch(setLoadingApp(true));
+      const response = await orderApi.getAll(payload);
+      dispatch(setLoadingApp(false));
+      return response;
+    } catch (error) {
+      dispatch(setLoadingApp(false));
+      return rejectWithValue(error?.response.data);
+    }
+  }
+);
+
+export const getAllOrderAction = createAsyncThunk(
+  'order/getAllOrderAction',
+  async (payload, { rejectWithValue, dispatch }) => {
     try {
       const response = await orderApi.getAll(payload);
       return response;
@@ -134,6 +159,20 @@ const orderSlices = createSlice({
       state.loading = true;
       state.error = undefined;
     },
+    // getAllOrderAction
+    [getAllOrderAction.fulfilled]: (state, action) => {
+      state.order = action.payload;
+      state.error = undefined;
+      state.loading = false;
+    },
+    [getAllOrderAction.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+    [getAllOrderAction.pending]: (state, action) => {
+      state.loading = true;
+      state.error = undefined;
+    },
   },
 });
 //actions
@@ -144,7 +183,6 @@ export const useOrderSelector = (state) => state.order.order;
 export const useUpdateOrderStatusSelector = (state) => state.order.updateOrder;
 export const useDeleteOrderSelector = (state) => state.order.deleteOrder;
 export const useOrderDetailSelector = (state) => state.order.orderDetail;
-
 
 //reducer
 const orderReducer = orderSlices.reducer;

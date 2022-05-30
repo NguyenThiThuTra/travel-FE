@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { notification } from 'antd';
+import { setLoadingApp } from 'features/commonSlice';
 import jwt_decode from 'jwt-decode';
 import authApi from '../../api/authApi';
 import userApi from '../../api/userApi';
@@ -23,8 +24,9 @@ export function detectLogin() {
 }
 export const login = createAsyncThunk(
   'auth/login',
-  async (payload, { rejectWithValue }) => {
+  async (payload, { rejectWithValue, dispatch }) => {
     try {
+      dispatch(setLoadingApp(true));
       const response = await authApi.login(payload);
       localStorage.setItem('access_token', response.token);
       notification.success({
@@ -32,8 +34,10 @@ export const login = createAsyncThunk(
         duration: 1.5,
         style: { backgroundColor: '#d4edda' },
       });
+      dispatch(setLoadingApp(false));
       return response;
     } catch (error) {
+      dispatch(setLoadingApp(false));
       notification.error({
         message:
           'Đăng nhập thất bại, vui lòng kiểm tra lại email và password !',
@@ -46,8 +50,9 @@ export const login = createAsyncThunk(
 );
 export const signup = createAsyncThunk(
   'auth/signup',
-  async (payload, { rejectWithValue }) => {
+  async (payload, { rejectWithValue, dispatch }) => {
     try {
+      dispatch(setLoadingApp(true));
       const response = await authApi.signup(payload);
       localStorage.setItem('access_token', response.token);
       console.log({ response });
@@ -56,8 +61,10 @@ export const signup = createAsyncThunk(
         duration: 1.5,
         style: { backgroundColor: '#d4edda' },
       });
+      dispatch(setLoadingApp(false));
       return response;
     } catch (error) {
+      dispatch(setLoadingApp(false));
       notification.error({
         message: 'Đăng ký thất bại !',
         duration: 1.5,
@@ -69,15 +76,18 @@ export const signup = createAsyncThunk(
 );
 export const getCurrentUser = createAsyncThunk(
   'auth/getCurrentUser',
-  async (payload, { rejectWithValue }) => {
+  async (payload, { rejectWithValue, dispatch }) => {
     try {
+      dispatch(setLoadingApp(true));
       const login = detectLogin();
       if (login.isLoggedIn && login.user_id) {
         const response = await userApi.getUser(login.user_id);
         return response;
       }
+      dispatch(setLoadingApp(false));
       return null;
     } catch (error) {
+      dispatch(setLoadingApp(false));
       notification.error({
         message: 'Call api error !',
         duration: 1.5,

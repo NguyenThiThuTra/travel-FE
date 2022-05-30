@@ -1,47 +1,60 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { message } from 'antd';
+import { setLoadingApp } from 'features/commonSlice';
 import homestayApi from '../../api/homestayApi';
 export const fetchAllHomestays = createAsyncThunk(
   'homestay/fetchAllHomestays',
-  async (payload, { rejectWithValue }) => {
+  async (payload, { rejectWithValue, dispatch }) => {
     try {
+      dispatch(setLoadingApp(true));
       const response = await homestayApi.getAll(payload);
+      dispatch(setLoadingApp(false));
       return response;
     } catch (error) {
+      dispatch(setLoadingApp(false));
       return rejectWithValue(error?.response.data);
     }
   }
 );
 export const fetchAllHomestaySearch = createAsyncThunk(
   'homestay/fetchAllHomestaySearch',
-  async (payload, { rejectWithValue }) => {
+  async (payload, { rejectWithValue, dispatch }) => {
     try {
+      dispatch(setLoadingApp(true));
       const response = await homestayApi.getAllSearch(payload);
+      dispatch(setLoadingApp(false));
       return response;
     } catch (error) {
+      dispatch(setLoadingApp(false));
       return rejectWithValue(error?.response.data);
     }
   }
 );
 export const getHomestay = createAsyncThunk(
   'homestay/getHomestay',
-  async (payload, { rejectWithValue }) => {
+  async (payload, { rejectWithValue, dispatch }) => {
     try {
+      dispatch(setLoadingApp(true));
       const response = await homestayApi.getHomestay(payload);
+      dispatch(setLoadingApp(false));
       return response;
     } catch (error) {
+      dispatch(setLoadingApp(false));
       return rejectWithValue(error?.response.data);
     }
   }
 );
 export const addHomestay = createAsyncThunk(
   'homestay/addHomestay',
-  async (payload, { rejectWithValue }) => {
+  async (payload, { rejectWithValue, dispatch }) => {
     try {
+      dispatch(setLoadingApp(true));
       const response = await homestayApi.addHomestay(payload);
       message.success('Thêm thành công');
+      dispatch(setLoadingApp(false));
       return response;
     } catch (error) {
+      dispatch(setLoadingApp(false));
       message.success('Thêm thất bại');
       return rejectWithValue(error?.response.data);
     }
@@ -49,23 +62,29 @@ export const addHomestay = createAsyncThunk(
 );
 export const deleteHomestay = createAsyncThunk(
   'homestay/deleteHomestay',
-  async (payload, { rejectWithValue }) => {
+  async (payload, { rejectWithValue, dispatch }) => {
     try {
+      dispatch(setLoadingApp(true));
       const response = await homestayApi.deleteHomestay(payload);
+      dispatch(setLoadingApp(false));
       return response;
     } catch (error) {
+      dispatch(setLoadingApp(false));
       return rejectWithValue(error?.response.data);
     }
   }
 );
 export const updateHomestay = createAsyncThunk(
   'homestay/updateHomestay',
-  async (payload, { rejectWithValue }) => {
+  async (payload, { rejectWithValue, dispatch }) => {
     try {
+      dispatch(setLoadingApp(true));
       const response = await homestayApi.updateHomestay(payload);
       message.success('Cập nhật thành công');
+      dispatch(setLoadingApp(false));
       return response;
     } catch (error) {
+      dispatch(setLoadingApp(false));
       message.success('Cập nhật thất bại');
       return rejectWithValue(error?.response.data);
     }

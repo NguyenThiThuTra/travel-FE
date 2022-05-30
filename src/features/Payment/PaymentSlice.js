@@ -1,13 +1,17 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import paymentApi from 'api/paymentApi';
+import { setLoadingApp } from 'features/commonSlice';
 
 export const createVNPayment = createAsyncThunk(
   'payment/VNPayment',
-  async (payload, { rejectWithValue }) => {
+  async (payload, { rejectWithValue, dispatch }) => {
     try {
+      dispatch(setLoadingApp(true));
       const response = await paymentApi.createVNPayment(payload);
+      dispatch(setLoadingApp(false));
       return response;
     } catch (error) {
+      dispatch(setLoadingApp(false));
       return rejectWithValue(error);
     }
   }
@@ -15,11 +19,14 @@ export const createVNPayment = createAsyncThunk(
 
 export const ipnVNPayment = createAsyncThunk(
   'payment/VNPayment/ipn',
-  async (payload, { rejectWithValue }) => {
+  async (payload, { rejectWithValue, dispatch }) => {
     try {
+      dispatch(setLoadingApp(true));
       const response = await paymentApi.ipnVNPayment(payload);
+      dispatch(setLoadingApp(false));
       return response;
     } catch (error) {
+      dispatch(setLoadingApp(false));
       return rejectWithValue(error);
     }
   }
@@ -27,11 +34,14 @@ export const ipnVNPayment = createAsyncThunk(
 
 export const returnVNPayment = createAsyncThunk(
   'payment/VNPayment/return',
-  async (payload, { rejectWithValue }) => {
+  async (payload, { rejectWithValue, dispatch }) => {
     try {
+      dispatch(setLoadingApp(true));
       const response = await paymentApi.returnVNPayment(payload);
+      dispatch(setLoadingApp(false));
       return response;
     } catch (error) {
+      dispatch(setLoadingApp(false));
       return rejectWithValue(error);
     }
   }

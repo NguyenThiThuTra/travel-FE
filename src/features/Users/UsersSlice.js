@@ -1,36 +1,46 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { message } from 'antd';
+import { setLoadingApp } from 'features/commonSlice';
 import userApi from '../../api/userApi';
 export const fetchAllUsers = createAsyncThunk(
   'users/fetchAllUsers',
-  async (payload, { rejectWithValue }) => {
+  async (payload, { rejectWithValue, dispatch }) => {
     try {
+      dispatch(setLoadingApp(true));
       const response = await userApi.getAll(payload);
+      dispatch(setLoadingApp(false));
       return response;
     } catch (error) {
+      dispatch(setLoadingApp(false));
       return rejectWithValue(error?.response.data);
     }
   }
 );
 export const getUser = createAsyncThunk(
   'users/getUser',
-  async (payload, { rejectWithValue }) => {
+  async (payload, { rejectWithValue, dispatch }) => {
     try {
+      dispatch(setLoadingApp(true));
       const response = await userApi.getUser(payload);
+      dispatch(setLoadingApp(false));
       return response;
     } catch (error) {
+      dispatch(setLoadingApp(false));
       return rejectWithValue(error?.response.data);
     }
   }
 );
 export const addUser = createAsyncThunk(
   'users/addUser',
-  async (payload, { rejectWithValue }) => {
+  async (payload, { rejectWithValue, dispatch }) => {
     try {
+      dispatch(setLoadingApp(true));
       const response = await userApi.addUser(payload);
       message.success('Thêm thành công');
+      dispatch(setLoadingApp(false));
       return response;
     } catch (error) {
+      dispatch(setLoadingApp(false));
       message.success('Thêm thất bại');
       return rejectWithValue(error?.response.data);
     }
@@ -38,12 +48,15 @@ export const addUser = createAsyncThunk(
 );
 export const updateUser = createAsyncThunk(
   'users/updateUser',
-  async (payload, { rejectWithValue }) => {
+  async (payload, { rejectWithValue, dispatch }) => {
     try {
+      dispatch(setLoadingApp(true));
       const response = await userApi.updateUser(payload);
       message.success('Cập nhật thành công');
+      dispatch(setLoadingApp(false));
       return response;
     } catch (error) {
+      dispatch(setLoadingApp(false));
       message.success('Cập nhật thất bại');
       return rejectWithValue(error?.response.data);
     }
@@ -52,11 +65,14 @@ export const updateUser = createAsyncThunk(
 
 export const deleteUser = createAsyncThunk(
   'users/deleteUser',
-  async (payload, { rejectWithValue }) => {
+  async (payload, { rejectWithValue, dispatch }) => {
     try {
+      dispatch(setLoadingApp(true));
       const response = await userApi.deleteUser(payload);
+      dispatch(setLoadingApp(false));
       return response;
     } catch (error) {
+      dispatch(setLoadingApp(false));
       return rejectWithValue(error?.response.data);
     }
   }

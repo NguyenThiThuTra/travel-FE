@@ -1,14 +1,18 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { message } from 'antd';
 import reviewApi from 'api/reviewApi';
+import { setLoadingAction, setLoadingApp } from 'features/commonSlice';
 
 export const getAllReviews = createAsyncThunk(
   'reviews/getAllReviews',
-  async (payload, { rejectWithValue }) => {
+  async (payload, { rejectWithValue, dispatch }) => {
     try {
+      // dispatch(setLoadingApp(true));
       const response = await reviewApi.getAllReviews(payload);
+      // dispatch(setLoadingApp(false));
       return response;
     } catch (error) {
+      // dispatch(setLoadingApp(false));
       message.error(error?.response?.data?.message);
       return rejectWithValue(error?.response.data);
     }
@@ -17,11 +21,14 @@ export const getAllReviews = createAsyncThunk(
 
 export const getAllReviewDestination = createAsyncThunk(
   'reviews/getAllReviewDestination',
-  async (payload, { rejectWithValue }) => {
+  async (payload, { rejectWithValue, dispatch }) => {
     try {
+      dispatch(setLoadingApp(true));
       const response = await reviewApi.getAllReviewDestination(payload);
+      dispatch(setLoadingApp(false));
       return response;
     } catch (error) {
+      dispatch(setLoadingApp(false));
       message.error(error?.response?.data?.message);
       return rejectWithValue(error?.response.data);
     }
@@ -30,11 +37,14 @@ export const getAllReviewDestination = createAsyncThunk(
 
 export const getReview = createAsyncThunk(
   'reviews/getReview',
-  async (payload, { rejectWithValue }) => {
+  async (payload, { rejectWithValue, dispatch }) => {
     try {
+      dispatch(setLoadingApp(false));
       const response = await reviewApi.getReview(payload);
+      dispatch(setLoadingApp(false));
       return response;
     } catch (error) {
+      dispatch(setLoadingApp(false));
       message.error(error?.response?.data?.message);
       return rejectWithValue(error?.response.data);
     }
@@ -43,11 +53,14 @@ export const getReview = createAsyncThunk(
 
 export const postReview = createAsyncThunk(
   'reviews/postReview',
-  async (payload, { rejectWithValue }) => {
+  async (payload, { rejectWithValue, dispatch }) => {
     try {
+      dispatch(setLoadingApp(true));
       const response = await reviewApi.postReview(payload);
+      dispatch(setLoadingApp(false));
       return response;
     } catch (error) {
+      dispatch(setLoadingApp(false));
       message.error(error?.response?.data?.message);
       return rejectWithValue(error?.response.data);
     }
@@ -56,11 +69,14 @@ export const postReview = createAsyncThunk(
 
 export const updateLikeReview = createAsyncThunk(
   'reviews/likeReview',
-  async (payload, { rejectWithValue }) => {
+  async (payload, { rejectWithValue, dispatch }) => {
     try {
+      dispatch(setLoadingAction(true));
       const response = await reviewApi.likeReview(payload);
+      dispatch(setLoadingAction(false));
       return response;
     } catch (error) {
+      dispatch(setLoadingAction(false));
       message.error(error?.response?.data?.message);
       return rejectWithValue(error?.response.data);
     }

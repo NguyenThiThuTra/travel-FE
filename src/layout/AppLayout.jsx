@@ -1,4 +1,4 @@
-import { BackTop } from 'antd';
+import { BackTop, Spin } from 'antd';
 import Header from 'common/Header/Header';
 import React from 'react';
 import { useLocation } from 'react-router-dom';
@@ -15,10 +15,12 @@ import { useCurrentUserSelector } from 'features/Auth/AuthSlice';
 import { useSelector } from 'react-redux';
 import PopupChat from 'common/PopupChat/PopupChat';
 import { useOpenPopupChatBoxSelector } from 'features/ChatBox/ChatBoxSlice';
+import { useLoadingAppSelector } from 'features/commonSlice';
 
 export default function AppLayout({ children }) {
   let location = useLocation();
 
+  const loadingApp = useSelector(useLoadingAppSelector);
   const currentUser = useSelector(useCurrentUserSelector);
   return (
     <React.StrictMode>
@@ -57,6 +59,20 @@ export default function AppLayout({ children }) {
           </div>
         </BackTop>
       </div>
+
+      {loadingApp && (
+        <div
+          style={{
+            position: 'fixed',
+            inset: 0,
+            background: 'grey',
+            zIndex: '9999',
+          }}
+          className="loading-app"
+        >
+          Loading...
+        </div>
+      )}
     </React.StrictMode>
   );
 }

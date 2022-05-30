@@ -16,7 +16,7 @@ import './_Header.scss';
 import { resetAction } from 'app/store';
 import {
   toggleModalLogin,
-  visibleModalLoginSelector,
+  useVisibleModalLoginSelector,
 } from 'features/commonSlice';
 
 const Header = () => {
@@ -49,7 +49,7 @@ const Header = () => {
 
   //end show info
   //modal login
-  const visibleModalLogin = useSelector(visibleModalLoginSelector);
+  const visibleModalLogin = useSelector(useVisibleModalLoginSelector);
   const handleToggleModalLogin = () => {
     dispatch(toggleModalLogin());
   };

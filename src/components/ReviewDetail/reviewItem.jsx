@@ -1,7 +1,7 @@
 import { UserOutlined } from '@ant-design/icons';
 import { Avatar, Image } from 'antd';
 import { ORDER_STATUS } from 'constants/order';
-import { getAllOrder } from 'features/Order/OrderSlice';
+import { getAllOrder, getAllOrderAction } from 'features/Order/OrderSlice';
 import React, { useEffect, useMemo, useState } from 'react';
 import { AiOutlineLike } from 'react-icons/ai';
 import { useDispatch } from 'react-redux';
@@ -18,7 +18,7 @@ export function ReviewItem({ review, handleLikeReview }) {
     const getOrderByUserId = async () => {
       try {
         const response = await dispatch(
-          getAllOrder({
+          getAllOrderAction({
             limit: 4,
             filters: { user_id: user?._id, status: ORDER_STATUS.approved.en },
           })

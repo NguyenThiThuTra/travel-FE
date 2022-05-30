@@ -1,37 +1,47 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { message } from 'antd';
+import { setLoadingApp } from 'features/commonSlice';
 import destinationApi from '../../api/destinationApi';
 export const fetchAllDestinations = createAsyncThunk(
   'destinations/fetAllDestinations',
-  async (payload, { rejectWithValue }) => {
+  async (payload, { rejectWithValue, dispatch }) => {
     try {
+      dispatch(setLoadingApp(true));
       const response = await destinationApi.getAll(payload);
+      dispatch(setLoadingApp(false));
       return response;
     } catch (error) {
+      dispatch(setLoadingApp(false));
       return rejectWithValue(error?.response.data);
     }
   }
 );
 export const fetchHomestayInDestination = createAsyncThunk(
   'destinations/fetchHomestayInDestination',
-  async (payload, { rejectWithValue }) => {
+  async (payload, { rejectWithValue, dispatch }) => {
     try {
+      dispatch(setLoadingApp(true));
       const response = await destinationApi.getHomestayInDestination(payload);
+      dispatch(setLoadingApp(false));
       return response;
     } catch (error) {
+      dispatch(setLoadingApp(false));
       return rejectWithValue(error?.response.data);
     }
   }
 );
 export const addDestination = createAsyncThunk(
   'destinations/addDestination',
-  async (payload, { rejectWithValue }) => {
+  async (payload, { rejectWithValue, dispatch }) => {
     try {
+      dispatch(setLoadingApp(true));
       //  host/destinations =  create homestay+ update destination
       const response = await destinationApi.addDestination(payload);
       message.success('Thêm thành công');
+      dispatch(setLoadingApp(false));
       return response;
     } catch (error) {
+      dispatch(setLoadingApp(false));
       message.success('Thêm thất bại');
       return rejectWithValue(error?.response.data);
     }
@@ -39,12 +49,15 @@ export const addDestination = createAsyncThunk(
 );
 export const fetchDestination = createAsyncThunk(
   'destinations/fetchDestination',
-  async (payload, { rejectWithValue }) => {
+  async (payload, { rejectWithValue, dispatch }) => {
     try {
+      dispatch(setLoadingApp(true));
       //  host/destinations =  create homestay+ update destination
       const response = await destinationApi.getDestination(payload);
+      dispatch(setLoadingApp(false));
       return response;
     } catch (error) {
+      dispatch(setLoadingApp(false));
       message.success('Lấy dữ liệu thất bại');
       return rejectWithValue(error?.response.data);
     }
@@ -52,12 +65,15 @@ export const fetchDestination = createAsyncThunk(
 );
 export const updateDestination = createAsyncThunk(
   'destinations/updateDestination',
-  async (payload, { rejectWithValue }) => {
+  async (payload, { rejectWithValue, dispatch }) => {
     try {
+      dispatch(setLoadingApp(true));
       const response = await destinationApi.updateDestination(payload);
       message.success('Cập nhật thành công');
+      dispatch(setLoadingApp(false));
       return response;
     } catch (error) {
+      dispatch(setLoadingApp(false));
       message.success('Cập nhật thất bại');
       return rejectWithValue(error?.response.data);
     }

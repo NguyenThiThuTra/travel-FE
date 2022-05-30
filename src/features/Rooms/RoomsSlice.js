@@ -1,57 +1,73 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { message } from 'antd';
+import { setLoadingApp } from 'features/commonSlice';
 import roomApi from '../../api/roomApi';
 export const fetchAllRooms = createAsyncThunk(
   'rooms/fetchAllRooms',
-  async (payload, { rejectWithValue }) => {
+  async (payload, { rejectWithValue, dispatch }) => {
     try {
+      dispatch(setLoadingApp(true));
       const response = await roomApi.getAll(payload);
+      dispatch(setLoadingApp(false));
       return response;
     } catch (error) {
+      dispatch(setLoadingApp(false));
       return rejectWithValue(error?.response.data);
     }
   }
 );
 export const fetchAllCategory = createAsyncThunk(
   'rooms/fetchAllCategorys',
-  async (payload, { rejectWithValue }) => {
+  async (payload, { rejectWithValue, dispatch }) => {
     try {
+      dispatch(setLoadingApp(true));
       const response = await roomApi.getAllCategory(payload);
+      dispatch(setLoadingApp(false));
       return response;
     } catch (error) {
+      dispatch(setLoadingApp(false));
       return rejectWithValue(error?.response.data);
     }
   }
 );
 export const fetchAllCategoryInHomestay = createAsyncThunk(
   'rooms/fetchAllCategoryInHomestay',
-  async (payload, { rejectWithValue }) => {
+  async (payload, { rejectWithValue, dispatch }) => {
     try {
+      dispatch(setLoadingApp(true));
       const response = await roomApi.getAllCategoryInHomestay(payload);
+      dispatch(setLoadingApp(false));
       return response;
     } catch (error) {
+      dispatch(setLoadingApp(false));
       return rejectWithValue(error?.response.data);
     }
   }
 );
 export const getRoom = createAsyncThunk(
   'rooms/getRoom',
-  async (payload, { rejectWithValue }) => {
+  async (payload, { rejectWithValue, dispatch }) => {
     try {
+      dispatch(setLoadingApp(true));
       const response = await roomApi.getRoom(payload);
+      dispatch(setLoadingApp(false));
       return response;
     } catch (error) {
+      dispatch(setLoadingApp(false));
       return rejectWithValue(error?.response.data);
     }
   }
 );
 export const fetchAllRoomsInMyHomestay = createAsyncThunk(
   'rooms/fetchAllRooms',
-  async (payload, { rejectWithValue }) => {
+  async (payload, { rejectWithValue, dispatch }) => {
     try {
+      dispatch(setLoadingApp(true));
       const response = await roomApi.getAllRoomsInMyHomestay(payload);
+      dispatch(setLoadingApp(false));
       return response;
     } catch (error) {
+      dispatch(setLoadingApp(false));
       return rejectWithValue(error?.response.data);
     }
   }
@@ -59,12 +75,15 @@ export const fetchAllRoomsInMyHomestay = createAsyncThunk(
 
 export const addRoom = createAsyncThunk(
   'rooms/addRoom',
-  async (payload, { rejectWithValue }) => {
+  async (payload, { rejectWithValue, dispatch }) => {
     try {
+      dispatch(setLoadingApp(true));
       const response = await roomApi.addRoom(payload);
       message.success('Thêm thành công');
+      dispatch(setLoadingApp(false));
       return response;
     } catch (error) {
+      dispatch(setLoadingApp(false));
       message.success('Thêm thất bại');
       return rejectWithValue(error?.response.data);
     }
@@ -72,23 +91,29 @@ export const addRoom = createAsyncThunk(
 );
 export const deleteRoom = createAsyncThunk(
   'rooms/deleteRoom',
-  async (payload, { rejectWithValue }) => {
+  async (payload, { rejectWithValue, dispatch }) => {
     try {
+      dispatch(setLoadingApp(true));
       const response = await roomApi.deleteRoom(payload);
+      dispatch(setLoadingApp(false));
       return response;
     } catch (error) {
+      dispatch(setLoadingApp(false));
       return rejectWithValue(error?.response.data);
     }
   }
 );
 export const updateRoom = createAsyncThunk(
   'rooms/updateRoom',
-  async (payload, { rejectWithValue }) => {
+  async (payload, { rejectWithValue, dispatch }) => {
     try {
+      dispatch(setLoadingApp(true));
       const response = await roomApi.updateRoom(payload);
       message.success('Cập nhật thành công');
+      dispatch(setLoadingApp(false));
       return response;
     } catch (error) {
+      dispatch(setLoadingApp(false));
       message.success('Cập nhật thất bại');
       return rejectWithValue(error?.response.data);
     }
@@ -206,11 +231,10 @@ const roomsSlices = createSlice({
 export const roomsActions = roomsSlices.actions;
 
 //selectors
-export const useCategorySelector = (state)=> state.room.category;
+export const useCategorySelector = (state) => state.room.category;
 export const useRoomsSelector = (state) => state.room.rooms;
 export const useRoomRemovedSelector = (state) => state.room.roomRemoved;
 export const useRoomsLoadingSelector = (state) => state.room.loading;
-
 
 //reducer
 const roomsReducer = roomsSlices.reducer;

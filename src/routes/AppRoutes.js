@@ -1,6 +1,6 @@
 import { PrivateRoute } from 'common/PrivateRoute';
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import { appRoutes } from './routes';
 
 export default function AppRoutes() {

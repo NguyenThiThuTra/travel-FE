@@ -1,13 +1,17 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import userApi from 'api/userApi';
+import { setLoadingApp } from 'features/commonSlice';
 
 export const getUser = createAsyncThunk(
   'auth/get-receiver',
-  async (payload, { rejectWithValue }) => {
+  async (payload, { rejectWithValue, dispatch }) => {
     try {
+      dispatch(setLoadingApp(true));
       const response = await userApi.getUser(payload);
+      dispatch(setLoadingApp(false));
       return response?.data;
     } catch (error) {
+      dispatch(setLoadingApp(false));
       return rejectWithValue(error?.response.data);
     }
   }

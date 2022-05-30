@@ -1,13 +1,17 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { message } from 'antd';
 import commentApi from 'api/comment';
+import { setLoadingApp } from 'features/commonSlice';
 export const addCommentInHomestay = createAsyncThunk(
   'comments/addCommentInHomestay',
-  async (payload, { rejectWithValue }) => {
+  async (payload, { rejectWithValue, dispatch }) => {
     try {
+      dispatch(setLoadingApp(true));
       const response = await commentApi.addCommentInHomestay(payload);
+      dispatch(setLoadingApp(false));
       return response;
     } catch (error) {
+      dispatch(setLoadingApp(false));
       message.error(error?.response?.data?.message);
       return rejectWithValue(error?.response.data);
     }
@@ -15,11 +19,14 @@ export const addCommentInHomestay = createAsyncThunk(
 );
 export const getAllCommentInHomestay = createAsyncThunk(
   'comments/getAllCommentInHomestay',
-  async (payload, { rejectWithValue }) => {
+  async (payload, { rejectWithValue, dispatch }) => {
     try {
+      dispatch(setLoadingApp(true));
       const response = await commentApi.getAllCommentInHomestay(payload);
+      dispatch(setLoadingApp(false));
       return response;
     } catch (error) {
+      dispatch(setLoadingApp(false));
       message.error(error?.response?.data?.message);
       return rejectWithValue(error?.response.data);
     }
@@ -27,11 +34,14 @@ export const getAllCommentInHomestay = createAsyncThunk(
 );
 export const updateComment = createAsyncThunk(
   'comments/updateComment',
-  async (payload, { rejectWithValue }) => {
+  async (payload, { rejectWithValue, dispatch }) => {
     try {
+      dispatch(setLoadingApp(true));
       const response = await commentApi.updateComment(payload);
+      dispatch(setLoadingApp(false));
       return response;
     } catch (error) {
+      dispatch(setLoadingApp(false));
       message.error(error?.response?.data?.message);
       return rejectWithValue(error?.response.data);
     }
@@ -97,7 +107,6 @@ const commentSlices = createSlice({
 });
 //actions
 export const commentActions = commentSlices.actions;
-
 
 //selectors
 export const useCommentPostSelector = (state) => state.comments.commentPost;

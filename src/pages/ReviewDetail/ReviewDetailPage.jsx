@@ -1,9 +1,14 @@
 import { ReviewItem } from 'components/ReviewDetail/reviewItem';
 import { useCurrentUserSelector } from 'features/Auth/AuthSlice';
 import {
+  useLoadingActionSelector,
+  useLoadingAppSelector,
+} from 'features/commonSlice';
+import {
   getAllReviews,
   updateLikeReview,
   useDataReviewsSelector,
+  useLikeReviewSelector,
 } from 'features/Reviews/ReviewsSlice';
 import React, { Fragment, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -18,7 +23,8 @@ export default function ReviewDetailPage() {
 
   const currentUser = useSelector(useCurrentUserSelector);
   const reviews = useSelector(useDataReviewsSelector);
-  console.log({ reviews });
+  const loadingAction = useSelector(useLoadingActionSelector);
+  const likeReview = useSelector(useLikeReviewSelector);
 
   useEffect(() => {
     if (!id) return;
@@ -27,10 +33,10 @@ export default function ReviewDetailPage() {
         filters: { province: parseInt(id) },
       })
     );
-  }, [id]);
+  }, [id, likeReview]);
   // updateLikeReview
-  const handleLikeReview = (review) => {
-    if (!currentUser || !review) return;
+  const handleLikeReview = async (review) => {
+    if (loadingAction || !currentUser || !review) return;
     const payload = {
       review_id: review._id,
       user_id: currentUser?.data?._id,
