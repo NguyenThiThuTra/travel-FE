@@ -18,7 +18,6 @@ export default function HomestayChatBox({
   const [user, setUser] = useState(null);
   const currentUser = useSelector(useCurrentUserSelector);
   const receiver = useSelector(useReceiverChatBoxSelector);
-  console.log({ receiver });
   useEffect(() => {
     const friendId = conversation.members.find(
       (member) => member !== currentUser?.data?._id

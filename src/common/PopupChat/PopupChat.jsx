@@ -18,6 +18,7 @@ import ListHomestayChatBox from './ListHomestayChatBox';
 import './_PopupChat.scss';
 import { BsChatFill } from 'react-icons/bs';
 import { AiOutlineCloseCircle, AiOutlineSend } from 'react-icons/ai';
+import useFirestoreLoadMore from 'hooks/useFirestoreLoadMore';
 
 export default function PopupChat() {
   const dispatch = useDispatch();
@@ -98,11 +99,23 @@ export default function PopupChat() {
   //   getMessages();
   // }, [currentConversation]);
   const messageRef = firestore.collection('messages');
-  const query = messageRef
-    .where('conversation_id', '==', currentConversation?.id || null)
-    .orderBy('createdAt', 'desc')
-    .limit(25);
-  const [messages] = useCollectionData(query);
+  const queryMessageFn = React.useCallback(() => {
+    let q = messageRef
+      .where('conversation_id', '==', currentConversation?.id || null)
+      .orderBy('createdAt', 'desc')
+      .limit(15);
+    return q;
+  }, [currentConversation, onScroll]);
+
+  const [[messages, loadingMessage, errorMessage], moreMessage] =
+    useFirestoreLoadMore(queryMessageFn, messageRef);
+  const dataMessages = useMemo(() => {
+    return messages.map((doc) => ({
+      ...doc.data(),
+      id: doc.id,
+    }));
+  }, [messages]);
+
 
   // console.log({ messages, receiver, conversations, currentConversation });
   const [formValue, setFormValue] = useState();
@@ -116,6 +129,7 @@ export default function PopupChat() {
     if (!formValue) {
       return;
     }
+    setOnScroll(true);
 
     const conversation_id = uuidv4();
     if (!currentConversation) {
@@ -140,12 +154,12 @@ export default function PopupChat() {
   };
 
   // animation
-
+  const [onScroll, setOnScroll] = useState(false);
   useEffect(() => {
-    if (receiver || currentConversation) {
+    if (onScroll && (receiver || currentConversation)) {
       dummy?.current?.scrollIntoView({ behavior: 'smooth' });
     }
-  }, [messages, receiver, currentConversation]);
+  }, [onScroll, messages, receiver, currentConversation]);
 
   useEffect(() => {
     if (receiver) {
@@ -176,6 +190,7 @@ export default function PopupChat() {
           onMouseEnter={() => chatBoxRef?.current?.focus()}
           className="chat-box"
         >
+          <div onClick={() => moreMessage()}> MORE MORE </div>
           <div className="chat-box__header">
             <BsChatFill color="#ee4d2d" fontSize={20} />
             <span className="chat-box__title">
@@ -203,7 +218,7 @@ export default function PopupChat() {
                 </div>
                 <div className="chat-box__content">
                   <span ref={dummy}></span>
-                  {messages?.map((message, index) => (
+                  {dataMessages?.map((message, index) => (
                     <ChatMessage
                       currentUser={currentUser}
                       message={message}
