@@ -1,10 +1,7 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import {
-  useCollection,
-  useCollectionData,
-  useCollectionOnce,
+  useCollectionOnce
 } from 'react-firebase-hooks/firestore';
-import { firestore, firebase } from 'configs/firebase/config';
 
 const useFirestoreLoadMore = (queryFn, messageRef) => {
   const [query, setQuery] = useState(null);
@@ -12,21 +9,7 @@ const useFirestoreLoadMore = (queryFn, messageRef) => {
   const [data, setData] = useState([]);
 
   const [qData, loading, error] = useCollectionOnce(query);
-  // const [mdxx] = useCollectionOnce(
-  //   firestore
-  //     .collection('messages')
-  //     .where(
-  //       'conversation_id',
-  //       '==',
-  //       'b55ff38a-fb61-4a79-a26a-cb791777cb8b' || null
-  //     )
-  //     .orderBy('createdAt', 'desc')
-  //     .limit(15)
-  // );
 
-  // useEffect(() => {
-  //   setQuery(queryFn());
-  // }, [mdxx]);
   useEffect(() => {
     setData([]);
     setQuery(queryFn());

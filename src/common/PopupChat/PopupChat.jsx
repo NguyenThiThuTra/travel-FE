@@ -1,24 +1,22 @@
-import React, { useState, useRef, useEffect, useMemo } from 'react';
+import { Empty, Input } from 'antd';
 import ChatIcon from 'assets/images/chat.png';
-import { Avatar, Empty, Input } from 'antd';
+import { firestore } from 'configs/firebase/config';
 import { useCurrentUserSelector } from 'features/Auth/AuthSlice';
-import { useDispatch, useSelector } from 'react-redux';
-import { firestore, firebase } from 'configs/firebase/config';
-import { useCollectionData } from 'react-firebase-hooks/firestore';
-import { ChatMessage } from './ChatMessage';
-import { v4 as uuidv4 } from 'uuid';
 import {
   setOpenPopupChatBox,
-  setReceiver,
   toggleOpenPopupChatBox,
   useOpenPopupChatBoxSelector,
   useReceiverChatBoxSelector,
 } from 'features/ChatBox/ChatBoxSlice';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { useCollectionData } from 'react-firebase-hooks/firestore';
+import { AiOutlineCloseCircle, AiOutlineSend } from 'react-icons/ai';
+import { BsChatFill } from 'react-icons/bs';
+import { useDispatch, useSelector } from 'react-redux';
+import { v4 as uuidv4 } from 'uuid';
+import { ChatMessage } from './ChatMessage';
 import ListHomestayChatBox from './ListHomestayChatBox';
 import './_PopupChat.scss';
-import { BsChatFill } from 'react-icons/bs';
-import { AiOutlineCloseCircle, AiOutlineSend } from 'react-icons/ai';
-import useFirestoreLoadMore from 'hooks/useFirestoreLoadMore';
 
 export default function PopupChat() {
   const dispatch = useDispatch();
@@ -79,6 +77,27 @@ export default function PopupChat() {
   //   }
   // }, [currentConversation]);
 
+  const [dataMessages, setDataMessages] = useState([]);
+  const [lastDoc, setLastDoc] = useState();
+  const [loading, setLoading] = useState(false);
+  const [isEmpty, setIsEmpty] = useState(false);
+
+  // const updateState = (collections) => {
+  //   const isCollectionEmpty = collections.size === 0;
+  //   if (!isCollectionEmpty) {
+  //     const messages = collections.docs.map((doc) => ({
+  //       ...doc.data(),
+  //       id: doc.id,
+  //     }));
+  //     const isLastDoc = collections.docs[collections.docs.length - 1];
+
+  //     setDataMessages((prevState) => [...prevState, ...messages]);
+  //     setLastDoc(isLastDoc);
+  //   } else {
+  //     setIsEmpty(true);
+  //   }
+  //   setLoading(false);
+  // };
   // useEffect(() => {
   //   if (!currentConversation) return;
   //   const getMessages = async () => {
@@ -86,36 +105,30 @@ export default function PopupChat() {
   //       .collection('messages')
   //       .where('conversation_id', '==', currentConversation?.id || null)
   //       .orderBy('createdAt', 'desc')
-  //       .onSnapshot((snapshot) => {
-  //         console.log({ snapshot });
-  //         const messages = snapshot.docs.map((doc) => ({
-  //           ...doc.data(),
-  //           id: doc.id,
-  //         }));
-  //         console.log({ messagesmessagesmessages: messages });
-  //         // setMessages(messages);
+  //       // .limit(15)
+  //       .onSnapshot((collections) => {
+  //         updateState(collections);
   //       });
   //   };
   //   getMessages();
   // }, [currentConversation]);
+  // console.log({ dataMessages });
   const messageRef = firestore.collection('messages');
-  const queryMessageFn = React.useCallback(() => {
-    let q = messageRef
-      .where('conversation_id', '==', currentConversation?.id || null)
-      .orderBy('createdAt', 'desc')
-      .limit(15);
-    return q;
-  }, [currentConversation, onScroll]);
+  // const queryMessage = React.useCallback(() => {
+  //   let q = messageRef
+  //     .where('conversation_id', '==', currentConversation?.id || null)
+  //     .orderBy('createdAt', 'desc');
+  //   // .limit(15);
+  //   return q;
+  // }, [currentConversation, onScroll]);
 
-  const [[messages, loadingMessage, errorMessage], moreMessage] =
-    useFirestoreLoadMore(queryMessageFn, messageRef);
-  const dataMessages = useMemo(() => {
-    return messages.map((doc) => ({
-      ...doc.data(),
-      id: doc.id,
-    }));
+  const queryMessage = messageRef
+    .where('conversation_id', '==', currentConversation?.id || null)
+    .orderBy('createdAt', 'desc');
+  const [messages] = useCollectionData(queryMessage);
+  useEffect(() => {
+    setDataMessages(messages);
   }, [messages]);
-
 
   // console.log({ messages, receiver, conversations, currentConversation });
   const [formValue, setFormValue] = useState();
@@ -156,10 +169,10 @@ export default function PopupChat() {
   // animation
   const [onScroll, setOnScroll] = useState(false);
   useEffect(() => {
-    if (onScroll && (receiver || currentConversation)) {
+    if (conversationsRef || receiver || currentConversation) {
       dummy?.current?.scrollIntoView({ behavior: 'smooth' });
     }
-  }, [onScroll, messages, receiver, currentConversation]);
+  }, [conversationsRef, onScroll, messages, receiver, currentConversation]);
 
   useEffect(() => {
     if (receiver) {
@@ -190,7 +203,7 @@ export default function PopupChat() {
           onMouseEnter={() => chatBoxRef?.current?.focus()}
           className="chat-box"
         >
-          <div onClick={() => moreMessage()}> MORE MORE </div>
+          {/* <div onClick={() => moreMessage()}> MORE MORE </div> */}
           <div className="chat-box__header">
             <BsChatFill color="#ee4d2d" fontSize={20} />
             <span className="chat-box__title">
