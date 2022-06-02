@@ -3,7 +3,9 @@ import {
   Button,
   Form,
   Input,
+  message,
   Modal,
+  Rate,
   Select,
   Space,
   Typography,
@@ -12,51 +14,47 @@ import {
 import orderApi from 'api/orderApi';
 import provincesOpenApi from 'api/provincesOpenApi';
 import { useCurrentUserSelector } from 'features/Auth/AuthSlice';
+import { addCommentInHomestay } from 'features/Comment/CommentSlice';
 import { postReview } from 'features/Reviews/ReviewsSlice';
 import { objectToFormData } from 'helpers/ConvertObjectToFormData';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getBase64 } from 'utils/getBase64';
-import './_FormReview.scss';
+import './_FormAssessmentHomestay.scss';
 
 const { TextArea } = Input;
 const { Title } = Typography;
 
-export default function FormReview({
+export default function FormAssessmentHomestay({
   handleOk,
   visible,
   handleCancel,
   loading,
+  homestay,
 }) {
   const dispatch = useDispatch();
-
   const currentUser = useSelector(useCurrentUserSelector);
 
   const onFinish = async (values) => {
 
-    let { schedule, ...rest } = values;
-    const payload = { ...rest, user_id: currentUser?.data?._id };
+    let { text, rate } = values;
+    const payload = {
+      text,
+      rate,
+      user_id: currentUser?.data?._id,
+      homestay_id: homestay?._id,
+    };
 
     let formData = objectToFormData(payload);
     const filesImage = fileListImageReview.map((file) => file.originFileObj);
     filesImage.forEach((file) => {
       formData.append('images', file);
     });
-    if (schedule) {
-      schedule = schedule
-        .map((item) => {
-          return Object.values(item);
-        })
-        .flat();
-      for (let i = 0; i < schedule.length; i++) {
-        formData.append(`schedule[day${i + 1}]`, schedule[i]);
-      }
-    }
 
     try {
-      await dispatch(postReview(formData)).unwrap();
-      await handleOk();
+      dispatch(addCommentInHomestay(formData));
     } catch (error) {
+      message.error(error.message);
       console.error(error);
     }
   };
@@ -166,7 +164,7 @@ export default function FormReview({
     <Modal
       className="form-review"
       visible={visible}
-      title={<h3 className="form-review__title">Review của bạn</h3>}
+      title={<h3 className="form-review__title">Đánh giá {homestay?.name}</h3>}
       onOk={handleOk}
       onCancel={handleCancel}
       width={800}
@@ -200,41 +198,19 @@ export default function FormReview({
         autoComplete="off"
       >
         <Form.Item
-          label="Chọn địa điểm"
-          name="province"
-          rules={[{ required: true, message: 'Vui lòng chọn địa điểm' }]}
+          label="1. Đánh giá"
+          name="rate"
+          rules={[{ required: true, message: 'Vui lòng chọn đánh giá sao' }]}
         >
-          <Select
-            onChange={onChangeProvince}
-            onFocus={onFocusProvince}
-            onBlur={onBlurProvince}
-            onSearch={onSearchProvince}
-            showSearch
-            style={{ width: 343 }}
-            placeholder="Search to Select "
-            options={provinceBooking?.map((province) => ({
-              value: province.code,
-              label: province.name,
-            }))}
-            optionFilterProp="children"
-            filterOption={(input, option) => {
-              console.log({ option });
-              return (
-                option?.label?.toLowerCase()?.indexOf(input?.toLowerCase()) >= 0
-              );
-            }}
-            filterSort={(optionA, optionB) =>
-              optionA?.label
-                ?.toLowerCase()
-                ?.localeCompare(optionB?.label?.toLowerCase())
-            }
-          />
+          <Rate />
         </Form.Item>
 
         <Form.Item
-          label="Review của bạn"
-          name="review"
-          rules={[{ required: true, message: 'Vui lòng review điểm đến' }]}
+          label="2. Nhận xét chỗ nghỉ này"
+          name="text"
+          rules={[
+            { required: true, message: 'Vui lòng nhận xét chỗ nghỉ này' },
+          ]}
         >
           <TextArea rows={4} />
         </Form.Item>
@@ -266,46 +242,6 @@ export default function FormReview({
           </Modal>
         </Form.Item>
 
-        <Title level={5}>Lịch trình của bạn</Title>
-
-        <Form.List name="schedule">
-          {(fields, { add, remove }) => (
-            <>
-              {fields.map(({ key, name, ...restField }, index) => (
-                <Space
-                  key={key}
-                  style={{ display: 'flex', marginBottom: 8 }}
-                  align="baseline"
-                >
-                  <Form.Item
-                    {...restField}
-                    label={`Ngày ${index + 1}`}
-                    name={[name, `day${index + 1}`]}
-                    rules={[
-                      {
-                        required: false,
-                        message: `Nhập lịch trình ngày ${index + 1}`,
-                      },
-                    ]}
-                  >
-                    <TextArea rows={4} />
-                  </Form.Item>
-                  <MinusCircleOutlined onClick={() => remove(name)} />
-                </Space>
-              ))}
-              <Form.Item>
-                <Button
-                  type="dashed"
-                  onClick={() => add()}
-                  block
-                  icon={<PlusOutlined />}
-                >
-                  Thêm review
-                </Button>
-              </Form.Item>
-            </>
-          )}
-        </Form.List>
         <Form.Item>
           <Button type="primary" htmlType="submit">
             Đăng bài

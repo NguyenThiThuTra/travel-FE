@@ -55,7 +55,6 @@ export const signup = createAsyncThunk(
       dispatch(setLoadingApp(true));
       const response = await authApi.signup(payload);
       localStorage.setItem('access_token', response.token);
-      console.log({ response });
       notification.success({
         message: 'Đăng ký thành công !',
         duration: 1.5,

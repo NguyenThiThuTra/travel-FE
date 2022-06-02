@@ -6,7 +6,7 @@ import {
   getAllReviewDestination,
   getAllReviews,
   useDataReviewsSelector,
-  useReviewDestinationSelector,
+  useReviewDestinationSelector
 } from 'features/Reviews/ReviewsSlice';
 import React, { Fragment, useEffect, useMemo, useState } from 'react';
 import { AiFillPlusCircle } from 'react-icons/ai';
@@ -80,22 +80,22 @@ const ReviewsPage = () => {
   }
 
   const [loading, setLoading] = useState(false);
-  const [visible, setVisible] = useState(false);
+  const [visibleFormReview, setVisibleFormReview] = useState(false);
 
   const showModal = () => {
-    setVisible(true);
+    setVisibleFormReview(true);
   };
 
   const handleOk = () => {
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
-      setVisible(false);
+      setVisibleFormReview(false);
     }, 3000);
   };
 
   const handleCancel = () => {
-    setVisible(false);
+    setVisibleFormReview(false);
   };
 
   return (
@@ -168,12 +168,14 @@ const ReviewsPage = () => {
       </div>
 
       {/* modal */}
-      <FormReview
-        visible={visible}
-        loading={loading}
-        handleOk={handleOk}
-        handleCancel={handleCancel}
-      />
+      {visibleFormReview && (
+        <FormReview
+          visible={visibleFormReview}
+          loading={loading}
+          handleOk={handleOk}
+          handleCancel={handleCancel}
+        />
+      )}
     </Fragment>
   );
 };

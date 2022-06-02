@@ -62,7 +62,10 @@ export default function HistoryPage() {
               <ListOrders data={order?.data} />
             </TabPane>
             <TabPane tab="Đã xác nhận" key={ORDER_STATUS.approved.en}>
-              <ListOrders data={order?.data} />
+              <ListOrders
+                orderStatus={ORDER_STATUS.approved.en}
+                data={order?.data}
+              />
             </TabPane>
             <TabPane tab="Đã huỷ" key={ORDER_STATUS.canceled.en}>
               <ListOrders data={order?.data} />

@@ -80,7 +80,7 @@ export function CommentList() {
         })
       );
     }
-  }, [currentUser, id,]);
+  }, [currentUser, id]);
 
   const [value, setValue] = useState('');
 
@@ -108,7 +108,7 @@ export function CommentList() {
       }
     }
   };
-  
+
   // handle replies comment
   const formRef = useRef(null);
   const [showReplyComment, setShowReplyComment] = useState(null);
@@ -157,6 +157,10 @@ export function CommentList() {
     const length = comments?.data?.filter(
       (comment) => comment?.user_id?._id === currentUser?.data?._id
     ).length;
+    const currentCommentByUser = comments?.data?.filter(
+      (comment) => comment?.user_id?._id === currentUser?.data?._id
+    );
+
     return length >= limitComment;
   };
 

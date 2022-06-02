@@ -46,6 +46,19 @@
     color: #ee4d2d;
     font-weight: 500;
   }
+  &__bottom-wrap{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  &__review{
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    span{
+      margin-left: 1rem;
+    }
+  }
   &__bottom {
     display: flex;
     justify-content: flex-end;
