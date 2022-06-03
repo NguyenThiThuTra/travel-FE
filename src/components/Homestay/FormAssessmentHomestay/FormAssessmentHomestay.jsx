@@ -36,7 +36,6 @@ export default function FormAssessmentHomestay({
   const currentUser = useSelector(useCurrentUserSelector);
 
   const onFinish = async (values) => {
-
     let { text, rate } = values;
     const payload = {
       text,
@@ -52,7 +51,8 @@ export default function FormAssessmentHomestay({
     });
 
     try {
-      dispatch(addCommentInHomestay(formData));
+      await dispatch(addCommentInHomestay(formData)).unwrap();
+      await handleCancel();
     } catch (error) {
       message.error(error.message);
       console.error(error);
@@ -196,6 +196,7 @@ export default function FormAssessmentHomestay({
         name="dynamic_form_nest_item"
         onFinish={onFinish}
         autoComplete="off"
+        layout="vertical"
       >
         <Form.Item
           label="1. Đánh giá"
@@ -215,7 +216,7 @@ export default function FormAssessmentHomestay({
           <TextArea rows={4} />
         </Form.Item>
 
-        <Form.Item label="Thêm ảnh">
+        <Form.Item label="Thêm ảnh vào đánh giá của bạn">
           <Upload
             action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
             listType="picture-card"

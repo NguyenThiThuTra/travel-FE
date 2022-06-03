@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useIsFirstRender } from '../useIsFirstRender';
+import useIsFirstRender from './useIsFirstRender';
 
 
 function useUpdateEffect(effect, deps) {

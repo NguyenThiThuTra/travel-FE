@@ -9,6 +9,7 @@ export const addCommentInHomestay = createAsyncThunk(
       dispatch(setLoadingApp(true));
       const response = await commentApi.addCommentInHomestay(payload);
       dispatch(setLoadingApp(false));
+      message.success('Đánh giá homestay thành công');
       return response;
     } catch (error) {
       dispatch(setLoadingApp(false));

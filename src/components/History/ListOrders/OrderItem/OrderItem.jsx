@@ -107,7 +107,6 @@ export function OrderItem({ orderStatus, seller, data, totalPriceOrders }) {
     };
     getComments();
   }, [data]);
-
   // get my order in homestay
   useEffect(() => {
     const getOrders = async () => {

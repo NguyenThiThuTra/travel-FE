@@ -1,25 +1,17 @@
 import { LikeFilled, LikeOutlined } from '@ant-design/icons';
-import {
-  Button,
-  Collapse,
-  Image, Popconfirm,
-  Tabs,
-  Tooltip
-} from 'antd';
+import { Button, Collapse, Image, Popconfirm, Tabs, Tooltip } from 'antd';
 import { CommentList } from 'common/CommentList/CommentList';
 import HeaderImageLayout from 'common/HeaderImageLayout/HeaderImageLayout';
 import { TableProduct } from 'common/TableProduct/TableProduct';
 import { useCurrentUserSelector } from 'features/Auth/AuthSlice';
 import {
   setOpenPopupChatBox,
-  setReceiver
+  setReceiver,
 } from 'features/ChatBox/ChatBoxSlice';
-import {
-  toggleModalLogin
-} from 'features/commonSlice';
+import { toggleModalLogin } from 'features/commonSlice';
 import {
   getHomestay,
-  useHomestaySelector
+  useHomestaySelector,
 } from 'features/Homestay/HomestaySlice';
 import { fetchAllRooms, useRoomsSelector } from 'features/Rooms/RoomsSlice';
 import { groupBy } from 'helpers/groupBy';
@@ -119,6 +111,9 @@ const HomestayDetailPage = () => {
     dispatch(setReceiver(dataHomestay));
     dispatch(setOpenPopupChatBox(true));
   };
+
+  // render comments
+  const renderCommentList = useMemo(() => <CommentList />, []);
   return (
     <div className="ProductsDetailsPage">
       <HeaderImageLayout title_ul={rooms?.data?.[0]?.homestay_id?.name} />
@@ -357,7 +352,7 @@ const HomestayDetailPage = () => {
             )}
           </Row> */}
         </div>
-        <CommentList />
+        {renderCommentList}
       </div>
     </div>
   );

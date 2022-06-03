@@ -4,6 +4,7 @@ import {
   Comment,
   Empty,
   Form,
+  Image,
   List,
   message,
   Tooltip,
@@ -23,6 +24,7 @@ import {
 } from 'features/Comment/CommentSlice';
 import { useHomestaySelector } from 'features/Homestay/HomestaySlice';
 import { getAllOrder, useOrderSelector } from 'features/Order/OrderSlice';
+import useIsFirstRender from 'hooks/useIsFirstRender';
 import moment from 'moment';
 import React, { Fragment, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -62,14 +64,42 @@ export function CommentList() {
   const order = useSelector(useOrderSelector);
   const homestay = useSelector(useHomestaySelector);
 
+  const [paging, setPaging] = useState({ limit: 5, page: 1 });
+  const [dataComments, setDataComments] = useState([]);
+  const dummy = useRef();
+  const loadMoreComments = () => {
+    // dummy?.current?.scrollIntoView({ behavior: 'smooth' });
+    setPaging((prevState) => ({ ...prevState, page: prevState.page + 1 }));
+  };
   // get all comments Homestay
+
+  const isFirstRender = useIsFirstRender();
   useEffect(() => {
-    dispatch(getAllCommentInHomestay({ homestay_id: id }));
-  }, [id, commentPost, commentUpdate]);
+    console.log({ id });
+    if (!id) {
+      return;
+    }
+    const getComments = async () => {
+      try {
+        const response = await dispatch(
+          getAllCommentInHomestay({
+            homestay_id: id,
+            params: { limit: paging.limit, page: paging.page },
+          })
+        ).unwrap();
+        setDataComments((preState) => [...dataComments, ...response?.data]);
+      } catch (error) {
+        message.error(error.message);
+        setDataComments(null);
+      }
+    };
+    getComments();
+  }, [id, commentPost, commentUpdate, paging]);
+  console.log({ comments, dataComments });
 
   // get my order in homestay
   useEffect(() => {
-    if (currentUser?.data?._id) {
+    if (currentUser?.data?._id && id) {
       dispatch(
         getAllOrder({
           filters: {
@@ -153,147 +183,210 @@ export function CommentList() {
     if (checkOwnerHomestay()) {
       return true;
     }
-    const limitComment = order?.paging?.total;
-    const length = comments?.data?.filter(
-      (comment) => comment?.user_id?._id === currentUser?.data?._id
-    ).length;
-    const currentCommentByUser = comments?.data?.filter(
-      (comment) => comment?.user_id?._id === currentUser?.data?._id
-    );
+    // const limitComment = order?.paging?.total;
+    // const length = comments?.data?.filter(
+    //   (comment) => comment?.user_id?._id === currentUser?.data?._id
+    // ).length;
 
-    return length >= limitComment;
+    // return length >= limitComment;x
+    return true;
   };
 
+  //
+  const [visiblePreviewGroup, setVisiblePreviewGroup] = useState(true);
+  const [idImagePreview, setIdImageReview] = useState(null);
+  const handleShowImagePreview = (id) => {
+    setVisiblePreviewGroup(true);
+    setIdImageReview(id);
+  };
+  const handleCloseImagePreview = () => {
+    setVisiblePreviewGroup(false);
+    setIdImageReview(null);
+  };
   return (
-    <div>
-      <Title level={3}>Đánh giá từ người dùng</Title>
-      {comments?.data?.length > 0 ? (
-        <Fragment>
-          <List
-            className="comment-list"
-            header={`${comments?.data.length} replies`}
-            itemLayout="horizontal"
-            dataSource={comments?.data || []}
-            renderItem={(item) => (
-              <li key={Math.random()}>
-                <Comment
-                  actions={
-                    checkOwnerHomestay() &&
-                    !item?.replies?.length > 0 && [
-                      <span
-                        onClick={() => handleShowInputReplyComment(item._id)}
-                        key="comment-list-reply-to-0"
+    <Fragment>
+      <div>
+        <Title level={3}>Đánh giá từ người dùng</Title>
+        {dataComments?.length > 0 ? (
+          <Fragment>
+            <List
+              className="comment-list"
+              header={`${dataComments.length} replies`}
+              itemLayout="horizontal"
+              dataSource={dataComments || []}
+              renderItem={(item) => (
+                <li key={Math.random()}>
+                  <Comment
+                    actions={
+                      checkOwnerHomestay() && [
+                        // !item?.replies?.length > 0 &&
+                        <span
+                          onClick={() => handleShowInputReplyComment(item._id)}
+                          key="comment-list-reply-to-0"
+                        >
+                          Reply to
+                        </span>,
+                      ]
+                    }
+                    author={item.user_id?.name}
+                    avatar={
+                      item.user_id?.avatar ||
+                      'https://joeschmoe.io/api/v1/random'
+                    }
+                    content={
+                      <div>
+                        {item.text}
+
+                        {item?.images?.length > 0 && (
+                          <Fragment>
+                            <Image
+                              style={{ marginTop: '2rem' }}
+                              preview={{ visiblePreviewGroup: false }}
+                              width={200}
+                              src={item?.images[0]}
+                              alt="image preview"
+                              onClick={() => handleShowImagePreview(item?._id)}
+                            />
+
+                            <div style={{ display: 'none' }}>
+                              <Image.PreviewGroup
+                                preview={{
+                                  visible:
+                                    visiblePreviewGroup &&
+                                    idImagePreview === item?._id,
+                                  onVisibleChange: (vis) =>
+                                    setVisiblePreviewGroup(vis),
+                                }}
+                              >
+                                {item?.images?.map((image, index) => (
+                                  <Image
+                                    key={index}
+                                    src={image}
+                                    alt={`preview ${index}`}
+                                  />
+                                ))}
+                              </Image.PreviewGroup>
+                            </div>
+                          </Fragment>
+                        )}
+                      </div>
+                    }
+                    datetime={
+                      <Tooltip
+                        title={moment(item.updatedAt).format(
+                          'YYYY-MM-DD HH:mm:ss'
+                        )}
                       >
-                        Reply to
-                      </span>,
-                    ]
-                  }
-                  author={item.user_id?.name}
-                  avatar={
-                    item.user_id?.avatar || 'https://joeschmoe.io/api/v1/random'
-                  }
-                  content={item.text}
-                  datetime={
-                    <Tooltip
-                      title={moment(item.updatedAt).format(
-                        'YYYY-MM-DD HH:mm:ss'
-                      )}
-                    >
-                      <span>{moment(item.updatedAt).fromNow()}</span>
-                    </Tooltip>
-                  }
-                  children={
-                    <>
-                      {item?.replies?.map((reply) => (
-                        <Comment
-                          author={currentUser?.data?.name}
-                          avatar={
-                            currentUser?.data?.avatar ||
-                            'https://joeschmoe.io/api/v1/random'
-                          }
-                          content={reply.text}
-                          datetime={
-                            <Tooltip
-                              title={moment(reply.updatedAt).format(
-                                'YYYY-MM-DD HH:mm:ss'
-                              )}
-                            >
-                              <span>{moment(reply.updatedAt).fromNow()}</span>
-                            </Tooltip>
-                          }
-                        />
-                      ))}
-                      {checkOwnerHomestay() &&
-                        !item?.replies.length > 0 &&
-                        showReplyComment === item._id && (
+                        <span>{moment(item.updatedAt).fromNow()}</span>
+                      </Tooltip>
+                    }
+                    children={
+                      <>
+                        {item?.replies?.map((reply) => (
                           <Comment
+                            author={currentUser?.data?.name}
                             avatar={
-                              <Avatar
-                                src={
-                                  currentUser?.data?.avatar ||
-                                  'https://joeschmoe.io/api/v1/random'
-                                }
-                                alt={currentUser?.data?.name}
-                              />
+                              currentUser?.data?.avatar ||
+                              'https://joeschmoe.io/api/v1/random'
                             }
-                            content={
-                              <>
-                                <Form
-                                  ref={formRef}
-                                  onFinish={handleSubmitReplyComment}
-                                >
-                                  <Form.Item name="text">
-                                    <TextArea
-                                      rows={4}
-                                      // onChange={handleChangeReplyComment}
-                                      // value={valueReplyComment}
-                                    />
-                                  </Form.Item>
-                                  <Form.Item>
-                                    <Button
-                                      htmlType="submit"
-                                      // loading={loading}
-                                      type="primary"
-                                    >
-                                      Add Comment
-                                    </Button>
-                                  </Form.Item>
-                                </Form>
-                              </>
+                            content={reply.text}
+                            datetime={
+                              <Tooltip
+                                title={moment(reply.updatedAt).format(
+                                  'YYYY-MM-DD HH:mm:ss'
+                                )}
+                              >
+                                <span>{moment(reply.updatedAt).fromNow()}</span>
+                              </Tooltip>
                             }
                           />
-                        )}
-                    </>
-                  }
-                />
-              </li>
-            )}
+                        ))}
+                        {checkOwnerHomestay() &&
+                          // !item?.replies.length > 0 &&
+                          showReplyComment === item._id && (
+                            <Comment
+                              avatar={
+                                <Avatar
+                                  src={
+                                    currentUser?.data?.avatar ||
+                                    'https://joeschmoe.io/api/v1/random'
+                                  }
+                                  alt={currentUser?.data?.name}
+                                />
+                              }
+                              content={
+                                <>
+                                  <Form
+                                    ref={formRef}
+                                    onFinish={handleSubmitReplyComment}
+                                  >
+                                    <Form.Item name="text">
+                                      <TextArea
+                                        rows={4}
+                                        // onChange={handleChangeReplyComment}
+                                        // value={valueReplyComment}
+                                      />
+                                    </Form.Item>
+                                    <Form.Item>
+                                      <Button
+                                        htmlType="submit"
+                                        // loading={loading}
+                                        type="primary"
+                                      >
+                                        Add Comment
+                                      </Button>
+                                    </Form.Item>
+                                  </Form>
+                                </>
+                              }
+                            />
+                          )}
+                      </>
+                    }
+                  />
+                </li>
+              )}
+            />
+          </Fragment>
+        ) : (
+          <Empty />
+        )}
+        {!checkUserCommented() && order?.data?.length > 0 && (
+          <Comment
+            avatar={
+              <Avatar
+                src={
+                  currentUser?.data?.avatar ||
+                  'https://joeschmoe.io/api/v1/random'
+                }
+                alt={currentUser?.data?.name}
+              />
+            }
+            content={
+              <Editor
+                onSubmit={handleSubmit}
+                onChange={handleChange}
+                value={value}
+                submitting={loading}
+              />
+            }
           />
-        </Fragment>
-      ) : (
-        <Empty />
+        )}
+      </div>
+      {comments?.paging?.current_page < comments?.paging?.last_page && (
+        <div
+          onClick={loadMoreComments}
+          ref={dummy}
+          style={{
+            color: '#5191FA',
+            fontSize: '1.4rem',
+            marginTop: '1.5rem',
+            cursor: 'pointer',
+          }}
+        >
+          Load more
+        </div>
       )}
-      {!checkUserCommented() && order?.data?.length > 0 && (
-        <Comment
-          avatar={
-            <Avatar
-              src={
-                currentUser?.data?.avatar ||
-                'https://joeschmoe.io/api/v1/random'
-              }
-              alt={currentUser?.data?.name}
-            />
-          }
-          content={
-            <Editor
-              onSubmit={handleSubmit}
-              onChange={handleChange}
-              value={value}
-              submitting={loading}
-            />
-          }
-        />
-      )}
-    </div>
+    </Fragment>
   );
 }
