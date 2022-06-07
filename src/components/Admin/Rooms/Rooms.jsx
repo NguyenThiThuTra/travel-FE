@@ -181,29 +181,35 @@ export default function RoomsPage(props) {
         },
       },
 
-      {
-        title: 'Trạng thái',
-        dataIndex: 'status',
-        key: 'status',
-        width: 150,
-        render: (n, record) => {
-          return (
-            <Switch
-              style={{ opacity: 1 }}
-              defaultChecked
-              checked={record?.status}
-              disabled={true}
-            />
-          );
-        },
-      },
+      // {
+      //   title: 'Trạng thái',
+      //   dataIndex: 'status',
+      //   key: 'status',
+      //   width: 150,
+      //   render: (n, record) => {
+      //     return (
+      //       <Switch
+      //         style={{ opacity: 1 }}
+      //         defaultChecked
+      //         checked={record?.status}
+      //         disabled={true}
+      //       />
+      //     );
+      //   },
+      // },
       {
         title: 'Action',
         key: 'operation',
         fixed: 'right',
         width: 100,
         render: (r) => (
-          <ActionTable id={r._id} dataDetail={rooms} funcDelete={deleteRoom} showActionEdit={false} />
+          <ActionTable
+            id={r._id}
+            dataDetail={rooms}
+            funcDelete={deleteRoom}
+            showActionEdit={false}
+            showActionDelete={false}
+          />
         ),
       },
     ],

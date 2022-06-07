@@ -1,12 +1,8 @@
 import { Button, Modal, Select, Table } from 'antd';
 import queryString from 'query-string';
-import React, { Fragment, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { Fragment, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
-import {
-  fetchAllCategoryInHomestay,
-  useRoomsSelector,
-} from '../../features/Rooms/RoomsSlice';
 import { AddCartForm } from '../AddCartForm/AddCartForm';
 import './_TableProduct.scss';
 
