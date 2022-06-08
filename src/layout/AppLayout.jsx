@@ -23,7 +23,6 @@ export default function AppLayout({ children }) {
   const loadingApp = useSelector(useLoadingAppSelector);
   const currentUser = useSelector(useCurrentUserSelector);
   return (
-    <Spin spinning={loadingApp} tip="Loading...">
       <React.StrictMode>
         <div className="App">
           {!flagPathname(HIDDEN_HEADER, location.pathname) && <Header />}
@@ -63,6 +62,5 @@ export default function AppLayout({ children }) {
           </BackTop>
         </div>
       </React.StrictMode>
-    </Spin>
   );
 }
