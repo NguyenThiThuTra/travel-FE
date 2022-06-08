@@ -23,56 +23,46 @@ export default function AppLayout({ children }) {
   const loadingApp = useSelector(useLoadingAppSelector);
   const currentUser = useSelector(useCurrentUserSelector);
   return (
-    <React.StrictMode>
-      <div className="App">
-        {!flagPathname(HIDDEN_HEADER, location.pathname) && <Header />}
+    <Spin spinning={loadingApp} tip="Loading...">
+      <React.StrictMode>
+        <div className="App">
+          {!flagPathname(HIDDEN_HEADER, location.pathname) && <Header />}
 
-        {/* LIST_ROUTE    */}
-        {children}
-        {/*End LIST_ROUTE    */}
-        {!flagPathname(HIDDEN_FOOTER, location.pathname) && (
-          <Footer
-            showNewsletter={!flagPathname(HIDDEN_NEWSLETTER, location.pathname)}
-            showFooterInfo={
-              !flagPathname(HIDDEN_FOOTER_INFO, location.pathname)
-            }
-          />
-        )}
+          {/* LIST_ROUTE    */}
+          {children}
+          {/*End LIST_ROUTE    */}
+          {!flagPathname(HIDDEN_FOOTER, location.pathname) && (
+            <Footer
+              showNewsletter={
+                !flagPathname(HIDDEN_NEWSLETTER, location.pathname)
+              }
+              showFooterInfo={
+                !flagPathname(HIDDEN_FOOTER_INFO, location.pathname)
+              }
+            />
+          )}
 
-        {/* popup chat admin */}
-        {currentUser && <PopupChat />}
+          {/* popup chat admin */}
+          {currentUser && <PopupChat />}
 
-        <BackTop style={{ bottom: '100px' }}>
-          <div
-            style={{
-              height: 40,
-              width: 40,
-              lineHeight: '40px',
-              borderRadius: 4,
-              backgroundColor: '#23232c',
-              color: '#fff',
-              textAlign: 'center',
-              fontSize: 14,
-            }}
-          >
-            <ArrowUpOutlined />
-          </div>
-        </BackTop>
-      </div>
-
-      {loadingApp && (
-        <div
-          style={{
-            position: 'fixed',
-            inset: 0,
-            background: 'grey',
-            zIndex: '9999',
-          }}
-          className="loading-app"
-        >
-          Loading...
+          <BackTop style={{ bottom: '100px' }}>
+            <div
+              style={{
+                height: 40,
+                width: 40,
+                lineHeight: '40px',
+                borderRadius: 4,
+                backgroundColor: '#23232c',
+                color: '#fff',
+                textAlign: 'center',
+                fontSize: 14,
+              }}
+            >
+              <ArrowUpOutlined />
+            </div>
+          </BackTop>
         </div>
-      )}
-    </React.StrictMode>
+      </React.StrictMode>
+    </Spin>
   );
 }
