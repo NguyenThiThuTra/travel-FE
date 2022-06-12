@@ -16,7 +16,6 @@ const DestinationsPage = () => {
   //end querySearch
 
   const onShowSizeChange = (current, pageSize) => {
-    console.log({ current, pageSize });
     let query = {
       ...querySearch,
       page: current,

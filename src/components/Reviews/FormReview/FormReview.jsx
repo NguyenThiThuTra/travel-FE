@@ -8,14 +8,17 @@ import {
   Space,
   Typography,
   Upload,
+  message,
 } from 'antd';
 import orderApi from 'api/orderApi';
 import provincesOpenApi from 'api/provincesOpenApi';
+import { RouteConstant } from 'constants/RouteConstant';
 import { useCurrentUserSelector } from 'features/Auth/AuthSlice';
 import { postReview } from 'features/Reviews/ReviewsSlice';
 import { objectToFormData } from 'helpers/ConvertObjectToFormData';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import { getBase64 } from 'utils/getBase64';
 import './_FormReview.scss';
 
@@ -28,12 +31,12 @@ export default function FormReview({
   handleCancel,
   loading,
 }) {
+  const history = useHistory();
   const dispatch = useDispatch();
 
   const currentUser = useSelector(useCurrentUserSelector);
 
   const onFinish = async (values) => {
-
     let { schedule, ...rest } = values;
     const payload = { ...rest, user_id: currentUser?.data?._id };
 
@@ -55,8 +58,11 @@ export default function FormReview({
 
     try {
       await dispatch(postReview(formData)).unwrap();
-      await handleOk();
+      await handleCancel();
+      history.push(`/reviews/${values?.province}`);
+      await message.success('Đăng bài thành công');
     } catch (error) {
+      await message.error('Đăng bài review thất bại !');
       console.error(error);
     }
   };
@@ -167,7 +173,6 @@ export default function FormReview({
       className="form-review"
       visible={visible}
       title={<h3 className="form-review__title">Review của bạn</h3>}
-      onOk={handleOk}
       onCancel={handleCancel}
       width={800}
       footer={null}

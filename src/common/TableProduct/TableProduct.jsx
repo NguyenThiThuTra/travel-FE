@@ -1,7 +1,9 @@
-import { Button, Modal, Select, Table } from 'antd';
+import { Button, Modal, Popconfirm, Select, Table } from 'antd';
+import { useCurrentUserSelector } from 'features/Auth/AuthSlice';
+import { toggleModalLogin } from 'features/commonSlice';
 import queryString from 'query-string';
 import React, { Fragment, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
 import { AddCartForm } from '../AddCartForm/AddCartForm';
 import './_TableProduct.scss';
@@ -18,7 +20,6 @@ function onSearch(val) {
 export function TableProduct({ nameHomestay, homestay_id, data }) {
   const location = useLocation();
   const querySearch = queryString.parse(location.search);
-  console.log({ data });
 
   const dispatch = useDispatch();
 
@@ -32,7 +33,26 @@ export function TableProduct({ nameHomestay, homestay_id, data }) {
 
   const [orders, setOrders] = useState([]);
   const [isModalOrdersVisible, setIsModalOrdersVisible] = useState(false);
+
+  const currentUser = useSelector(useCurrentUserSelector);
+  // open booking
+  const [visiblePopupNotification, setVisiblePopupNotification] =
+    useState(false);
+  function confirmNotification(e) {
+    // message.success('Click on Yes');
+    setVisiblePopupNotification(false);
+    dispatch(toggleModalLogin());
+  }
+
+  function cancelNotification(e) {
+    // message.error('Click on No');
+    setVisiblePopupNotification(false);
+  }
+
   const showModalOrders = () => {
+    if (!currentUser) {
+      return setVisiblePopupNotification(true);
+    }
     setIsModalOrdersVisible(true);
   };
 
@@ -75,8 +95,7 @@ export function TableProduct({ nameHomestay, homestay_id, data }) {
     () =>
       orders.reduce(
         (previousValue, currentValue) =>
-          previousValue +
-          currentValue.select_room * currentValue.price,
+          previousValue + currentValue.select_room * currentValue.price,
         0
       ),
     [orders]
@@ -180,13 +199,22 @@ export function TableProduct({ nameHomestay, homestay_id, data }) {
                       <div className="booking-des__item">{`Số lượng phòng đặt : ${totalSelectedRooms}`}</div>
                       <div className="booking-des__item">{`Giá tiền : ${totalPriceOrders}`}</div>
                     </div>
-                    <Button
-                      onClick={showModalOrders}
-                      style={{ width: '100px' }}
-                      type="primary"
+                    <Popconfirm
+                      visible={visiblePopupNotification}
+                      title="Bạn cần đăng nhập để thực hiện chức năng này ?"
+                      onConfirm={confirmNotification}
+                      onCancel={cancelNotification}
+                      okText="Yes"
+                      cancelText="No"
                     >
-                      Tôi sẽ đặt
-                    </Button>
+                      <Button
+                        onClick={showModalOrders}
+                        style={{ width: '100px' }}
+                        type="primary"
+                      >
+                        Tôi sẽ đặt
+                      </Button>
+                    </Popconfirm>
                     <ul className="booking-ticker">
                       <li> Xác nhận tức thời</li>
                       <li> Không cần đăng ký</li>
@@ -202,7 +230,7 @@ export function TableProduct({ nameHomestay, homestay_id, data }) {
         },
       },
     ],
-    [orders]
+    [orders, visiblePopupNotification]
   );
 
   const dataTable = Object.values(data);

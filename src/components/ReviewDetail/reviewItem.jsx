@@ -63,7 +63,7 @@ export function ReviewItem({ review, handleLikeReview }) {
           <div className="review-box__content-review">{review?.review}</div>
           <ul className="review-box__list-schedule">
             {review &&
-              Object.values(review?.schedule)?.map((day, index) => (
+              Object.values(review?.schedule || [])?.map((day, index) => (
                 <li>
                   {`Ngày ${index + 1} : `} {day}
                 </li>

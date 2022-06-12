@@ -6,13 +6,15 @@ import {
 } from 'features/Homestay/HomestaySlice';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation, useRouteMatch } from 'react-router-dom';
 import { login, signup } from '../../../features/Auth/AuthSlice';
 const { Option } = Select;
 const ModalLogin = (props) => {
   // const store = useContext(AuthContext);
   //end context
   const history = useHistory();
+  const location = useLocation();
+  const match = useRouteMatch();
   let dispatch = useDispatch();
   const [nameForm, setNameForm] = useState('sign-in');
   const [confirmLoading, setConfirmLoading] = useState(false);
@@ -45,16 +47,15 @@ const ModalLogin = (props) => {
           if (role === 'admin') {
             history.push('/admin/orders');
           }
-          if (role === 'user') {
-            history.push('/my-homestay/orders');
-          }
+          // if (role === 'user') {
+          //   history.push('/my-homestay/orders');
+          // }
         }
       }
       if (nameForm !== 'sign-in') {
         dispatch(signup(values));
       }
     } catch (error) {
-      console.log('hihi');
       console.error(error);
     }
   };

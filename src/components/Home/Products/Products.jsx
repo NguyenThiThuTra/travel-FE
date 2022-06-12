@@ -50,7 +50,7 @@ const Products = () => {
       >
         <div className="btn_load_more">
           {/* <ButtonUI /> */}
-          <span>Load more</span>
+          <span>Xem thêm</span>
         </div>
       </div>
     </div>
