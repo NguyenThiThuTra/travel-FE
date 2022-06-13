@@ -31,6 +31,7 @@ export default function FormAssessmentHomestay({
   handleCancel,
   loading,
   homestay,
+  orderId,
 }) {
   const dispatch = useDispatch();
   const currentUser = useSelector(useCurrentUserSelector);
@@ -42,6 +43,7 @@ export default function FormAssessmentHomestay({
       rate,
       user_id: currentUser?.data?._id,
       homestay_id: homestay?._id,
+      order_id: orderId,
     };
 
     let formData = objectToFormData(payload);

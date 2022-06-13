@@ -2,6 +2,7 @@ import { Layout, Tabs, Typography } from 'antd';
 import { ListOrders } from 'components/History/ListOrders/ListOrders';
 import { ORDER_STATUS } from 'constants/order';
 import { useCurrentUserSelector } from 'features/Auth/AuthSlice';
+import { useCommentPostSelector } from 'features/Comment/CommentSlice';
 import {
   getAllOrder,
   useOrderSelector,
@@ -21,6 +22,7 @@ export default function HistoryPage() {
   const currentUser = useSelector(useCurrentUserSelector);
   const [orderStatus, setOrderStatus] = useState(ORDER_STATUS.pending.en);
   const updateOrderStatus = useSelector(useUpdateOrderStatusSelector);
+  const commentPost = useSelector(useCommentPostSelector);
   const order = useSelector(useOrderSelector);
 
   useEffect(() => {
@@ -40,7 +42,7 @@ export default function HistoryPage() {
       getAllOrderByUserId();
     }
     getAllOrderByUserId();
-  }, [currentUser, orderStatus, updateOrderStatus]);
+  }, [currentUser, orderStatus, updateOrderStatus, commentPost]);
 
   const onChangeTabs = (key) => {
     setOrderStatus(key);

@@ -236,7 +236,7 @@ const FormFilters = () => {
         }}
       >
         <Button onClick={Search} style={{ width: '100px' }} type="primary">
-          Lọc
+          Tìm kiếm
         </Button>
       </div>
     </div>

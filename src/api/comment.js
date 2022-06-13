@@ -5,6 +5,10 @@ const commentApi = {
     const url = '/comments/homestay';
     return axiosClient.post(url, payload);
   },
+  getAll(params) {
+    const url = `/comments`;
+    return axiosClient.get(url, { params });
+  },
   getAllCommentInHomestay({ params, homestay_id }) {
     const url = `/comments/homestay/${homestay_id}`;
     return axiosClient.get(url, { params });

@@ -1,12 +1,15 @@
-import { Button, Col, Row, Select } from 'antd';
+import { Button, Col, message, Popconfirm, Row, Select } from 'antd';
 import provincesOpenApi from 'api/provincesOpenApi';
 import TravelDestinationBox from 'common/TravelDestinationBox/TravelDestinationBox';
 import FormReview from 'components/Reviews/FormReview/FormReview';
+import { useCurrentUserSelector } from 'features/Auth/AuthSlice';
+import { toggleModalLogin } from 'features/commonSlice';
+import { getAllOrder, useOrderSelector } from 'features/Order/OrderSlice';
 import {
   getAllReviewDestination,
   getAllReviews,
   useDataReviewsSelector,
-  useReviewDestinationSelector
+  useReviewDestinationSelector,
 } from 'features/Reviews/ReviewsSlice';
 import React, { Fragment, useEffect, useMemo, useState } from 'react';
 import { AiFillPlusCircle } from 'react-icons/ai';
@@ -20,6 +23,9 @@ const ReviewsPage = () => {
 
   const dispatch = useDispatch();
 
+  const currentUser = useSelector(useCurrentUserSelector);
+
+  const orders = useSelector(useOrderSelector);
   const reviews = useSelector(useDataReviewsSelector);
   const reviewDestination = useSelector(useReviewDestinationSelector);
   useEffect(() => {
@@ -29,6 +35,22 @@ const ReviewsPage = () => {
   useEffect(() => {
     dispatch(getAllReviewDestination());
   }, []);
+
+  useEffect(() => {
+    const getOrderByUserId = async () => {
+      if (currentUser?.data?._id) {
+        dispatch(
+          getAllOrder({
+            filters: {
+              user_id: currentUser?.data?._id,
+            },
+            limit: 1,
+          })
+        );
+      }
+    };
+    getOrderByUserId();
+  }, [currentUser]);
 
   // lấy danh sách các tỉnh thành
   const [provinces, setProvinces] = useState(null);
@@ -82,7 +104,27 @@ const ReviewsPage = () => {
   const [loading, setLoading] = useState(false);
   const [visibleFormReview, setVisibleFormReview] = useState(false);
 
+  // show modal review
+  const [visiblePopupNotification, setVisiblePopupNotification] =
+    useState(false);
+  function confirmNotification(e) {
+    // message.success('Click on Yes');
+    setVisiblePopupNotification(false);
+    dispatch(toggleModalLogin());
+  }
+
+  function cancelNotification(e) {
+    // message.error('Click on No');
+    setVisiblePopupNotification(false);
+  }
   const showModal = () => {
+    if (!currentUser) {
+      return setVisiblePopupNotification(true);
+    }
+    if (!(orders?.data?.length > 0)) {
+      message.info('Bạn chưa từng đến địa điểm nào');
+      return false;
+    }
     setVisibleFormReview(true);
   };
 
@@ -133,14 +175,23 @@ const ReviewsPage = () => {
               }
             />
           </div>
-          <Button
-            onClick={showModal}
-            className=" btn-review"
-            type="primary"
-            icon={<AiFillPlusCircle />}
+          <Popconfirm
+            visible={visiblePopupNotification}
+            title="Bạn cần đăng nhập để thực hiện chức năng này ?"
+            onConfirm={confirmNotification}
+            onCancel={cancelNotification}
+            okText="Yes"
+            cancelText="No"
           >
-            Thêm review của bạn
-          </Button>
+            <Button
+              onClick={showModal}
+              className=" btn-review"
+              type="primary"
+              icon={<AiFillPlusCircle />}
+            >
+              Thêm review của bạn
+            </Button>
+          </Popconfirm>
         </div>
 
         <div>

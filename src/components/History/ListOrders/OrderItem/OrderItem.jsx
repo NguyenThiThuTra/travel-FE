@@ -77,8 +77,9 @@ export function OrderItem({ orderStatus, seller, data, totalPriceOrders }) {
   // show Modal review
   const [loading, setLoading] = useState(false);
   const [visibleFormReview, setVisibleFormReview] = useState(false);
-
-  const showModal = () => {
+  const [orderId, setOrderId] = useState(null);
+  const showModal = (id) => {
+    setOrderId(id);
     setVisibleFormReview(true);
   };
 
@@ -107,6 +108,18 @@ export function OrderItem({ orderStatus, seller, data, totalPriceOrders }) {
     };
     getComments();
   }, [data]);
+
+  // get comment by order_id
+  const [commentByOrderId, setCommentByOrderId] = useState(null);
+  useEffect(() => {
+    const getCommentByOrderId = async () => {
+      const payload = { filters: { order_id: data?._id }, limit: 1 };
+      const response = await commentApi.getAll(payload);
+      setCommentByOrderId(response?.data);
+    };
+    getCommentByOrderId();
+  }, [data]);
+
   // get my order in homestay
   useEffect(() => {
     const getOrders = async () => {
@@ -185,12 +198,22 @@ export function OrderItem({ orderStatus, seller, data, totalPriceOrders }) {
           <div>
             {
               // checkUserCommented() &&
-              !seller && orderStatus === ORDER_STATUS.approved.en && (
-                <div onClick={showModal} className="order-item__review">
-                  <AiFillStar size={25} color="#fadb14" />
-                  <span>Cho điểm và đánh giá </span>
-                </div>
-              )
+              !seller &&
+                orderStatus === ORDER_STATUS.approved.en &&
+                (!(commentByOrderId?.length > 0) ? (
+                  <div
+                    onClick={() => showModal(data?._id)}
+                    className="order-item__review"
+                  >
+                    <AiFillStar size={25} color="#fadb14" />
+                    <span>Cho điểm và đánh giá </span>
+                  </div>
+                ) : (
+                  <div className="order-item__review">
+                    <AiFillStar size={25} />
+                    <span>Đã hoàn thành đánh giá </span>
+                  </div>
+                ))
             }
           </div>
           <div className="order-item__bottom">
@@ -244,6 +267,7 @@ export function OrderItem({ orderStatus, seller, data, totalPriceOrders }) {
       {visibleFormReview && (
         <FormAssessmentHomestay
           homestay={data?.homestay_id}
+          orderId={orderId}
           visible={visibleFormReview}
           loading={loading}
           handleOk={handleOk}
