@@ -47,6 +47,12 @@ export const MENU_ADMIN_ROUTES = [
   { id: 16, element: <OrderDetail />, path: 'orders/:id' },
   // category
   { id: 17, element: <AdminCategoryPage />, path: 'category' },
+  { id: 18, element: <ActionFormRoom />, path: 'category/:action' },
+  {
+    id: 19,
+    element: <ActionFormRoom />,
+    path: 'category/:action/:id',
+  },
 ];
 export default function AdminPage() {
   let match = useRouteMatch();

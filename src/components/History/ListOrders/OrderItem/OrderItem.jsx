@@ -160,10 +160,22 @@ export function OrderItem({ orderStatus, seller, data, totalPriceOrders }) {
     }
   };
 
+  const renderAddressHomestay = () => {
+    if (!data) {
+      return '';
+    }
+    const { addresses } = data?.homestay_id;
+    const { address } = addresses;
+    const district = addresses?.district?.name;
+    const province = addresses?.province?.name;
+    const ward = addresses?.ward?.name;
+    return `${address}, ${ward}, ${district}, ${province}`;
+  };
   return (
     <Fragment>
       <Card className="order-item">
         <Title level={4}>{data?.homestay_id?.name}</Title>
+        <div style={{fontWeight:'bold'}}>Địa chỉ: {renderAddressHomestay()} </div>
         <Divider className="order-item__divider" />
         {data?.order?.map(({ category_id: category, select_room }, idx) => (
           <div

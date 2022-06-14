@@ -119,7 +119,16 @@ export default function AdminCategoryPage(props) {
         },
       },
       {
-        title: 'description',
+        title: 'Số lượng phòng',
+        width: 150,
+        dataIndex: 'quantity',
+        key: 'description',
+        render: (n, record) => {
+          return <div>{record?.quantity}</div>;
+        },
+      },
+      {
+        title: 'Mô tả ',
         width: 250,
         dataIndex: 'description',
         key: 'description',

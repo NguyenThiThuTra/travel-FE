@@ -1,3 +1,5 @@
+import { Typography } from 'antd';
+import provincesOpenApi from 'api/provincesOpenApi';
 import { ReviewItem } from 'components/ReviewDetail/reviewItem';
 import { useCurrentUserSelector } from 'features/Auth/AuthSlice';
 import {
@@ -26,8 +28,17 @@ export default function ReviewDetailPage() {
   const loadingAction = useSelector(useLoadingActionSelector);
   const likeReview = useSelector(useLikeReviewSelector);
 
-  const [paging, setPaging] = useState({ limit: 1, page: 1 });
+  const [paging, setPaging] = useState({ limit: 10, page: 1 });
   const [dataReview, setDataReview] = useState([]);
+
+  const [province, setProvince] = useState(null);
+  useEffect(() => {
+    const getProvince = async () => {
+      const res = await provincesOpenApi.getDistricts(id);
+      setProvince(res);
+    };
+    getProvince();
+  }, [id]);
   useEffect(() => {
     const getDataReview = async () => {
       if (!id) return;
@@ -37,6 +48,7 @@ export default function ReviewDetailPage() {
             filters: { province: parseInt(id) },
             limit: paging.limit,
             page: paging.page,
+            sort: '-createdAt',
           })
         ).unwrap();
         setDataReview(res.data);
@@ -77,6 +89,9 @@ export default function ReviewDetailPage() {
   };
   return (
     <div className="review-detail-page">
+      <Typography.Title level={4} style={{ padding: '2rem 0' }}>
+        Review: {province?.name}
+      </Typography.Title>
       <div className="review-detail">
         {dataReview?.map((review) => (
           <Fragment key={review?._id}>

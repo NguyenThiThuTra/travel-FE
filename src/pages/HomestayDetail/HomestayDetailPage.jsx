@@ -35,6 +35,7 @@ const HomestayDetailPage = () => {
   const rooms = useSelector(useRoomsSelector);
 
   const [dataGroupByCategory, setDataGroupByCategory] = useState([]);
+
   useEffect(() => {
     if (rooms) {
       const data = rooms?.data?.map((room) => {
@@ -114,9 +115,21 @@ const HomestayDetailPage = () => {
 
   // render comments
   const renderCommentList = useMemo(() => <CommentList />, []);
+
+  const renderAddressHomestay = () => {
+    if (!homestay) {
+      return '';
+    }
+    const { addresses } = homestay?.data;
+    const { address } = addresses;
+    const district = addresses?.district?.name;
+    const province = addresses?.province?.name;
+    const ward = addresses?.ward?.name;
+    return `${address}, ${ward}, ${district}, ${province}`;
+  };
   return (
     <div className="ProductsDetailsPage">
-      <HeaderImageLayout title_ul={rooms?.data?.[0]?.homestay_id?.name} />
+      <HeaderImageLayout title_ul={homestay?.data?.name} />
       <div
         style={{
           maxWidth: '1192px',
@@ -125,7 +138,7 @@ const HomestayDetailPage = () => {
         }}
       >
         <div className="homestay-detail__header">
-          <h1>{rooms?.data?.[0]?.homestay_id?.name}</h1>
+          <h1>{homestay?.data?.name}</h1>
           <Popconfirm
             visible={visiblePopupNotification}
             title="Bạn cần đăng nhập để thực hiện chức năng này ?"
@@ -138,6 +151,9 @@ const HomestayDetailPage = () => {
               Chat Ngay
             </Button>
           </Popconfirm>
+        </div>
+        <div className="homestay-detail__address">
+        <span>Địa chỉ:</span>  {renderAddressHomestay()}
         </div>
         <div className="gallery">
           <Image
