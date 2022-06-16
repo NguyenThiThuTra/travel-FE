@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { message } from 'antd';
+import likeReviewApi from 'api/likeReviewApi';
 import reviewApi from 'api/reviewApi';
 import { setLoadingAction, setLoadingApp } from 'features/commonSlice';
 
@@ -73,6 +74,22 @@ export const updateLikeReview = createAsyncThunk(
     try {
       dispatch(setLoadingAction(true));
       const response = await reviewApi.likeReview(payload);
+      dispatch(setLoadingAction(false));
+      return response;
+    } catch (error) {
+      dispatch(setLoadingAction(false));
+      message.error(error?.response?.data?.message);
+      return rejectWithValue(error?.response.data);
+    }
+  }
+);
+
+export const getLikeReviewByUserId = createAsyncThunk(
+  'likeReview/review',
+  async (payload, { rejectWithValue, dispatch }) => {
+    try {
+      dispatch(setLoadingAction(true));
+      const response = await likeReviewApi.getLikeReviewByUserId(payload);
       dispatch(setLoadingAction(false));
       return response;
     } catch (error) {

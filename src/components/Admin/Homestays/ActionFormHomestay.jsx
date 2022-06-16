@@ -200,9 +200,9 @@ export default function ActionFormHomestay() {
       if (role === 'user') {
         history.push('/my-homestay/homestays');
       }
-      if (role === 'admin') {
-        history.push('/admin/homestays');
-      }
+      // if (role === 'admin') {
+      //   history.push('/admin/homestays');
+      // }
     } catch (error) {
       message.error('Error');
     }

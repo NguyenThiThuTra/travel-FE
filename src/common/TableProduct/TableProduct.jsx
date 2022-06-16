@@ -48,6 +48,7 @@ export function TableProduct({ nameHomestay, homestay_id, data }) {
     // message.error('Click on No');
     setVisiblePopupNotification(false);
   }
+  console.log({ currentUser });
 
   const showModalOrders = () => {
     if (!currentUser) {
@@ -230,7 +231,7 @@ export function TableProduct({ nameHomestay, homestay_id, data }) {
         },
       },
     ],
-    [orders, visiblePopupNotification]
+    [orders, visiblePopupNotification, currentUser]
   );
 
   const dataTable = Object.values(data);

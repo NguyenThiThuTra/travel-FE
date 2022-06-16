@@ -120,8 +120,8 @@ const HomestayDetailPage = () => {
     if (!homestay) {
       return '';
     }
-    const { addresses } = homestay?.data;
-    const { address } = addresses;
+    const addresses = homestay?.data?.addresses;
+    const address = addresses?.address;
     const district = addresses?.district?.name;
     const province = addresses?.province?.name;
     const ward = addresses?.ward?.name;
@@ -153,7 +153,7 @@ const HomestayDetailPage = () => {
           </Popconfirm>
         </div>
         <div className="homestay-detail__address">
-        <span>Địa chỉ:</span>  {renderAddressHomestay()}
+          <span>Địa chỉ:</span> {renderAddressHomestay()}
         </div>
         <div className="gallery">
           <Image

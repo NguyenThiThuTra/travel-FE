@@ -43,14 +43,14 @@ const ModalLogin = (props) => {
         const originalPromiseResult = await unwrapResult(resultAction);
         const role = currentUser?.data?.roles;
         const numberHomestay = originalPromiseResult?.results;
-        if (role) {
-          if (role === 'admin') {
-            history.push('/admin/orders');
-          }
-          // if (role === 'user') {
-          //   history.push('/my-homestay/orders');
-          // }
-        }
+        // if (role) {
+        //   if (role === 'admin') {
+        //     history.push('/admin/orders');
+        //   }
+        // if (role === 'user') {
+        //   history.push('/my-homestay/orders');
+        // }
+        // }
       }
       if (nameForm !== 'sign-in') {
         dispatch(signup(values));

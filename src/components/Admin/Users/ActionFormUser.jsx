@@ -278,23 +278,7 @@ export default function ActionFormUser() {
             <Option value="other">Khác</Option>
           </Select>
         </Form.Item>
-        {currentUser?.data?.roles === 'admin' && (
-          <Form.Item
-            name="roles"
-            label="Quyền của tài khoản"
-            rules={[
-              {
-                required: false,
-                message: 'Chọn quyền của tài khoản!',
-              },
-            ]}
-          >
-            <Select placeholder="Chọn quyền của tài khoản">
-              <Option value="user">User</Option>
-              <Option value="admin">Admin</Option>
-            </Select>
-          </Form.Item>
-        )}
+       
         <Form.Item
           label="Ảnh đại diện"
           rules={[

@@ -164,8 +164,8 @@ export function OrderItem({ orderStatus, seller, data, totalPriceOrders }) {
     if (!data) {
       return '';
     }
-    const { addresses } = data?.homestay_id;
-    const { address } = addresses;
+    const addresses = data?.homestay_id?.addresses;
+    const address = addresses?.address;
     const district = addresses?.district?.name;
     const province = addresses?.province?.name;
     const ward = addresses?.ward?.name;
@@ -175,7 +175,9 @@ export function OrderItem({ orderStatus, seller, data, totalPriceOrders }) {
     <Fragment>
       <Card className="order-item">
         <Title level={4}>{data?.homestay_id?.name}</Title>
-        <div style={{fontWeight:'bold'}}>Địa chỉ: {renderAddressHomestay()} </div>
+        <div style={{ fontWeight: 'bold' }}>
+          Địa chỉ: {renderAddressHomestay()}{' '}
+        </div>
         <Divider className="order-item__divider" />
         {data?.order?.map(({ category_id: category, select_room }, idx) => (
           <div

@@ -65,12 +65,12 @@ export default function OrdersPage(props) {
           dispatch(getAllOrder(payload));
           return;
         }
-        if (role === 'admin') {
-          const payload = {
-            ...querySearch,
-          };
-          dispatch(getAllOrder(payload));
-        }
+        // if (role === 'admin') {
+        //   const payload = {
+        //     ...querySearch,
+        //   };
+        //   dispatch(getAllOrder(payload));
+        // }
 
         // }
       }

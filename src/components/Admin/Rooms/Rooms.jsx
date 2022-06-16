@@ -37,9 +37,9 @@ export default function RoomsPage(props) {
       const payload = {
         ...querySearch,
       };
-      if (role === 'admin') {
-        return dispatch(fetchAllRooms(payload));
-      }
+      // if (role === 'admin') {
+      //   return dispatch(fetchAllRooms(payload));
+      // }
       if (role === 'user') {
         const payload = {
           ...querySearch,

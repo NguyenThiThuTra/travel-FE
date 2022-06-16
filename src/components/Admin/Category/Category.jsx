@@ -39,9 +39,9 @@ export default function AdminCategoryPage(props) {
       const payload = {
         ...querySearch,
       };
-      if (role === 'admin') {
-        return dispatch(fetchAllCategory(payload));
-      }
+      // if (role === 'admin') {
+      //   return dispatch(fetchAllCategory(payload));
+      // }
       if (role === 'user') {
         const payload = {
           ...querySearch,

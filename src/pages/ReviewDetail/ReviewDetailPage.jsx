@@ -1,4 +1,4 @@
-import { Typography } from 'antd';
+import { Image, Typography } from 'antd';
 import provincesOpenApi from 'api/provincesOpenApi';
 import { ReviewItem } from 'components/ReviewDetail/reviewItem';
 import { useCurrentUserSelector } from 'features/Auth/AuthSlice';
@@ -89,7 +89,16 @@ export default function ReviewDetailPage() {
   };
   return (
     <div className="review-detail-page">
-      <Typography.Title level={4} style={{ padding: '2rem 0' }}>
+      <Typography.Title
+        level={4}
+        style={{
+          padding: '2rem 0',
+          position: 'sticky',
+          top: '0rem',
+          backgroundColor: '#fafafa',
+          zIndex: 10,
+        }}
+      >
         Review: {province?.name}
       </Typography.Title>
       <div className="review-detail">

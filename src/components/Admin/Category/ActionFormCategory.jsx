@@ -178,9 +178,9 @@ export default function ActionFormCategory() {
       if (role === 'user') {
         history.push('/my-homestay/rooms');
       }
-      if (role === 'admin') {
-        history.push('/admin/rooms');
-      }
+      // if (role === 'admin') {
+      //   history.push('/admin/rooms');
+      // }
     } catch (e) {
       message.error('Error');
     }
