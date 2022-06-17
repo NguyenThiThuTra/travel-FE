@@ -15,7 +15,6 @@ export function ReviewItem({ review, handleLikeReview }) {
   const [orders, setOrders] = useState(null);
   const [currentLikeReview, setCurrentLikeReview] = useState(null);
 
-  console.log({ currentLikeReview });
   useEffect(() => {
     if (!user) return;
     const getCurrentLikeReview = async () => {
@@ -32,7 +31,7 @@ export function ReviewItem({ review, handleLikeReview }) {
       }
     };
     getCurrentLikeReview();
-  }, [review]);
+  }, [review?._id, user?._id]);
 
   useEffect(() => {
     if (!user) return;
@@ -61,6 +60,100 @@ export function ReviewItem({ review, handleLikeReview }) {
 
   // visiblePreviewGroup
   const [visiblePreviewGroup, setVisiblePreviewGroup] = useState(false);
+
+  // handle render review
+  const numberSlice = 200;
+  const [readMore, setReadMore] = useState(false);
+  const renderReviewContent = () => {
+    const reviewText = review?.review;
+    const reviewTextLength = reviewText?.length;
+    const reviewTextPreview = reviewText?.slice(0, numberSlice) || '';
+    const reviewTextReadMore = reviewText?.slice(numberSlice) || '';
+    const reviewTextReadMoreLength = reviewTextReadMore?.length || 0;
+
+    if (reviewTextReadMoreLength) {
+      return (
+        <Fragment>
+          <div className="review-box__content">
+            <div className="review-box__content-review">
+              {' '}
+              <span>{reviewTextPreview}</span>
+              <span>{readMore && reviewTextReadMore}</span>
+            </div>
+            {readMore && (
+              <ul className="review-box__list-schedule">
+                {review &&
+                  Object.values(review?.schedule || [])?.map((day, index) => (
+                    <li>
+                      {`Ngày ${index + 1} : `} {day}
+                    </li>
+                  ))}
+              </ul>
+            )}
+
+            <span
+              onClick={() => setReadMore((pre) => !pre)}
+              style={{
+                color: '#1877F2',
+                cursor: 'pointer',
+                marginLeft: '10px',
+              }}
+            >
+              {readMore ? 'Thu gọn' : 'Xem thêm...'}
+            </span>
+          </div>
+        </Fragment>
+      );
+    }
+    // schedules
+    const schedules = Object.values(review?.schedule || []);
+
+    let totalReviewUserIndex = null;
+    const getTotalReviewUser = (total, data, index) => {
+      const result = total + (data?.length || 0);
+      if (result > numberSlice) {
+        totalReviewUserIndex = index;
+      }
+      return result;
+    };
+    const allReviewUser = schedules.reduce(
+      getTotalReviewUser,
+      reviewTextLength
+    );
+    // if (!totalReviewUserIndex) {
+    //   return (
+    //     <div className="review-box__content">
+    //       <div className="review-box__content-review">
+    //         <span>{reviewText}</span>
+    //       </div>
+    //       <ul className="review-box__list-schedule">
+    //         {review &&
+    //           Object.values(review?.schedule || [])?.map((day, index) => (
+    //             <li>
+    //               {`Ngày ${index + 1} : `} {day}
+    //             </li>
+    //           ))}
+    //       </ul>
+    //     </div>
+    //   );
+    // }
+    return (
+      <div className="review-box__content">
+        <div className="review-box__content-review">
+          <span>{reviewText}</span>
+        </div>
+        <ul className="review-box__list-schedule">
+          {review &&
+            Object.values(review?.schedule || [])?.map((day, index) => (
+              <li>
+                {`Ngày ${index + 1} : `} {day}
+              </li>
+            ))}
+        </ul>
+      </div>
+    );
+  };
+
   return (
     <div className="review-box">
       <div className="review-box-main">
@@ -81,17 +174,7 @@ export function ReviewItem({ review, handleLikeReview }) {
           Đã từng ở tại {arrNameHomestay}...
         </div>
 
-        <div className="review-box__content">
-          <div className="review-box__content-review">{review?.review}</div>
-          <ul className="review-box__list-schedule">
-            {review &&
-              Object.values(review?.schedule || [])?.map((day, index) => (
-                <li>
-                  {`Ngày ${index + 1} : `} {day}
-                </li>
-              ))}
-          </ul>
-        </div>
+        {renderReviewContent()}
 
         <div onClick={handleLikeReview} className="review-box__action">
           <span style={{ marginRight: '1rem' }}>{review?.likeReview}</span>

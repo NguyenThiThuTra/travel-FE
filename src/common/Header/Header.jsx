@@ -18,6 +18,7 @@ import {
   toggleModalLogin,
   useVisibleModalLoginSelector,
 } from 'features/commonSlice';
+import { RouteConstant } from 'constants/RouteConstant';
 
 const Header = () => {
   let location = useLocation();
@@ -93,6 +94,22 @@ const Header = () => {
   //detect scroll
   const { scrollingUp, top, setTop } = useDetectScroll();
   //end detect scroll
+  const handleActiveNavItem = (item) => {
+    const path = item?.route;
+    const id = item?.id;
+    if (location.pathname === path) {
+      return id;
+    }
+    const isActive =
+      RouteConstant.HomePage.path !== path &&
+      location.pathname.includes(path) &&
+      id;
+    if (isActive) {
+      return id;
+    } else {
+      return false;
+    }
+  };
   return (
     <div
       className={`header ${!scrollingUp ? 'none' : ''} ${!top ? 'top' : ''}`}
@@ -121,7 +138,7 @@ const Header = () => {
                   onClick={() => item.id}
                 >
                   <NavbarItem
-                    isActive={location.pathname === item?.route && item.id}
+                    isActive={handleActiveNavItem(item)}
                     item={item}
                   />
                 </div>

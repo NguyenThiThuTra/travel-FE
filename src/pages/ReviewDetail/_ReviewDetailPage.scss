@@ -7,6 +7,8 @@
 .review-detail {
   // display: flex;
   // align-items: center;
+  max-width: 995px;
+  margin: 0 auto;
 }
 
 .review-box {
@@ -20,7 +22,7 @@
   &-main {
     flex-grow: 1;
     padding-right: 2rem;
-    max-width: 550px;
+    max-width: 75%;
     display: flex;
     flex-direction: column;
   }
