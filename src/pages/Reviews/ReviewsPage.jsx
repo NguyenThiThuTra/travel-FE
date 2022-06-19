@@ -7,11 +7,9 @@ import { toggleModalLogin } from 'features/commonSlice';
 import { getAllOrder, useOrderSelector } from 'features/Order/OrderSlice';
 import {
   getAllReviewDestination,
-  getAllReviews,
-  useDataReviewsSelector,
-  useReviewDestinationSelector,
+  getAllReviews, useReviewDestinationSelector
 } from 'features/Reviews/ReviewsSlice';
-import React, { Fragment, useEffect, useMemo, useState } from 'react';
+import { Fragment, useEffect, useMemo, useState } from 'react';
 import { AiFillPlusCircle } from 'react-icons/ai';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
@@ -26,7 +24,6 @@ const ReviewsPage = () => {
   const currentUser = useSelector(useCurrentUserSelector);
 
   const orders = useSelector(useOrderSelector);
-  const reviews = useSelector(useDataReviewsSelector);
   const reviewDestination = useSelector(useReviewDestinationSelector);
   useEffect(() => {
     dispatch(getAllReviews());

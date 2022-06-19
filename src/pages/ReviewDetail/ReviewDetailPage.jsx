@@ -2,13 +2,11 @@ import { Typography } from 'antd';
 import provincesOpenApi from 'api/provincesOpenApi';
 import { ReviewItem } from 'components/ReviewDetail/reviewItem';
 import { useCurrentUserSelector } from 'features/Auth/AuthSlice';
-import {
-  useLoadingActionSelector
-} from 'features/commonSlice';
+import { useLoadingActionSelector } from 'features/commonSlice';
 import {
   getAllReviews,
   updateLikeReview,
-  useDataReviewsSelector
+  useDataReviewsSelector,
 } from 'features/Reviews/ReviewsSlice';
 import { Fragment, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -70,7 +68,8 @@ export default function ReviewDetailPage() {
         return prevState.map((item) => {
           if (item._id === review._id) {
             const newData = { ...item };
-            newData.active = !item?.active;
+            newData.isCurrentUserLike = !newData.isCurrentUserLike;
+            // newData.active = !item?.active;
             newData.likeReview = resultUpdate?.likeReview;
             return newData;
           }
@@ -94,7 +93,6 @@ export default function ReviewDetailPage() {
       ).unwrap();
       setDataReview(res.data);
       const data = res?.data;
-      console.log({ datatatata: data });
       setDataReview((preState) => [...dataReview, ...data]);
       setPaging((prevState) => ({ ...prevState, page: prevState.page + 1 }));
     } catch (error) {

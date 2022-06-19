@@ -30,7 +30,7 @@ export default function AppLayout({ children }) {
           {/* LIST_ROUTE    */}
           {children}
           {/*End LIST_ROUTE    */}
-          {!flagPathname(HIDDEN_FOOTER, location.pathname) && (
+          {/* {!flagPathname(HIDDEN_FOOTER, location.pathname) && (
             <Footer
               showNewsletter={
                 !flagPathname(HIDDEN_NEWSLETTER, location.pathname)
@@ -39,7 +39,7 @@ export default function AppLayout({ children }) {
                 !flagPathname(HIDDEN_FOOTER_INFO, location.pathname)
               }
             />
-          )}
+          )} */}
 
           {/* popup chat admin */}
           {currentUser && <PopupChat />}

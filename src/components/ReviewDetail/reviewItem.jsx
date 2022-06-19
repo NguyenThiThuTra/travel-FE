@@ -1,37 +1,46 @@
 import { UserOutlined } from '@ant-design/icons';
 import { Avatar, Image, Rate } from 'antd';
 import { ORDER_STATUS } from 'constants/order';
+import { useCurrentUserSelector } from 'features/Auth/AuthSlice';
 import { getAllOrder, getAllOrderAction } from 'features/Order/OrderSlice';
 import { getLikeReviewByUserId } from 'features/Reviews/ReviewsSlice';
-import React, { Fragment, useEffect, useMemo, useState } from 'react';
+import React, {
+  Fragment,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import { AiOutlineLike } from 'react-icons/ai';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 export function ReviewItem({ review, handleLikeReview }) {
   const dispatch = useDispatch();
 
   const user = review?.user_id;
+  const currentUser = useSelector(useCurrentUserSelector);
 
   const [orders, setOrders] = useState(null);
-  const [currentLikeReview, setCurrentLikeReview] = useState(null);
 
-  useEffect(() => {
-    if (!user) return;
-    const getCurrentLikeReview = async () => {
-      try {
-        const response = await dispatch(
-          getLikeReviewByUserId({
-            user_id: user?._id,
-            review_id: review?._id,
-          })
-        ).unwrap();
-        setCurrentLikeReview(response?.data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    getCurrentLikeReview();
-  }, [review?._id, user?._id]);
+  // const [currentLikeReview, setCurrentLikeReview] = useState(null);
+
+  // useEffect(() => {
+  //   if (!user) return;
+  //   const getCurrentLikeReview = async () => {
+  //     try {
+  //       const response = await dispatch(
+  //         getLikeReviewByUserId({
+  //           user_id: currentUser?.data?._id,
+  //           review_id: review?._id,
+  //         })
+  //       ).unwrap();
+  //       setCurrentLikeReview(response?.data);
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   };
+  //   getCurrentLikeReview();
+  // }, [review, currentUser]);
 
   useEffect(() => {
     if (!user) return;
@@ -154,6 +163,25 @@ export function ReviewItem({ review, handleLikeReview }) {
     );
   };
 
+  const renderLikeReview = useCallback(
+    () => (
+      <div onClick={handleLikeReview} className="review-box__action">
+        <span style={{ marginRight: '1rem' }}>{review?.likeReview}</span>
+        <AiOutlineLike
+          color={review?.isCurrentUserLike ? 'rgb(32, 120, 244)' : '#23232c'}
+          size={20}
+        />{' '}
+        <span
+          style={{
+            color: review?.isCurrentUserLike ? 'rgb(32, 120, 244)' : '#23232c',
+          }}
+        >
+          Thích
+        </span>
+      </div>
+    ),
+    [review?.isCurrentUserLike]
+  );
   return (
     <div className="review-box">
       <div className="review-box-main">
@@ -176,20 +204,7 @@ export function ReviewItem({ review, handleLikeReview }) {
 
         {renderReviewContent()}
 
-        <div onClick={handleLikeReview} className="review-box__action">
-          <span style={{ marginRight: '1rem' }}>{review?.likeReview}</span>
-          <AiOutlineLike
-            color={currentLikeReview ? 'rgb(32, 120, 244)' : '#23232c'}
-            size={20}
-          />{' '}
-          <span
-            style={{
-              color: currentLikeReview ? 'rgb(32, 120, 244)' : '#23232c',
-            }}
-          >
-            Thích
-          </span>
-        </div>
+        {renderLikeReview()}
       </div>
       <div>
         {review?.images?.length > 0 && (

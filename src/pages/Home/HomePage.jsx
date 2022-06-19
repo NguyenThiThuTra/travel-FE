@@ -9,9 +9,9 @@ const HomePage = () => {
     <div className="HomePage">
       <CarouselCpn />
       <div className="container">
-        <Destinations />
+        {/* <Destinations /> */}
         {/* <Banner /> */}
-        <Promotions />
+        {/* <Promotions /> */}
         {/* <Products /> */}
       </div>
     </div>
