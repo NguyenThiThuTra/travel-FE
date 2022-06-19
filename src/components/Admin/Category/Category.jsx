@@ -18,6 +18,7 @@ import {
   useRoomsSelector,
   useCategorySelector,
 } from 'features/Rooms/RoomsSlice';
+import { PERMISSIONS } from 'constants/permissions';
 const expandable = {
   expandedRowRender: (record) => <p>description</p>,
 };
@@ -35,22 +36,20 @@ export default function AdminCategoryPage(props) {
   const category = useSelector(useCategorySelector);
   useEffect(() => {
     const role = currentUser?.data?.roles;
-    if (role) {
+    // const payload = {
+    //   ...querySearch,
+    // };
+    // if (role === PERMISSIONS.admin ) {
+    //   return dispatch(fetchAllCategory(payload));
+    // }
+    if (role === PERMISSIONS.user) {
       const payload = {
         ...querySearch,
+        filters: {
+          user_id: currentUser?.data?._id,
+        },
       };
-      // if (role === 'admin') {
-      //   return dispatch(fetchAllCategory(payload));
-      // }
-      if (role === 'user') {
-        const payload = {
-          ...querySearch,
-          filters: {
-            user_id: currentUser?.data?._id,
-          },
-        };
-        dispatch(fetchAllCategory(payload));
-      }
+      dispatch(fetchAllCategory(payload));
     }
     /* eslint-disable */
   }, [location, roomRemoved, currentUser]);

@@ -1,13 +1,13 @@
-import { Switch } from 'antd';
 import { ActionTable } from 'common/Table/ActionTable';
 import CustomTable from 'common/Table/CustomTable';
 import CustomTitleTable from 'common/Table/CustomTitleTable';
+import { PERMISSIONS } from 'constants/permissions';
 import { useCurrentUserSelector } from 'features/Auth/AuthSlice';
 import {
   deleteHomestay,
   fetchAllHomestays,
   useHomestayRemovedSelector,
-  useHomestaysSelector,
+  useHomestaysSelector
 } from 'features/Homestay/HomestaySlice';
 import moment from 'moment';
 import queryString from 'query-string';
@@ -32,7 +32,7 @@ export default function AdminHomestaysPage(props) {
     const role = currentUser?.data?.roles;
     if (role) {
       let query = { ...querySearch };
-      if (role === 'user') {
+      if (role === PERMISSIONS.user) {
         query = {
           ...querySearch,
           filters: {
@@ -190,7 +190,7 @@ export default function AdminHomestaysPage(props) {
         title={() => (
           <CustomTitleTable
             hideAdd={
-              currentUser?.data?.roles === 'user' && homestays?.data?.length > 0
+              currentUser?.data?.roles === PERMISSIONS.user && homestays?.data?.length > 0
             }
             title="Danh sách homestays"
           />

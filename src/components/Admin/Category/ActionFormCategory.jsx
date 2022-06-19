@@ -12,6 +12,7 @@ import {
   Typography,
   Upload,
 } from 'antd';
+import { PERMISSIONS } from 'constants/permissions';
 import { ROOM_TYPES } from 'constants/room';
 import React, { Fragment, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -98,7 +99,7 @@ export default function ActionFormCategory() {
     const role = currentUser?.data?.roles;
     // console.log('role', role);
     async function fetchHomestayByUserId() {
-      if ((role === 'user' || role === 'admin') && action === 'add') {
+      if (action === 'add') {
         const resultAction = await dispatch(
           fetchAllHomestays({
             filters: { user_id: currentUser?.data?._id },
@@ -107,7 +108,7 @@ export default function ActionFormCategory() {
         const originalPromiseResult = await unwrapResult(resultAction);
         reset({
           homestay_id: originalPromiseResult?.data?.[0]?._id,
-          user_id: currentUser?.data?._id 
+          user_id: currentUser?.data?._id,
         });
       }
     }
@@ -126,7 +127,7 @@ export default function ActionFormCategory() {
         const { name, type, quantity, price, description, images, avatar } =
           category;
         reset({
-          user_id:homestay?.user_id,
+          user_id: homestay?.user_id,
           homestay_id,
           name,
           type,
@@ -175,10 +176,10 @@ export default function ActionFormCategory() {
         ).unwrap();
       }
       const role = currentUser?.data?.roles;
-      if (role === 'user') {
+      if (role ===  PERMISSIONS.user) {
         history.push('/my-homestay/rooms');
       }
-      // if (role === 'admin') {
+      // if (role ===  PERMISSIONS.admin) {
       //   history.push('/admin/rooms');
       // }
     } catch (e) {
@@ -274,8 +275,7 @@ export default function ActionFormCategory() {
         <Form.Item
           label={<LabelRequired title="User ID" />}
           className={
-            errors?.user_id &&
-            'ant-form-item-with-help ant-form-item-has-error'
+            errors?.user_id && 'ant-form-item-with-help ant-form-item-has-error'
           }
         >
           <Controller

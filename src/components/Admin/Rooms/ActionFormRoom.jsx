@@ -27,6 +27,7 @@ import {
   updateRoom,
 } from 'features/Rooms/RoomsSlice';
 import { objectToFormData } from 'helpers/ConvertObjectToFormData';
+import { PERMISSIONS } from 'constants/permissions';
 
 const { Title } = Typography;
 const { Option } = Select;
@@ -94,7 +95,7 @@ export default function ActionFormRoom() {
     const role = currentUser?.data?.roles;
     // console.log('role', role);
     async function defaultFormUser() {
-      if ((role === 'user' || role === 'admin') && action === 'add') {
+      if (action === 'add') {
         reset({
           user_id: currentUser?.data?._id,
         });
@@ -172,10 +173,10 @@ export default function ActionFormRoom() {
         ).unwrap();
       }
       const role = currentUser?.data?.roles;
-      if (role === 'user') {
+      if (role === PERMISSIONS.user) {
         history.push('/my-homestay/rooms');
       }
-      // if (role === 'admin') {
+      // if (role === PERMISSIONS.admin) {
       //   history.push('/admin/rooms');
       // }
     } catch (e) {

@@ -5,6 +5,7 @@ import {
   ORDER_STATUS_COLOR,
   ORDER_STATUS_VALUE,
 } from 'constants/order';
+import { PERMISSIONS } from 'constants/permissions';
 import { useCurrentUserSelector } from 'features/Auth/AuthSlice';
 import { fetchAllHomestays } from 'features/Homestay/HomestaySlice';
 import {
@@ -38,7 +39,6 @@ export default function OrdersPage(props) {
   const loading = useSelector((state) => state.order.loading);
   const deleteOrder = useSelector(useDeleteOrderSelector);
 
-
   useEffect(() => {
     const getOrderHomestayById = async () => {
       const role = currentUser?.data?.roles;
@@ -54,8 +54,7 @@ export default function OrdersPage(props) {
         ).unwrap();
         const homestay_id = resultAction?.data?.[0]?._id;
 
-        // if (role === 'user') {
-        if (homestay_id) {
+        if (role === PERMISSIONS.user && homestay_id) {
           const payload = {
             ...querySearch,
             filters: {
@@ -65,13 +64,11 @@ export default function OrdersPage(props) {
           dispatch(getAllOrder(payload));
           return;
         }
-        // if (role === 'admin') {
+        // if (role === PERMISSIONS.admin) {
         //   const payload = {
         //     ...querySearch,
         //   };
         //   dispatch(getAllOrder(payload));
-        // }
-
         // }
       }
     };

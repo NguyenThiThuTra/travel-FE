@@ -1,7 +1,14 @@
-import { Col, Dropdown, Menu, message, Row, Tooltip } from 'antd';
+import { Col, Dropdown, Menu, Row, Tooltip } from 'antd';
+import { resetAction } from 'app/store';
 import { HEADER } from 'constants/header';
-import { LOGO } from 'constants/logo';
 import { HEADER_BACKGROUND_DARK } from 'constants/pathnameSpecial';
+import { PERMISSIONS } from 'constants/permissions';
+import { RouteConstant } from 'constants/RouteConstant';
+import { getCurrentUser, logout } from 'features/Auth/AuthSlice';
+import {
+  toggleModalLogin,
+  useVisibleModalLoginSelector,
+} from 'features/commonSlice';
 import { useDetectScroll } from 'hooks/useDetectScroll';
 import React, { useEffect, useState } from 'react';
 import { HiOutlineMenu } from 'react-icons/hi';
@@ -9,16 +16,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
 import { flagPathname } from 'utils/flagPathname';
 import NavbarItem from '../NavbarItem/NavbarItem';
-import { authActions, getCurrentUser } from '../../features/Auth/AuthSlice';
 import ModalLogin from './ModalLogin/ModalLogin';
 import UserProfile from './UserProfile/UserProfile';
 import './_Header.scss';
-import { resetAction } from 'app/store';
-import {
-  toggleModalLogin,
-  useVisibleModalLoginSelector,
-} from 'features/commonSlice';
-import { RouteConstant } from 'constants/RouteConstant';
 
 const Header = () => {
   let location = useLocation();
@@ -58,7 +58,7 @@ const Header = () => {
   const handleLogout = async () => {
     try {
       dispatch(resetAction());
-      dispatch(authActions.logout());
+      dispatch(logout());
       history.push('/');
     } catch (e) {
       console.error(e);
@@ -69,7 +69,7 @@ const Header = () => {
       <Menu.Item onClick={showUserProfile}>
         <div>Thông tin cá nhân</div>
       </Menu.Item>
-      {currentUser?.data?.roles === 'user' && (
+      {currentUser?.data?.roles === PERMISSIONS.user && (
         <React.Fragment>
           <Menu.Item onClick={() => history.push('/history')}>
             <div>Lịch sử đặt phòng</div>
