@@ -26,9 +26,7 @@ const Header = () => {
   let dispatch = useDispatch();
   const currentUser = useSelector((state) => state.auth.currentUser);
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
-  useEffect(() => {
-    dispatch(getCurrentUser());
-  }, [isLoggedIn]);
+
   const loading = useSelector((state) => state.auth.loading);
   const [isActive, setIsActive] = useState(1);
   //show info

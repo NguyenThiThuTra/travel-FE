@@ -53,7 +53,7 @@ export default function ReviewDetailPage() {
       }
     };
     getDataReview();
-  }, [id]);
+  }, [id, currentUser]);
   // updateLikeReview
   const handleLikeReview = async (review) => {
     if (loadingAction || !currentUser || !review) return;

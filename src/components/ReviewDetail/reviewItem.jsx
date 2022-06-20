@@ -22,56 +22,16 @@ export function ReviewItem({ review, handleLikeReview }) {
 
   const [orders, setOrders] = useState(null);
 
-  // const [currentLikeReview, setCurrentLikeReview] = useState(null);
-
-  // useEffect(() => {
-  //   if (!user) return;
-  //   const getCurrentLikeReview = async () => {
-  //     try {
-  //       const response = await dispatch(
-  //         getLikeReviewByUserId({
-  //           user_id: currentUser?.data?._id,
-  //           review_id: review?._id,
-  //         })
-  //       ).unwrap();
-  //       setCurrentLikeReview(response?.data);
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  //   };
-  //   getCurrentLikeReview();
-  // }, [review, currentUser]);
-
-  useEffect(() => {
-    if (!user) return;
-    const getOrderByUserId = async () => {
-      try {
-        const response = await dispatch(
-          getAllOrderAction({
-            limit: 4,
-            filters: { user_id: user?._id, status: ORDER_STATUS.approved.en },
-          })
-        ).unwrap();
-        setOrders(response?.data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    getOrderByUserId();
-  }, [user]);
-
+  const homestays = review?.homestays;
   const arrNameHomestay = useMemo(() => {
-    return orders
-      ?.filter((order) => order?.homestay_id)
-      ?.map((order) => order?.homestay_id?.name)
-      ?.join(', ');
-  }, [orders]);
+    return homestays?.map((homestay) => homestay?.name)?.join(', ');
+  }, [homestays]);
 
   // visiblePreviewGroup
   const [visiblePreviewGroup, setVisiblePreviewGroup] = useState(false);
 
   // handle render review
-  const numberSlice = 200;
+  const numberSlice = 300;
   const [readMore, setReadMore] = useState(false);
   const renderReviewContent = () => {
     const reviewText = review?.review;
@@ -105,7 +65,7 @@ export function ReviewItem({ review, handleLikeReview }) {
               style={{
                 color: '#1877F2',
                 cursor: 'pointer',
-                marginLeft: '10px',
+                // marginLeft: '10px',
               }}
             >
               {readMore ? 'Thu gọn' : 'Xem thêm...'}
@@ -118,9 +78,11 @@ export function ReviewItem({ review, handleLikeReview }) {
     const schedules = Object.values(review?.schedule || []);
 
     let totalReviewUserIndex = null;
+    let reviewUserSplit = 0;
     const getTotalReviewUser = (total, data, index) => {
       const result = total + (data?.length || 0);
-      if (result > numberSlice) {
+      if (totalReviewUserIndex === null && result > numberSlice) {
+        reviewUserSplit = numberSlice - total;
         totalReviewUserIndex = index;
       }
       return result;
@@ -129,23 +91,68 @@ export function ReviewItem({ review, handleLikeReview }) {
       getTotalReviewUser,
       reviewTextLength
     );
-    // if (!totalReviewUserIndex) {
-    //   return (
-    //     <div className="review-box__content">
-    //       <div className="review-box__content-review">
-    //         <span>{reviewText}</span>
-    //       </div>
-    //       <ul className="review-box__list-schedule">
-    //         {review &&
-    //           Object.values(review?.schedule || [])?.map((day, index) => (
-    //             <li>
-    //               {`Ngày ${index + 1} : `} {day}
-    //             </li>
-    //           ))}
-    //       </ul>
-    //     </div>
-    //   );
-    // }
+    // console.log({ totalReviewUserIndex, reviewUserSplit });
+
+    if (totalReviewUserIndex !== null) {
+      return (
+        <div className="review-box__content">
+          <div className="review-box__content-review">
+            <span>{reviewText}</span>
+          </div>
+          <ul className="review-box__list-schedule">
+            {review &&
+              Object.values(review?.schedule || [])?.map((day, index) => {
+                const renderHTML = [];
+                if (index < totalReviewUserIndex) {
+                  renderHTML.push(
+                    <li>
+                      {`Ngày ${index + 1} : `} {day}
+                    </li>
+                  );
+                }
+                if (index === totalReviewUserIndex) {
+                  renderHTML.push(
+                    <li>
+                      {`Ngày ${index + 1} : `} {day.slice(0, reviewUserSplit)}
+                      {readMore && day.slice(reviewUserSplit)}
+                    </li>
+                  );
+                }
+                if (readMore && index > totalReviewUserIndex) {
+                  renderHTML.push(
+                    <li>
+                      {`Ngày ${index + 1} : `} {day}
+                    </li>
+                  );
+                }
+                if (
+                  index ===
+                  Object.values(review?.schedule || []).length - 1
+                ) {
+                  renderHTML.push(
+                    <span
+                      onClick={() => setReadMore((pre) => !pre)}
+                      style={{
+                        color: '#1877F2',
+                        cursor: 'pointer',
+                        // marginLeft: '10px',
+                      }}
+                    >
+                      {readMore ? 'Thu gọn' : 'Xem thêm...'}
+                    </span>
+                  );
+                }
+                return renderHTML;
+                // return (
+                //   <li>
+                //     {`Ngày ${index + 1} : `} {day}
+                //   </li>
+                // );
+              })}
+          </ul>
+        </div>
+      );
+    }
     return (
       <div className="review-box__content">
         <div className="review-box__content-review">
@@ -166,7 +173,14 @@ export function ReviewItem({ review, handleLikeReview }) {
   const renderLikeReview = useCallback(
     () => (
       <div onClick={handleLikeReview} className="review-box__action">
-        <span style={{ marginRight: '1rem' }}>{review?.likeReview}</span>
+        <span
+          style={{
+            marginRight: '1rem',
+            color: review?.isCurrentUserLike ? 'rgb(32, 120, 244)' : '#23232c',
+          }}
+        >
+          {review?.likeReview}
+        </span>
         <AiOutlineLike
           color={review?.isCurrentUserLike ? 'rgb(32, 120, 244)' : '#23232c'}
           size={20}
