@@ -1,5 +1,5 @@
 import { LikeFilled, LikeOutlined } from '@ant-design/icons';
-import { Button, Collapse, Image, Popconfirm, Tabs, Tooltip } from 'antd';
+import { Button, Collapse, Image, Popconfirm, Rate, Tabs, Tooltip } from 'antd';
 import { CommentList } from 'common/CommentList/CommentList';
 import HeaderImageLayout from 'common/HeaderImageLayout/HeaderImageLayout';
 import { TableProduct } from 'common/TableProduct/TableProduct';
@@ -31,9 +31,8 @@ const HomestayDetailPage = () => {
   const currentUser = useSelector(useCurrentUserSelector);
   const homestay = useSelector(useHomestaySelector);
   const dataHomestay = useMemo(() => homestay?.data, [homestay]);
-
   const rooms = useSelector(useRoomsSelector);
-
+  console.log({ dataHomestay });
   const [dataGroupByCategory, setDataGroupByCategory] = useState([]);
 
   useEffect(() => {
@@ -138,7 +137,8 @@ const HomestayDetailPage = () => {
         }}
       >
         <div className="homestay-detail__header">
-          <h1>{homestay?.data?.name}</h1>
+          <h1 style={{ marginBottom: '0' }}>{homestay?.data?.name}</h1>
+
           <Popconfirm
             visible={visiblePopupNotification}
             title="Bạn cần đăng nhập để thực hiện chức năng này ?"
@@ -151,6 +151,15 @@ const HomestayDetailPage = () => {
               Chat Ngay
             </Button>
           </Popconfirm>
+        </div>
+        <div style={{ marginBottom: '1rem' }}>
+          {dataHomestay?.comments_count === 0 ? (
+            <span> Chưa được đánh giá </span>
+          ) : (
+            <span>
+              <Rate allowHalf disabled value={dataHomestay?.rate} />
+            </span>
+          )}
         </div>
         <div className="homestay-detail__address">
           <span>Địa chỉ:</span> {renderAddressHomestay()}

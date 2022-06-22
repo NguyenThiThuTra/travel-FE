@@ -206,9 +206,11 @@ export function ReviewItem({ review, handleLikeReview }) {
           </div>
           {moment(review.createdAt).format('DD/MM/YYYY HH:mm ')}
         </div>
-        <div className="review-box__location">
-          Đã từng ở tại {arrNameHomestay}...
-        </div>
+        {arrNameHomestay && (
+          <div className="review-box__location">
+            Đã từng ở tại {arrNameHomestay}...
+          </div>
+        )}
 
         {renderReviewContent()}
 

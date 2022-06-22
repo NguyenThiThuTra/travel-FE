@@ -1,4 +1,4 @@
-import { Image } from 'antd';
+import { Image, Rate } from 'antd';
 import { fetchAllCategory } from 'features/Rooms/RoomsSlice';
 import React, { useEffect, useState } from 'react';
 import { BsFillHeartFill } from 'react-icons/bs';
@@ -59,6 +59,14 @@ const HomestayItem = ({ size, homestay, handleRedirectHomestayDetail }) => {
           >
             {homestay?.name}
           </h3>
+
+          <div style={{ marginBottom: '1rem' }}>
+            {homestay?.comments_count === 0 ? (
+              <span> Chưa được đánh giá </span>
+            ) : (
+              <Rate allowHalf disabled defaultValue={homestay?.rate} />
+            )}
+          </div>
           <h5
             onClick={handleRedirectHomestayDetail}
             className="package-box__destination"
