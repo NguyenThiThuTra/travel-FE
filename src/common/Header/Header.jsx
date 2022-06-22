@@ -110,10 +110,11 @@ const Header = () => {
   };
   return (
     <div
-      className={`header ${!scrollingUp ? 'none' : ''} ${!top ? 'top' : ''}`}
+      className="header"
+      // className={`header ${!scrollingUp ? 'none' : ''} ${!top ? 'top' : ''}`}
       style={{
         backgroundColor:
-          flagPathname(HEADER_BACKGROUND_DARK, location.pathname) &&
+          // flagPathname(HEADER_BACKGROUND_DARK, location.pathname) &&
           'rgb(11 47 78 / 85%)',
       }}
       onMouseEnter={() => setTop(false)}

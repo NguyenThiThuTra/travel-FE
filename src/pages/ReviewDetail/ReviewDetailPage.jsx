@@ -107,7 +107,7 @@ export default function ReviewDetailPage() {
           style={{
             padding: '2rem 0',
             position: 'sticky',
-            top: '0rem',
+            top: '60px',
             backgroundColor: '#fafafa',
             zIndex: 10,
           }}

@@ -1,18 +1,10 @@
 import { UserOutlined } from '@ant-design/icons';
-import { Avatar, Image, Rate } from 'antd';
-import { ORDER_STATUS } from 'constants/order';
+import { Avatar, Image } from 'antd';
 import { useCurrentUserSelector } from 'features/Auth/AuthSlice';
-import { getAllOrder, getAllOrderAction } from 'features/Order/OrderSlice';
-import { getLikeReviewByUserId } from 'features/Reviews/ReviewsSlice';
-import React, {
-  Fragment,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
-import { AiOutlineLike } from 'react-icons/ai';
+import { Fragment, useCallback, useMemo, useState } from 'react';
+import { AiOutlineLike, AiOutlinePlus } from 'react-icons/ai';
 import { useDispatch, useSelector } from 'react-redux';
+import moment from 'moment';
 
 export function ReviewItem({ review, handleLikeReview }) {
   const dispatch = useDispatch();
@@ -21,7 +13,6 @@ export function ReviewItem({ review, handleLikeReview }) {
   const currentUser = useSelector(useCurrentUserSelector);
 
   const [orders, setOrders] = useState(null);
-
   const homestays = review?.homestays;
   const arrNameHomestay = useMemo(() => {
     return homestays?.map((homestay) => homestay?.name)?.join(', ');
@@ -200,17 +191,20 @@ export function ReviewItem({ review, handleLikeReview }) {
     <div className="review-box">
       <div className="review-box-main">
         <div className="review-box__header">
-          <Avatar
-            src={user?.avatar}
-            style={{
-              backgroundColor: '#87d068',
-              minWidth: '35px',
-              minHeight: '35px',
-              marginRight: '10px',
-            }}
-            icon={<UserOutlined />}
-          />
-          <div className="review-box__name">{user?.name}</div>
+          <div className="review-box__info">
+            <Avatar
+              src={user?.avatar}
+              style={{
+                backgroundColor: '#87d068',
+                minWidth: '35px',
+                minHeight: '35px',
+                marginRight: '10px',
+              }}
+              icon={<UserOutlined />}
+            />
+            <div className="review-box__name">{user?.name}</div>
+          </div>
+          {moment(review.createdAt).format('DD/MM/YYYY HH:mm ')}
         </div>
         <div className="review-box__location">
           Đã từng ở tại {arrNameHomestay}...
@@ -223,14 +217,49 @@ export function ReviewItem({ review, handleLikeReview }) {
       <div>
         {review?.images?.length > 0 && (
           <Fragment>
-            <Image
-              style={{ marginTop: '2rem' }}
-              preview={{ visible: false }}
-              width={200}
-              src={review?.images?.[0]}
-              alt="image preview"
+            <div
+              style={{
+                marginTop: '2rem',
+                position: 'relative',
+                cursor: 'pointer',
+              }}
               onClick={() => setVisiblePreviewGroup(true)}
-            />
+            >
+              <Image
+                style={{ filter: 'brightness(80%)' }}
+                preview={{ visible: false }}
+                width={300}
+                src={review?.images?.[0]}
+                alt="image preview"
+              />
+              {review?.images?.length > 1 && (
+                <div
+                  style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    zIndex: 10,
+                    background: 'rgba(0,0,0,0.3)',
+                  }}
+                >
+                  <AiOutlinePlus fontSize="35px" color="white" />
+                  <span
+                    style={{
+                      fontSize: '30px',
+                      color: 'white',
+                      fontWeight: '500',
+                    }}
+                  >
+                    {review?.images?.length}
+                  </span>
+                </div>
+              )}
+            </div>
 
             <div style={{ display: 'none' }}>
               <Image.PreviewGroup

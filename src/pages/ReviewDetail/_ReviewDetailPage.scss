@@ -29,6 +29,11 @@
   &__header {
     display: flex;
     align-items: center;
+    justify-content: space-between;
+  }
+  &__info {
+    display: flex;
+    align-items: center;
   }
   &__name {
     margin-right: 2rem;
