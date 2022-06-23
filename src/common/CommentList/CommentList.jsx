@@ -7,6 +7,7 @@ import {
   Image,
   List,
   message,
+  Rate,
   Tooltip,
   Typography,
 } from 'antd';
@@ -209,7 +210,7 @@ export function CommentList() {
           <Fragment>
             <List
               className="comment-list"
-              header={`${dataComments.length} replies`}
+              header={`${dataComments.length} bình luận`}
               itemLayout="horizontal"
               dataSource={dataComments || []}
               renderItem={(item) => (
@@ -222,11 +223,28 @@ export function CommentList() {
                           onClick={() => handleShowInputReplyComment(item._id)}
                           key="comment-list-reply-to-0"
                         >
-                          Reply to
+                          Trả lời
                         </span>,
                       ]
                     }
-                    author={item.user_id?.name}
+                    author={
+                      <span style={{ fontSize: '16px' }}>
+                        <span>{item.user_id?.name}</span>
+                        {item?.rate && (
+                          <Rate
+                            style={{
+                              paddingLeft: '10px',
+                              fontSize: '15px',
+                              position: 'relative',
+                              bottom: '2px',
+                            }}
+                            allowHalf
+                            disabled
+                            defaultValue={item?.rate}
+                          />
+                        )}
+                      </span>
+                    }
                     avatar={
                       item.user_id?.avatar ||
                       'https://joeschmoe.io/api/v1/random'

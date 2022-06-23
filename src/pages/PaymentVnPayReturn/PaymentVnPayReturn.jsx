@@ -29,7 +29,7 @@ export default function PaymentVnPayReturn() {
         // history.push(RouteConstant.HistoryPage);
         message.success(getVNPAYReturnUrlStatus(response?.code));
 
-        const formOrder = { status: ORDER_STATUS.approved.en };
+        const formOrder = { status: ORDER_STATUS.pending.en, paid: true };
         await dispatch(
           updateOrder({
             id: order_id,

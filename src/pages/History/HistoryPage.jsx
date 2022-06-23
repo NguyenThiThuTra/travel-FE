@@ -60,7 +60,7 @@ export default function HistoryPage() {
             style={{ padding: '2rem' }}
             defaultActiveKey="1"
           >
-            <TabPane tab="Chưa xác nhận" key={ORDER_STATUS.pending.en}>
+            <TabPane tab="Đang chờ xử lý" key={ORDER_STATUS.pending.en}>
               <ListOrders data={order?.data} />
             </TabPane>
             <TabPane tab="Đã xác nhận" key={ORDER_STATUS.approved.en}>

@@ -40,9 +40,9 @@ const HomestayItem = ({ size, homestay, handleRedirectHomestayDetail }) => {
             alt="avatar"
           />
         </div>
-        <div className="package-box__icon">
+        {/* <div className="package-box__icon">
           <BsFillHeartFill />
-        </div>
+        </div> */}
       </div>
       <div
         className="package-box__content"
