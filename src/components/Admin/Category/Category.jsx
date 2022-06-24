@@ -1,4 +1,4 @@
-import { Switch } from 'antd';
+import { Image, Switch } from 'antd';
 import { useCurrentUserSelector } from 'features/Auth/AuthSlice';
 import moment from 'moment';
 import queryString from 'query-string';
@@ -64,21 +64,21 @@ export default function AdminCategoryPage(props) {
   };
   const columns = useMemo(
     () => [
-      {
-        title: 'ID',
-        dataIndex: '_id',
-        key: '_id',
-        width: 220,
-      },
-      {
-        title: 'Homestay id',
-        dataIndex: 'homestay_id',
-        key: 'homestay_id',
-        width: 220,
-        render: (n, record) => {
-          return <div>{record?.homestay_id}</div>;
-        },
-      },
+      // {
+      //   title: 'ID',
+      //   dataIndex: '_id',
+      //   key: '_id',
+      //   width: 220,
+      // },
+      // {
+      //   title: 'Homestay id',
+      //   dataIndex: 'homestay_id',
+      //   key: 'homestay_id',
+      //   width: 220,
+      //   render: (n, record) => {
+      //     return <div>{record?.homestay_id}</div>;
+      //   },
+      // },
       {
         title: 'Tên ',
         width: 220,
@@ -136,42 +136,62 @@ export default function AdminCategoryPage(props) {
         },
       },
       {
+        title: 'Hình ảnh',
+        dataIndex: 'avatar',
+        key: 'avatar',
+        width: 250,
+        render: (n, record) => {
+          return (
+            <div>
+              {(record?.avatar || record?.images?.[0]) && (
+                <Image
+                  preview={{ visible: false, mask: null }}
+                  width={235}
+                  src={record?.avatar || record?.images?.[0]}
+                  alt="image preview"
+                />
+              )}
+            </div>
+          );
+        },
+      },
+      {
         title: 'Số lượng hình ảnh',
         dataIndex: 'images',
         key: 'images',
         width: 100,
         render: (n, record) => {
-          return <div>{record?.images?.length ?? 0}</div>;
+          return <div>{record?.images?.length}</div>;
         },
       },
-      {
-        title: 'Số bình luận',
-        dataIndex: 'comments_count',
-        key: 'comments_count',
-        width: 100,
-        render: (n, record) => {
-          return <div>{record?.homestay_id?.comments_count ?? 0}</div>;
-        },
-      },
+      // {
+      //   title: 'Số bình luận',
+      //   dataIndex: 'comments_count',
+      //   key: 'comments_count',
+      //   width: 100,
+      //   render: (n, record) => {
+      //     return <div>{record?.homestay_id?.comments_count ?? 0}</div>;
+      //   },
+      // },
 
-      {
-        title: 'Đánh giá',
-        dataIndex: 'rate',
-        key: 'rate',
-        width: 100,
-        render: (n, record) => {
-          return <div>{record?.homestay_id?.rate ?? 0}</div>;
-        },
-      },
-      {
-        title: 'Lượt xem',
-        dataIndex: 'view',
-        key: 'view',
-        width: 100,
-        render: (n, record) => {
-          return <div>{record?.homestay_id?.view ?? 0}</div>;
-        },
-      },
+      // {
+      //   title: 'Đánh giá',
+      //   dataIndex: 'rate',
+      //   key: 'rate',
+      //   width: 100,
+      //   render: (n, record) => {
+      //     return <div>{record?.homestay_id?.rate ?? 0}</div>;
+      //   },
+      // },
+      // {
+      //   title: 'Lượt xem',
+      //   dataIndex: 'view',
+      //   key: 'view',
+      //   width: 100,
+      //   render: (n, record) => {
+      //     return <div>{record?.homestay_id?.view ?? 0}</div>;
+      //   },
+      // },
       {
         title: 'Created at',
         dataIndex: 'createdAt',
@@ -239,7 +259,7 @@ export default function AdminCategoryPage(props) {
           defaultCurrent: Number(querySearch?.page) || 1,
           defaultPageSize: Number(querySearch?.limit) || 10,
         }}
-        expandable={expandable}
+        // expandable={expandable}
         title={() => <CustomTitleTable title="Danh sách phòng" />}
         // footer={() => <CustomFooterTable title="Here is footer" />}
       />

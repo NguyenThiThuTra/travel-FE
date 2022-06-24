@@ -1,3 +1,4 @@
+import { Image, Rate } from 'antd';
 import { ActionTable } from 'common/Table/ActionTable';
 import CustomTable from 'common/Table/CustomTable';
 import CustomTitleTable from 'common/Table/CustomTitleTable';
@@ -7,7 +8,7 @@ import {
   deleteHomestay,
   fetchAllHomestays,
   useHomestayRemovedSelector,
-  useHomestaysSelector
+  useHomestaysSelector,
 } from 'features/Homestay/HomestaySlice';
 import moment from 'moment';
 import queryString from 'query-string';
@@ -55,18 +56,18 @@ export default function AdminHomestaysPage(props) {
 
   const columns = useMemo(
     () => [
-      {
-        title: 'ID',
-        dataIndex: '_id',
-        key: '_id',
-        width: 220,
-      },
-      {
-        title: 'Id người dùng',
-        dataIndex: 'user_id',
-        key: 'user_id',
-        width: 220,
-      },
+      // {
+      //   title: 'ID',
+      //   dataIndex: '_id',
+      //   key: '_id',
+      //   width: 220,
+      // },
+      // {
+      //   title: 'Id người dùng',
+      //   dataIndex: 'user_id',
+      //   key: 'user_id',
+      //   width: 220,
+      // },
       {
         title: 'Tên ',
         width: 220,
@@ -93,6 +94,50 @@ export default function AdminHomestaysPage(props) {
         key: 'description',
       },
       {
+        title: 'Đánh giá',
+        dataIndex: 'rate',
+        key: 'rate',
+        width: 150,
+        render: (n, record) => {
+          return (
+            <div>
+              {record?.rate ? (
+                <Rate
+                  style={{
+                    fontSize: '15px',
+                  }}
+                  allowHalf
+                  disabled
+                  defaultValue={record?.rate}
+                />
+              ) : (
+                'Chưa có đánh giá'
+              )}
+            </div>
+          );
+        },
+      },
+      {
+        title: 'Hình ảnh',
+        dataIndex: 'avatar',
+        key: 'avatar',
+        width: 250,
+        render: (n, record) => {
+          return (
+            <div>
+              {(record?.avatar || record?.images?.[0]) && (
+                <Image
+                  preview={{ visible: false, mask: null }}
+                  width={235}
+                  src={record?.avatar || record?.images?.[0]}
+                  alt="image preview"
+                />
+              )}
+            </div>
+          );
+        },
+      },
+      {
         title: 'Số lượng hình ảnh',
         dataIndex: 'images',
         key: 'images',
@@ -107,18 +152,18 @@ export default function AdminHomestaysPage(props) {
         key: 'comments_count',
         width: 100,
       },
-      {
-        title: 'Đánh giá',
-        dataIndex: 'rate',
-        key: 'rate',
-        width: 100,
-      },
-      {
-        title: 'Lượt xem',
-        dataIndex: 'view',
-        key: 'view',
-        width: 100,
-      },
+      // {
+      //   title: 'Đánh giá',
+      //   dataIndex: 'rate',
+      //   key: 'rate',
+      //   width: 100,
+      // },
+      // {
+      //   title: 'Lượt xem',
+      //   dataIndex: 'view',
+      //   key: 'view',
+      //   width: 100,
+      // },
       {
         title: 'Created at',
         dataIndex: 'createdAt',
@@ -186,11 +231,12 @@ export default function AdminHomestaysPage(props) {
           defaultCurrent: Number(querySearch?.page) || 1,
           defaultPageSize: Number(querySearch?.limit) || 10,
         }}
-        expandable={expandable}
+        // expandable={expandable}
         title={() => (
           <CustomTitleTable
             hideAdd={
-              currentUser?.data?.roles === PERMISSIONS.user && homestays?.data?.length > 0
+              currentUser?.data?.roles === PERMISSIONS.user &&
+              homestays?.data?.length > 0
             }
             title="Danh sách homestays"
           />

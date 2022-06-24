@@ -29,17 +29,17 @@ export function AdminMenu() {
         path: 'homestays',
         name: 'Homestays',
       },
-      {
-        path: 'rooms',
-        name: 'Rooms',
-      },
+      // {
+      //   path: 'rooms',
+      //   name: 'Rooms',
+      // },
       {
         path: 'orders',
-        name: 'Orders',
+        name: 'Booking',
       },
       {
         path: 'category',
-        name: 'Category',
+        name: 'Rooms',
       },
     ];
   }, []);

@@ -174,7 +174,7 @@ export default function ActionFormRoom() {
       }
       const role = currentUser?.data?.roles;
       if (role === PERMISSIONS.user) {
-        history.push('/my-homestay/rooms');
+        history.push('/my-homestay/category');
       }
       // if (role === PERMISSIONS.admin) {
       //   history.push('/admin/rooms');

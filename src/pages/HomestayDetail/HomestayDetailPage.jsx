@@ -17,6 +17,7 @@ import { fetchAllRooms, useRoomsSelector } from 'features/Rooms/RoomsSlice';
 import { groupBy } from 'helpers/groupBy';
 import queryString from 'query-string';
 import React, { createElement, useEffect, useMemo, useState } from 'react';
+import { AiOutlinePlus } from 'react-icons/ai';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useParams } from 'react-router-dom';
 import './_HomestayDetail.scss';
@@ -32,9 +33,11 @@ const HomestayDetailPage = () => {
   const homestay = useSelector(useHomestaySelector);
   const dataHomestay = useMemo(() => homestay?.data, [homestay]);
   const rooms = useSelector(useRoomsSelector);
-  console.log({ dataHomestay });
   const [dataGroupByCategory, setDataGroupByCategory] = useState([]);
 
+  // visiblePreviewGroup
+  const [visiblePreviewGroup, setVisiblePreviewGroup] = useState(false);
+  // end visiblePreviewGroup
   useEffect(() => {
     if (rooms) {
       const data = rooms?.data?.map((room) => {
@@ -164,17 +167,64 @@ const HomestayDetailPage = () => {
         <div className="homestay-detail__address">
           <span>Địa chỉ:</span> {renderAddressHomestay()}
         </div>
-        <div className="gallery">
+        <div
+          className="gallery"
+          onClick={() =>
+            dataHomestay?.images?.length > 1 && setVisiblePreviewGroup(true)
+          }
+          style={{ position: 'relative', cursor: 'pointer' }}
+        >
           <Image
-            style={{ objectFit: 'cover' }}
+            style={{ filter: 'brightness(80%)', objectFit: 'cover' }}
+            preview={{ visible: false, mask: null }}
             height="400px"
             width="100%"
             src={
-              rooms?.data?.homestay_id?.images?.[0] ||
+              dataHomestay?.avatar ||
+              dataHomestay?.images?.[0] ||
               'https://dulichkhampha24.com/wp-content/uploads/2019/12/hang-mua-ninh-binh.jpg'
             }
             fallback="https://doanhnhanplus.vn/wp-content/uploads/2017/12/DN-Anh-chup-Da-Lat-BaiDN-221217-1.jpg"
           />
+          {dataHomestay?.images?.length > 1 && (
+            <div
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                zIndex: 10,
+                background: 'rgba(0,0,0,0.3)',
+              }}
+            >
+              <AiOutlinePlus fontSize="35px" color="white" />
+              <span
+                style={{
+                  fontSize: '30px',
+                  color: 'white',
+                  fontWeight: '500',
+                }}
+              >
+                {dataHomestay?.images?.length}
+              </span>
+            </div>
+          )}
+        </div>
+        <div style={{ display: 'none' }}>
+          <Image.PreviewGroup
+            preview={{
+              visible: visiblePreviewGroup,
+              onVisibleChange: (vis) => setVisiblePreviewGroup(vis),
+            }}
+          >
+            {dataHomestay?.images?.map((image, index) => (
+              <Image key={index} src={image} alt={`preview ${index}`} />
+            ))}
+          </Image.PreviewGroup>
         </div>
 
         <Tabs defaultActiveKey="1" onChange={callback}>

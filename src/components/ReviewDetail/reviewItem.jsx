@@ -225,7 +225,9 @@ export function ReviewItem({ review, handleLikeReview }) {
                 position: 'relative',
                 cursor: 'pointer',
               }}
-              onClick={() => setVisiblePreviewGroup(true)}
+              onClick={() =>
+                review?.images?.length > 1 && setVisiblePreviewGroup(true)
+              }
             >
               <Image
                 style={{ filter: 'brightness(80%)' }}

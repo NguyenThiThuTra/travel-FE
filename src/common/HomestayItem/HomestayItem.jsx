@@ -35,7 +35,8 @@ const HomestayItem = ({ size, homestay, handleRedirectHomestayDetail }) => {
             style={{ objectFit: 'cover' }}
             height={235}
             className="travel_destination__img"
-            src={homestay?.avatar || ''}
+            src={homestay?.avatar || homestay?.images?.[0] || ''}
+            preview={{ visible: false, mask: null }}
             fallback="https://res.cloudinary.com/dulich/image/upload/v1619010475/travel/destination-11_ewvbau.jpg"
             alt="avatar"
           />

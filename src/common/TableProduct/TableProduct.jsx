@@ -1,8 +1,9 @@
-import { Button, Modal, Popconfirm, Select, Table } from 'antd';
+import { Button, Image, Modal, Popconfirm, Select, Table } from 'antd';
 import { useCurrentUserSelector } from 'features/Auth/AuthSlice';
 import { toggleModalLogin } from 'features/commonSlice';
 import queryString from 'query-string';
 import React, { Fragment, useState } from 'react';
+import { AiOutlinePlus } from 'react-icons/ai';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
 import { AddCartForm } from '../AddCartForm/AddCartForm';
@@ -102,6 +103,9 @@ export function TableProduct({ nameHomestay, homestay_id, data }) {
     [orders]
   );
 
+  // visiblePreviewGroup
+  const [visiblePreviewGroup, setVisiblePreviewGroup] = useState(false);
+
   const columns = React.useMemo(
     () => [
       {
@@ -115,6 +119,73 @@ export function TableProduct({ nameHomestay, homestay_id, data }) {
             <div>
               <Link to="#" className="room-type"></Link>
               <div className="bed-type">{category?.name}</div>
+              {(category?.avatar || category?.images?.length > 0) && (
+                <Fragment>
+                  <div
+                    style={{
+                      marginTop: '2rem',
+                      position: 'relative',
+                      cursor: 'pointer',
+                      maxWidth: '250px',
+                    }}
+                    onClick={() =>
+                      // category?.images?.length > 1 &&
+                      setVisiblePreviewGroup(true)
+                    }
+                  >
+                    <Image
+                      style={{ filter: 'brightness(80%)' }}
+                      preview={{ visible: false, mask: null }}
+                      src={category?.avatar || category?.images?.[0]}
+                      alt="image preview"
+                    />
+                    {category?.images?.length > 1 && (
+                      <div
+                        style={{
+                          position: 'absolute',
+                          top: 0,
+                          left: 0,
+                          right: 0,
+                          bottom: 0,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          zIndex: 10,
+                          background: 'rgba(0,0,0,0.3)',
+                        }}
+                      >
+                        <AiOutlinePlus fontSize="35px" color="white" />
+                        <span
+                          style={{
+                            fontSize: '30px',
+                            color: 'white',
+                            fontWeight: '500',
+                          }}
+                        >
+                          {category?.images?.length}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+
+                  <div style={{ display: 'none' }}>
+                    <Image.PreviewGroup
+                      preview={{
+                        visible: visiblePreviewGroup,
+                        onVisibleChange: (vis) => setVisiblePreviewGroup(vis),
+                      }}
+                    >
+                      {category?.images?.map((image, index) => (
+                        <Image
+                          key={index}
+                          src={image}
+                          alt={`preview ${index}`}
+                        />
+                      ))}
+                    </Image.PreviewGroup>
+                  </div>
+                </Fragment>
+              )}
             </div>
           );
         },
@@ -231,7 +302,7 @@ export function TableProduct({ nameHomestay, homestay_id, data }) {
         },
       },
     ],
-    [orders, visiblePopupNotification, currentUser]
+    [orders, visiblePopupNotification, currentUser, visiblePreviewGroup]
   );
 
   const dataTable = Object.values(data);
