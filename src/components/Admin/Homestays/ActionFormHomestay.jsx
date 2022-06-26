@@ -240,6 +240,7 @@ export default function ActionFormHomestay() {
     }
     return;
   }, [districtCode]);
+  console.log({ listProvinces, listDistricts, listWards });
   //end addresses
 
   function onSearch(val) {

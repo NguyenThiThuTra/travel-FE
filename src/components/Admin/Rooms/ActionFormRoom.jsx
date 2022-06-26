@@ -28,6 +28,10 @@ import {
 } from 'features/Rooms/RoomsSlice';
 import { objectToFormData } from 'helpers/ConvertObjectToFormData';
 import { PERMISSIONS } from 'constants/permissions';
+import {
+  fetchAllHomestays,
+  getHomestay,
+} from 'features/Homestay/HomestaySlice';
 
 const { Title } = Typography;
 const { Option } = Select;
@@ -96,9 +100,22 @@ export default function ActionFormRoom() {
     // console.log('role', role);
     async function defaultFormUser() {
       if (action === 'add') {
-        reset({
-          user_id: currentUser?.data?._id,
-        });
+        const user_id = currentUser?.data?._id;
+        const payload = {
+          filters: {
+            user_id,
+          },
+        };
+        try {
+          const response = await dispatch(fetchAllHomestays(payload)).unwrap();
+          const dataHomestay = response?.data?.[0];
+          reset({
+            user_id,
+            homestay_id: dataHomestay?._id,
+          });
+        } catch (error) {
+          console.error({ error });
+        }
       }
     }
     defaultFormUser();
@@ -263,13 +280,13 @@ export default function ActionFormRoom() {
               required: true,
             }}
             render={({ field }) => {
-              return <Input {...field} />;
+              return <Input disabled {...field} />;
             }}
           />
           {errors?.homestay_id && <ErrorMessage />}
         </Form.Item>
 
-        <Form.Item
+        {/* <Form.Item
           label={<LabelRequired title="User ID" />}
           className={
             errors?.user_id && 'ant-form-item-with-help ant-form-item-has-error'
@@ -285,8 +302,8 @@ export default function ActionFormRoom() {
               return <Input {...field} />;
             }}
           />
-          {errors?.homestay_id && <ErrorMessage />}
-        </Form.Item>
+          {errors?.user_id && <ErrorMessage />}
+        </Form.Item> */}
 
         <Form.Item
           label={<LabelRequired title="Tên" />}
