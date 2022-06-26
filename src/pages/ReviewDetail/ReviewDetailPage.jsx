@@ -45,7 +45,7 @@ export default function ReviewDetailPage() {
             sort: '-createdAt',
           })
         ).unwrap();
-        setDataReview(res.data);
+        setDataReview(res?.data);
         const data = res?.data;
         setDataReview(data);
       } catch (error) {
@@ -103,7 +103,7 @@ export default function ReviewDetailPage() {
     <div className="review-detail-page">
       <div className="review-detail">
         <Typography.Title
-          level={4}
+          level={3}
           style={{
             padding: '2rem 0',
             position: 'sticky',

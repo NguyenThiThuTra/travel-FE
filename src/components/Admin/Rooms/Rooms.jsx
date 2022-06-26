@@ -163,7 +163,7 @@ export default function RoomsPage(props) {
         },
       },
       {
-        title: 'Created at',
+        title: 'Ngày tạo',
         dataIndex: 'createdAt',
         key: 'createdAt',
         width: 150,
@@ -172,7 +172,7 @@ export default function RoomsPage(props) {
         },
       },
       {
-        title: 'Updated at',
+        title: 'Ngày cập nhật',
         dataIndex: 'updatedAt',
         key: 'updatedAt',
         width: 150,
@@ -198,7 +198,7 @@ export default function RoomsPage(props) {
       //   },
       // },
       {
-        title: 'Action',
+        title: 'Thao tác',
         key: 'operation',
         fixed: 'right',
         width: 100,

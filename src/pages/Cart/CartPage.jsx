@@ -269,7 +269,7 @@ const CartPage = () => {
                   )}
                 />
                 <Column
-                  title="Action"
+                  title="Thao tác"
                   key="action"
                   render={(text, record) => (
                     <div>

@@ -35,7 +35,13 @@ const TYPE_ROOM = {
   family: 'Phòng gia đình',
   bigFamily: 'Phòng gia đình lớn',
 };
-export function OrderItem({ orderStatus, seller, data, totalPriceOrders }) {
+export function OrderItem({
+  orderStatus,
+  seller,
+  data,
+  totalPriceOrders,
+  editStatusBooking,
+}) {
   const dispatch = useDispatch();
 
   const currentUser = useSelector(useCurrentUserSelector);
@@ -44,12 +50,19 @@ export function OrderItem({ orderStatus, seller, data, totalPriceOrders }) {
     // update status !rejected
     if (status === ORDER_STATUS.approved.en) {
       const formOrder = { status };
-      return dispatch(
-        updateOrder({
-          id: data._id,
-          order: formOrder,
-        })
-      );
+      try {
+        await dispatch(
+          updateOrder({
+            id: data._id,
+            order: formOrder,
+          })
+        ).unwrap();
+        await editStatusBooking(data._id, status);
+        return false;
+      } catch (error) {
+        console.error(error);
+        return false;
+      }
     }
     if (
       status === ORDER_STATUS.rejected.en ||
@@ -57,12 +70,19 @@ export function OrderItem({ orderStatus, seller, data, totalPriceOrders }) {
     ) {
       // update status rejected
       const formOrder = { status };
-      return dispatch(
-        updateOrder({
-          id: data._id,
-          order: formOrder,
-        })
-      );
+      try {
+        await dispatch(
+          updateOrder({
+            id: data._id,
+            order: formOrder,
+          })
+        ).unwrap();
+        await editStatusBooking(data._id, status);
+        return false;
+      } catch (error) {
+        console.error(error);
+        return false;
+      }
     }
   };
   // total payment

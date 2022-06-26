@@ -2,11 +2,17 @@ import { Empty } from 'antd';
 import React from 'react';
 import { OrderItem } from './OrderItem/OrderItem';
 
-export function ListOrders({ orderStatus, data, seller = false }) {
+export function ListOrders({
+  orderStatus,
+  data,
+  seller = false,
+  editStatusBooking,
+}) {
   return (
     <div>
       {data?.map((item) => (
         <OrderItem
+          editStatusBooking={editStatusBooking}
           orderStatus={orderStatus}
           seller={seller}
           data={item}
