@@ -1,37 +1,53 @@
-import { Avatar, List, Typography } from 'antd';
+import { Avatar } from 'antd';
 import userApi from 'api/userApi';
 import { useCurrentUserSelector } from 'features/Auth/AuthSlice';
-import {
-  setReceiver,
-  useReceiverChatBoxSelector,
-} from 'features/ChatBox/ChatBoxSlice';
-import React, { Fragment, useEffect, useState } from 'react';
+import { setReceiver } from 'features/ChatBox/ChatBoxSlice';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useLocation } from 'react-router-dom';
+import { detectOwnerHomestay } from 'constants/detectOwnerHomestay';
+import homestayApi from 'api/homestayApi';
+import AvatarDefault from 'assets/images/avatar_default.png';
 
 export default function HomestayChatBox({
   onChangeCurrentConversation,
   conversation,
   currentConversation,
+  sender,
 }) {
+  const location = useLocation();
   const dispatch = useDispatch();
 
-  const [user, setUser] = useState(null);
+  const [receiver, set_Receiver] = useState(null);
   const currentUser = useSelector(useCurrentUserSelector);
-  const receiver = useSelector(useReceiverChatBoxSelector);
+  const [isOwnerHomestay, setIsOwnerHomestay] = useState(false);
+
+  useEffect(() => {
+    setIsOwnerHomestay(
+      detectOwnerHomestay.some((path) => location.pathname.includes(path))
+    );
+  }, [location]);
+
   useEffect(() => {
     const friendId = conversation.members.find(
-      (member) => member !== currentUser?.data?._id
+      (member) => member !== sender?._id
     );
-    userApi.getUser(friendId).then((res) => {
-      setUser(res.data);
-    });
-  }, [conversation, currentUser]);
+    // get receiver
+    if (!isOwnerHomestay) {
+      homestayApi.getHomestay(friendId).then((res) => {
+        set_Receiver(res?.data);
+      });
+    } else {
+      userApi.getUser(friendId).then((res) => {
+        set_Receiver(res?.data);
+      });
+    }
+  }, [conversation, currentUser, isOwnerHomestay]);
 
   const onClick = (conversation_id) => {
     onChangeCurrentConversation(conversation_id);
-    dispatch(setReceiver({ user_id: user?._id, name: user?.name }));
+    dispatch(setReceiver(receiver));
   };
-
   return (
     <li
       style={{
@@ -40,8 +56,8 @@ export default function HomestayChatBox({
       }}
       onClick={() => onClick(conversation.id)}
     >
-      <Avatar src="https://joeschmoe.io/api/v1/random" />
-      <p>{user?.name}</p>
+      <Avatar src={receiver?.avatar || AvatarDefault} />
+      <p>{receiver?.name}</p>
     </li>
   );
 }

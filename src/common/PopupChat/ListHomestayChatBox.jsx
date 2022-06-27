@@ -6,6 +6,7 @@ export default function ListHomestayChatBox({
   data,
   onChangeCurrentConversation,
   currentConversation,
+  sender,
 }) {
   return (
     <Fragment>
@@ -15,6 +16,7 @@ export default function ListHomestayChatBox({
       <ul className="ul-list-item-homestay">
         {data?.map((conversation) => (
           <HomestayChatBox
+            sender={sender}
             currentConversation={currentConversation}
             key={conversation.id}
             conversation={conversation}

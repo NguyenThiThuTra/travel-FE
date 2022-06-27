@@ -2,6 +2,7 @@ import { Empty, Input } from 'antd';
 import homestayApi from 'api/homestayApi';
 import ChatIcon from 'assets/images/chat.png';
 import { firestore } from 'configs/firebase/config';
+import { detectOwnerHomestay } from 'constants/detectOwnerHomestay';
 import { useCurrentUserSelector } from 'features/Auth/AuthSlice';
 import {
   setOpenPopupChatBox,
@@ -18,12 +19,14 @@ import { useCollectionData } from 'react-firebase-hooks/firestore';
 import { AiOutlineCloseCircle, AiOutlineSend } from 'react-icons/ai';
 import { BsChatFill } from 'react-icons/bs';
 import { useDispatch, useSelector } from 'react-redux';
+import { useLocation } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import { ChatMessage } from './ChatMessage';
 import ListHomestayChatBox from './ListHomestayChatBox';
 import './_PopupChat.scss';
 
 export default function PopupChat() {
+  const location = useLocation();
   const dispatch = useDispatch();
 
   // popup chat with admin
@@ -37,22 +40,32 @@ export default function PopupChat() {
 
   const receiver = useSelector(useReceiverChatBoxSelector);
   const currentUser = useSelector(useCurrentUserSelector);
-  console.log({ receiver, currentUser });
 
   const [sender, setSender] = useState('');
   // fetchHomestayByUserId
+  const [isOwnerHomestay, setIsOwnerHomestay] = useState(false);
+
   useEffect(() => {
-    setSender(currentUser?.data);
-    // console.log('role', role);
-    async function fetchHomestayByUserId() {
-      const payload = {
-        filters: { user_id: currentUser?.data?._id },
-      };
-      const response = await homestayApi.getAll(payload);
-      console.log({ response });
+    setIsOwnerHomestay(
+      detectOwnerHomestay.some((path) => location.pathname.includes(path))
+    );
+  }, [location]);
+  
+  useEffect(() => {
+    if (!isOwnerHomestay) {
+      setSender(currentUser?.data);
+    } else {
+      // console.log('role', role);
+      async function fetchHomestayByUserId() {
+        const payload = {
+          filters: { user_id: currentUser?.data?._id },
+        };
+        const response = await homestayApi.getAll(payload);
+        setSender(response?.data?.[0]);
+      }
+      fetchHomestayByUserId();
     }
-    fetchHomestayByUserId();
-  }, [currentUser]);
+  }, [currentUser, isOwnerHomestay]);
 
   // get conversations
   const conversationsRef = firestore.collection('conversations');
@@ -87,27 +100,8 @@ export default function PopupChat() {
     }
   }, [conversations, receiver]);
 
-  // useEffect(() => {
-  //   if (currentConversation) {
-  //     dispatch(
-  //       setReceiver({
-  //         user_id: currentConversation.members.find(
-  //           (member) => member !== currentUser?.data?._id
-  //         ),
-  //       })
-  //     );
-  //   }
-  // }, [currentConversation]);
-
   const [dataMessages, setDataMessages] = useState([]);
   const messageRef = firestore.collection('messages');
-  // const queryMessage = React.useCallback(() => {
-  //   let q = messageRef
-  //     .where('conversation_id', '==', currentConversation?.id || null)
-  //     .orderBy('createdAt', 'desc');
-  //   // .limit(15);
-  //   return q;
-  // }, [currentConversation, onScroll]);
 
   const queryMessage = messageRef
     .where('conversation_id', '==', currentConversation?.id || null)
@@ -139,7 +133,6 @@ export default function PopupChat() {
         createdAt: new Date().getTime(),
         updatedAt: new Date().getTime(),
       };
-      console.log({ conversation });
       conversationsRef.add(conversation);
     }
 
@@ -208,6 +201,7 @@ export default function PopupChat() {
             <div className="chat-box__listHomestay">
               <ListHomestayChatBox
                 data={conversations}
+                sender={sender}
                 currentConversation={currentConversation}
                 onChangeCurrentConversation={onChangeCurrentConversation}
               />
