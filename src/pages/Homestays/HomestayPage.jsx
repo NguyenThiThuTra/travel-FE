@@ -17,11 +17,17 @@ const HomestayPage = () => {
 
   const querySearch = queryString.parse(location.search);
   const dispatch = useDispatch();
-
   const homestays = useSelector(useHomestaysSelector);
-
+  
+  const pagingDefault = { limit: 9, page: 1 };
   useEffect(() => {
-    dispatch(fetchAllHomestaySearch(querySearch));
+    dispatch(
+      fetchAllHomestaySearch({
+        limit: pagingDefault.limit,
+        page: pagingDefault.page,
+        ...querySearch,
+      })
+    );
     /* eslint-disable */
   }, [location]);
 
@@ -109,8 +115,8 @@ const HomestayPage = () => {
           // total={500}
           onChange={onShowSizeChange}
           total={homestays?.paging?.total || 1}
-          defaultCurrent={Number(querySearch?.page) || 1}
-          defaultPageSize={Number(querySearch?.limit) || 10}
+          defaultCurrent={Number(querySearch?.page) || pagingDefault.page}
+          defaultPageSize={Number(querySearch?.limit) || pagingDefault.limit}
         />
       </div>
     </div>

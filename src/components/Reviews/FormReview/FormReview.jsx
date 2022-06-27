@@ -14,6 +14,7 @@ import orderApi from 'api/orderApi';
 import provincesOpenApi from 'api/provincesOpenApi';
 import { RouteConstant } from 'constants/RouteConstant';
 import { useCurrentUserSelector } from 'features/Auth/AuthSlice';
+import { useLoadingAppSelector } from 'features/commonSlice';
 import { postReview } from 'features/Reviews/ReviewsSlice';
 import { objectToFormData } from 'helpers/ConvertObjectToFormData';
 import React, { useEffect, useState } from 'react';
@@ -35,6 +36,7 @@ export default function FormReview({
   const dispatch = useDispatch();
 
   const currentUser = useSelector(useCurrentUserSelector);
+  const loadingApp = useSelector(useLoadingAppSelector);
 
   const onFinish = async (values) => {
     let { schedule, ...rest } = values;
@@ -312,7 +314,7 @@ export default function FormReview({
           )}
         </Form.List>
         <Form.Item>
-          <Button type="primary" htmlType="submit">
+          <Button loading={loadingApp} type="primary" htmlType="submit">
             Đăng bài
           </Button>
         </Form.Item>

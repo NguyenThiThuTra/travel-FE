@@ -1,4 +1,5 @@
 import { Empty, Input } from 'antd';
+import homestayApi from 'api/homestayApi';
 import ChatIcon from 'assets/images/chat.png';
 import { firestore } from 'configs/firebase/config';
 import { useCurrentUserSelector } from 'features/Auth/AuthSlice';
@@ -8,6 +9,10 @@ import {
   useOpenPopupChatBoxSelector,
   useReceiverChatBoxSelector,
 } from 'features/ChatBox/ChatBoxSlice';
+import {
+  fetchAllHomestays,
+  useHomestaysSelector,
+} from 'features/Homestay/HomestaySlice';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 import { AiOutlineCloseCircle, AiOutlineSend } from 'react-icons/ai';
@@ -20,6 +25,7 @@ import './_PopupChat.scss';
 
 export default function PopupChat() {
   const dispatch = useDispatch();
+
   // popup chat with admin
   const dummy = useRef();
   const chatBoxRef = useRef(null);
@@ -30,14 +36,30 @@ export default function PopupChat() {
   const openPopupChatBox = useSelector(useOpenPopupChatBoxSelector);
 
   const receiver = useSelector(useReceiverChatBoxSelector);
-
   const currentUser = useSelector(useCurrentUserSelector);
+  console.log({ receiver, currentUser });
 
+  const [sender, setSender] = useState('');
+  // fetchHomestayByUserId
+  useEffect(() => {
+    setSender(currentUser?.data);
+    // console.log('role', role);
+    async function fetchHomestayByUserId() {
+      const payload = {
+        filters: { user_id: currentUser?.data?._id },
+      };
+      const response = await homestayApi.getAll(payload);
+      console.log({ response });
+    }
+    fetchHomestayByUserId();
+  }, [currentUser]);
+
+  // get conversations
   const conversationsRef = firestore.collection('conversations');
   const queryConversations = conversationsRef.where(
     'members',
     'array-contains',
-    currentUser?.data?._id
+    sender?._id || ''
   );
 
   const [conversations, loadingConversations] = useCollectionData(
@@ -59,7 +81,7 @@ export default function PopupChat() {
     if (conversations && receiver) {
       setCurrentConversation(
         conversations?.find((conversation) =>
-          conversation.members.includes(receiver?.user_id)
+          conversation.members.includes(receiver?._id)
         )
       );
     }
@@ -78,41 +100,6 @@ export default function PopupChat() {
   // }, [currentConversation]);
 
   const [dataMessages, setDataMessages] = useState([]);
-  const [lastDoc, setLastDoc] = useState();
-  const [loading, setLoading] = useState(false);
-  const [isEmpty, setIsEmpty] = useState(false);
-
-  // const updateState = (collections) => {
-  //   const isCollectionEmpty = collections.size === 0;
-  //   if (!isCollectionEmpty) {
-  //     const messages = collections.docs.map((doc) => ({
-  //       ...doc.data(),
-  //       id: doc.id,
-  //     }));
-  //     const isLastDoc = collections.docs[collections.docs.length - 1];
-
-  //     setDataMessages((prevState) => [...prevState, ...messages]);
-  //     setLastDoc(isLastDoc);
-  //   } else {
-  //     setIsEmpty(true);
-  //   }
-  //   setLoading(false);
-  // };
-  // useEffect(() => {
-  //   if (!currentConversation) return;
-  //   const getMessages = async () => {
-  //     firestore
-  //       .collection('messages')
-  //       .where('conversation_id', '==', currentConversation?.id || null)
-  //       .orderBy('createdAt', 'desc')
-  //       // .limit(15)
-  //       .onSnapshot((collections) => {
-  //         updateState(collections);
-  //       });
-  //   };
-  //   getMessages();
-  // }, [currentConversation]);
-  // console.log({ dataMessages });
   const messageRef = firestore.collection('messages');
   // const queryMessage = React.useCallback(() => {
   //   let q = messageRef
@@ -147,17 +134,22 @@ export default function PopupChat() {
     const conversation_id = uuidv4();
     if (!currentConversation) {
       const conversation = {
-        members: [currentUser?.data?._id, receiver?.user_id],
+        members: [sender?._id, receiver?._id],
         id: conversation_id,
+        createdAt: new Date().getTime(),
+        updatedAt: new Date().getTime(),
       };
+      console.log({ conversation });
       conversationsRef.add(conversation);
     }
 
     const message = {
       conversation_id: currentConversation?.id || conversation_id,
       user_id: currentUser?.data?._id,
-      sender_id: currentUser?.data?._id,
+      sender_id: sender?._id,
       text: formValue,
+      photoURL: sender?.avatar,
+      name: sender?.name,
       // createdAt: new Date(),
       createdAt: new Date().getTime(),
       updatedAt: new Date().getTime(),
@@ -180,10 +172,6 @@ export default function PopupChat() {
     }
   }, [receiver]);
 
-  // openChatBox
-  const openChatBox = () => {
-    dispatch(setOpenPopupChatBox(true));
-  };
   return (
     <div className="popup-chat">
       <div
@@ -233,7 +221,7 @@ export default function PopupChat() {
                   <span ref={dummy}></span>
                   {dataMessages?.map((message, index) => (
                     <ChatMessage
-                      currentUser={currentUser}
+                      sender={sender}
                       message={message}
                       key={message.updatedAt}
                     />

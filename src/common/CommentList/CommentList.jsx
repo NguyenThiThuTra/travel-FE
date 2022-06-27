@@ -30,6 +30,7 @@ import moment from 'moment';
 import React, { Fragment, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import AvatarDefault from 'assets/images/avatar_default.png';
 
 const { Title } = Typography;
 
@@ -109,7 +110,7 @@ export function CommentList() {
         })
       );
     }
-  }, [currentUser, id]);
+  }, [currentUser?.data?._id, id]);
 
   const [value, setValue] = useState('');
 
@@ -245,10 +246,7 @@ export function CommentList() {
                         )}
                       </span>
                     }
-                    avatar={
-                      item.user_id?.avatar ||
-                      'https://joeschmoe.io/api/v1/random'
-                    }
+                    avatar={item.user_id?.avatar || AvatarDefault}
                     content={
                       <div>
                         {/* <div>{dataComments?.order_id?.order?.[0]} </div> */}

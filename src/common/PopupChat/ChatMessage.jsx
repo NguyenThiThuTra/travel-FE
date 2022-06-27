@@ -2,19 +2,19 @@ import { Avatar } from 'antd';
 import classNames from 'classnames';
 import React from 'react';
 
-export function ChatMessage({ message, currentUser }) {
+export function ChatMessage({ message, sender }) {
   return (
     <div
       style={{
         justifyContent:
-          message?.sender_id === currentUser?.data?._id && 'flex-end',
+          message?.sender_id === sender?._id && 'flex-end',
       }}
       className={classNames('chat-box__content__item')}
     >
       <div
         style={{
           backgroundColor:
-            message?.sender_id === currentUser?.data?._id
+            message?.sender_id === sender?._id
               ? '#3578E5'
               : '#f5f6f8',
         }}
@@ -25,7 +25,7 @@ export function ChatMessage({ message, currentUser }) {
         </div>
         <div
           style={{
-            color: message?.sender_id === currentUser?.data?._id && 'white',
+            color: message?.sender_id === sender?._id && 'white',
           }}
           className="chat-box__content__message"
         >

@@ -25,7 +25,7 @@ export default function HistoryPage() {
   const commentPost = useSelector(useCommentPostSelector);
   const order = useSelector(useOrderSelector);
 
-  const pagingDefault = { limit: 1, page: 1 };
+  const pagingDefault = { limit: 10, page: 1 };
   const [paging, setPaging] = useState(pagingDefault);
   const [dataOrder, setDataOrder] = useState([]);
   console.log({ order, dataOrder });
