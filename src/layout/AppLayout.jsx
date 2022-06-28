@@ -1,24 +1,21 @@
-import { BackTop, Spin } from 'antd';
-import Header from 'common/Header/Header';
-import React, { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
 import { ArrowUpOutlined } from '@ant-design/icons';
-import Footer from 'common/Footer/Footer';
-import { flagPathname } from 'utils/flagPathname';
-import {
-  HIDDEN_FOOTER,
-  HIDDEN_FOOTER_INFO,
-  HIDDEN_HEADER,
-  HIDDEN_NEWSLETTER,
-} from 'constants/pathnameSpecial';
+import { BackTop } from 'antd';
+import Header from 'common/Header/Header';
+import PopupChat from 'common/PopupChat/PopupChat';
+import { HIDDEN_HEADER } from 'constants/pathnameSpecial';
 import {
   getCurrentUser,
   useCurrentUserSelector,
 } from 'features/Auth/AuthSlice';
-import { useDispatch, useSelector } from 'react-redux';
-import PopupChat from 'common/PopupChat/PopupChat';
-import { useOpenPopupChatBoxSelector } from 'features/ChatBox/ChatBoxSlice';
+import {
+  setOpenPopupChatBox,
+  toggleOpenPopupChatBox,
+} from 'features/ChatBox/ChatBoxSlice';
 import { useLoadingAppSelector } from 'features/commonSlice';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useLocation } from 'react-router-dom';
+import { flagPathname } from 'utils/flagPathname';
 
 export default function AppLayout({ children }) {
   const location = useLocation();
@@ -30,6 +27,16 @@ export default function AppLayout({ children }) {
   useEffect(() => {
     dispatch(getCurrentUser());
   }, [isLoggedIn]);
+
+  const [detectOwnerHomestay] = useState(['/my-homestay', 'admin']);
+  const isOwnerHomestay = detectOwnerHomestay.some((path) =>
+    location.pathname.includes(path)
+  );
+
+  useEffect(() => {
+    dispatch(setOpenPopupChatBox(false));
+  }, [isOwnerHomestay]);
+
   return (
     <React.StrictMode>
       <div className="App">
@@ -50,7 +57,7 @@ export default function AppLayout({ children }) {
           )} */}
 
         {/* popup chat admin */}
-        {currentUser && <PopupChat />}
+        {!isOwnerHomestay && currentUser && <PopupChat />}
 
         <BackTop style={{ bottom: '100px' }}>
           <div

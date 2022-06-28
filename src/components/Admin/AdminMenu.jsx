@@ -1,5 +1,6 @@
 import { AppstoreOutlined } from '@ant-design/icons';
 import { Divider, Menu, Switch } from 'antd';
+import PopupChat from 'common/PopupChat/PopupChat';
 import React, { Fragment, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { Link, useLocation, useRouteMatch } from 'react-router-dom';
@@ -82,6 +83,9 @@ export function AdminMenu() {
           })}
         </SubMenu>
       </Menu>
+      <div style={{ padding: '2rem',marginLeft: '2rem' }}>
+        <PopupChat fixed={false} />
+      </div>
     </Fragment>
   );
 }

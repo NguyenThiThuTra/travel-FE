@@ -2,12 +2,14 @@ import { Button, Col, message, Popconfirm, Row, Select } from 'antd';
 import provincesOpenApi from 'api/provincesOpenApi';
 import TravelDestinationBox from 'common/TravelDestinationBox/TravelDestinationBox';
 import FormReview from 'components/Reviews/FormReview/FormReview';
+import { ORDER_STATUS } from 'constants/order';
 import { useCurrentUserSelector } from 'features/Auth/AuthSlice';
 import { toggleModalLogin } from 'features/commonSlice';
 import { getAllOrder, useOrderSelector } from 'features/Order/OrderSlice';
 import {
   getAllReviewDestination,
-  getAllReviews, useReviewDestinationSelector
+  getAllReviews,
+  useReviewDestinationSelector,
 } from 'features/Reviews/ReviewsSlice';
 import { Fragment, useEffect, useMemo, useState } from 'react';
 import { AiFillPlusCircle } from 'react-icons/ai';
@@ -40,6 +42,7 @@ const ReviewsPage = () => {
           getAllOrder({
             filters: {
               user_id: currentUser?.data?._id,
+              status: ORDER_STATUS.approved.en,
             },
             limit: 1,
           })

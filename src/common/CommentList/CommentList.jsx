@@ -68,6 +68,7 @@ export function CommentList() {
 
   const [paging, setPaging] = useState({ limit: 5, page: 1 });
   const [dataComments, setDataComments] = useState([]);
+  console.log({ dataComments });
   const dummy = useRef();
   const loadMoreComments = () => {
     // dummy?.current?.scrollIntoView({ behavior: 'smooth' });

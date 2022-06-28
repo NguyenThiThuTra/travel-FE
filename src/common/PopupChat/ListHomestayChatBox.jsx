@@ -1,5 +1,7 @@
 import { List, Typography } from 'antd';
-import React, { Fragment, useState } from 'react';
+import { detectOwnerHomestay } from 'constants/detectOwnerHomestay';
+import React, { Fragment, useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import HomestayChatBox from './HomestayChatBoxItem';
 
 export default function ListHomestayChatBox({
@@ -8,10 +10,18 @@ export default function ListHomestayChatBox({
   currentConversation,
   sender,
 }) {
+  const location = useLocation();
+  const [isOwnerHomestay, setIsOwnerHomestay] = useState(false);
+
+  useEffect(() => {
+    setIsOwnerHomestay(
+      detectOwnerHomestay.some((path) => location.pathname.includes(path))
+    );
+  }, [location]);
   return (
     <Fragment>
       <div className="ul-list-item-homestay__title" mark>
-        Danh sách homestay
+        {isOwnerHomestay ? 'Danh sách người dùng' : 'Danh sách homestay'}
       </div>
       <ul className="ul-list-item-homestay">
         {data?.map((conversation) => (

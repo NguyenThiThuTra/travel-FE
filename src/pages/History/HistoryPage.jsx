@@ -28,7 +28,6 @@ export default function HistoryPage() {
   const pagingDefault = { limit: 10, page: 1 };
   const [paging, setPaging] = useState(pagingDefault);
   const [dataOrder, setDataOrder] = useState([]);
-  console.log({ order, dataOrder });
   useEffect(() => {
     async function getAllOrderByUserId() {
       if (currentUser?.data?._id) {
@@ -90,7 +89,6 @@ export default function HistoryPage() {
     setPaging(pagingDefault);
     setOrderStatus(key);
   };
-  console.log({ paging, dataOrder });
   const dataRender = dataOrder?.filter((data) => data.status === orderStatus);
   return (
     <div className="history-page" style={{ padding: '8rem 2rem' }}>

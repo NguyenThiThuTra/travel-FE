@@ -21,6 +21,7 @@ import {
   updateOrder,
   useOrderSelector,
 } from 'features/Order/OrderSlice';
+import moment from 'moment';
 import React, { Fragment, useEffect, useMemo, useState } from 'react';
 import { AiFillStar } from 'react-icons/ai';
 import { useDispatch, useSelector } from 'react-redux';
@@ -130,6 +131,10 @@ export function OrderItem({
   }, [data]);
 
   // get comment by order_id
+  const [commentOrderId, setCommentOrderId] = useState('');
+  const handleSetCommentOrderId = () => {
+    setCommentOrderId(data?._id);
+  };
   const [commentByOrderId, setCommentByOrderId] = useState(null);
   useEffect(() => {
     const getCommentByOrderId = async () => {
@@ -138,7 +143,7 @@ export function OrderItem({
       setCommentByOrderId(response?.data);
     };
     getCommentByOrderId();
-  }, [data]);
+  }, [data, commentOrderId]);
 
   // get my order in homestay
   useEffect(() => {
@@ -156,27 +161,14 @@ export function OrderItem({
     getOrders();
   }, [currentUser, data?.homestay_id?._id]);
 
-  const checkOwnerHomestay = () => {
-    if (
-      currentUser?.data?._id &&
-      currentUser?.data?._id === data?.homestay_id?.user_id
-    ) {
-      return true;
-    }
-    return false;
-  };
   const checkUserCommented = () => {
-    if (!checkOwnerHomestay()) {
+    const isTimeAfterNow = moment(data?.start).isSameOrBefore(moment());
+    const isCheckConditionReview =
+      !seller && orderStatus === ORDER_STATUS.approved.en && isTimeAfterNow;
+    if (isCheckConditionReview) {
       return true;
-    }
-    const limitComment = orders?.filter(
-      (o) => o.status === ORDER_STATUS.approved.en
-    )?.length;
-    const commentsLength = comments?.data?.filter(
-      (comment) => comment?.user_id?._id === currentUser?.data?._id
-    ).length;
-    if (limitComment && commentsLength) {
-      return commentsLength < limitComment;
+    } else {
+      return false;
     }
   };
 
@@ -191,6 +183,7 @@ export function OrderItem({
     const ward = addresses?.ward?.name;
     return `${address}, ${ward}, ${district}, ${province}`;
   };
+
   return (
     <Fragment>
       <Card className="order-item">
@@ -230,25 +223,21 @@ export function OrderItem({
         <Divider className="order-item__divider" />
         <div className="order-item__bottom-wrap">
           <div>
-            {
-              // checkUserCommented() &&
-              !seller &&
-                orderStatus === ORDER_STATUS.approved.en &&
-                (!(commentByOrderId?.length > 0) ? (
-                  <div
-                    onClick={() => showModal(data?._id)}
-                    className="order-item__review"
-                  >
-                    <AiFillStar size={25} color="#fadb14" />
-                    <span>Cho điểm và đánh giá </span>
-                  </div>
-                ) : (
-                  <div className="order-item__review">
-                    <AiFillStar size={25} />
-                    <span>Đã hoàn thành đánh giá </span>
-                  </div>
-                ))
-            }
+            {checkUserCommented() &&
+              (!(commentByOrderId?.length > 0) ? (
+                <div
+                  onClick={() => showModal(data?._id)}
+                  className="order-item__review"
+                >
+                  <AiFillStar size={25} color="#fadb14" />
+                  <span>Cho điểm và đánh giá </span>
+                </div>
+              ) : (
+                <div className="order-item__review">
+                  <AiFillStar size={25} />
+                  <span>Đã hoàn thành đánh giá </span>
+                </div>
+              ))}
           </div>
           <div className="order-item__bottom">
             <div className="order-item__total">
@@ -300,6 +289,7 @@ export function OrderItem({
 
       {visibleFormReview && (
         <FormAssessmentHomestay
+          handleSetCommentOrderId={handleSetCommentOrderId}
           homestay={data?.homestay_id}
           orderId={orderId}
           visible={visibleFormReview}

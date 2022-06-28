@@ -1,6 +1,7 @@
 import { Empty, Input } from 'antd';
 import homestayApi from 'api/homestayApi';
 import ChatIcon from 'assets/images/chat.png';
+import classNames from 'classnames';
 import { firestore } from 'configs/firebase/config';
 import { detectOwnerHomestay } from 'constants/detectOwnerHomestay';
 import { useCurrentUserSelector } from 'features/Auth/AuthSlice';
@@ -25,7 +26,7 @@ import { ChatMessage } from './ChatMessage';
 import ListHomestayChatBox from './ListHomestayChatBox';
 import './_PopupChat.scss';
 
-export default function PopupChat() {
+export default function PopupChat({ fixed = true }) {
   const location = useLocation();
   const dispatch = useDispatch();
 
@@ -50,7 +51,7 @@ export default function PopupChat() {
       detectOwnerHomestay.some((path) => location.pathname.includes(path))
     );
   }, [location]);
-  
+
   useEffect(() => {
     if (!isOwnerHomestay) {
       setSender(currentUser?.data);
@@ -169,7 +170,9 @@ export default function PopupChat() {
     <div className="popup-chat">
       <div
         onClick={() => dispatch(toggleOpenPopupChatBox())}
-        className="icon-open-message"
+        className={classNames('icon-open-message ', {
+          'fixed': fixed,
+        })}
       >
         <img
           width="40px"
@@ -182,8 +185,10 @@ export default function PopupChat() {
         <div
           ref={chatBoxRef}
           onMouseEnter={() => chatBoxRef?.current?.focus()}
-          className="chat-box"
-        >
+          className={classNames("chat-box fixed ", {
+            'fixed': fixed,
+          })}
+      >
           {/* <div onClick={() => moreMessage()}> MORE MORE </div> */}
           <div className="chat-box__header">
             <BsChatFill color="#ee4d2d" fontSize={20} />

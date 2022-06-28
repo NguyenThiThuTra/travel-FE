@@ -1,6 +1,9 @@
 .popup-chat {
-  .icon-open-message {
+  .fixed {
     position: fixed;
+  }
+  .icon-open-message {
+    // position: fixed;
     right: 5rem;
     bottom: 4rem;
     z-index: 9999;
@@ -16,7 +19,7 @@
   }
   // chat-box
   .chat-box {
-    position: fixed;
+    // position: fixed;
     border-radius: 5px;
     right: 5rem;
     bottom: 0;

@@ -116,7 +116,6 @@ export default function ActionFormHomestay() {
   } = useForm({
     resolver: yupResolver(validationSchema),
   });
-  console.log({ errors });
   useEffect(() => {
     async function setInitialValues() {
       if (currentUser?.data?._id) {
@@ -199,13 +198,13 @@ export default function ActionFormHomestay() {
         user_id: currentUser?.data?._id,
       });
       if (role === PERMISSIONS.user) {
-        history.push('/my-homestay/homestays');
+        history.replace('/my-homestay/homestays');
       }
-      // if (role === PERMISSIONS.admin) {
-      //   history.push('/admin/homestays');
-      // }
+      if (role === PERMISSIONS.admin) {
+        history.replace('/admin/homestays');
+      }
     } catch (error) {
-      message.error('Error');
+      console.error(error);
     }
   };
 
@@ -240,7 +239,6 @@ export default function ActionFormHomestay() {
     }
     return;
   }, [districtCode]);
-  console.log({ listProvinces, listDistricts, listWards });
   //end addresses
 
   function onSearch(val) {
@@ -357,7 +355,7 @@ export default function ActionFormHomestay() {
               return (
                 <TextArea
                   {...field}
-                  placeholder="Địa chỉ"
+                  placeholder="Mô tả"
                   autoSize={{ minRows: 3, maxRows: 5 }}
                 />
               );

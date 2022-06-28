@@ -15,6 +15,7 @@ import orderApi from 'api/orderApi';
 import provincesOpenApi from 'api/provincesOpenApi';
 import { useCurrentUserSelector } from 'features/Auth/AuthSlice';
 import { addCommentInHomestay } from 'features/Comment/CommentSlice';
+import { setLoadingApp, useLoadingAppSelector } from 'features/commonSlice';
 import { postReview } from 'features/Reviews/ReviewsSlice';
 import { objectToFormData } from 'helpers/ConvertObjectToFormData';
 import React, { useEffect, useState } from 'react';
@@ -32,11 +33,14 @@ export default function FormAssessmentHomestay({
   loading,
   homestay,
   orderId,
+  handleSetCommentOrderId,
 }) {
   const dispatch = useDispatch();
   const currentUser = useSelector(useCurrentUserSelector);
+  const loadingApp = useSelector(useLoadingAppSelector);
 
   const onFinish = async (values) => {
+    dispatch(setLoadingApp(true));
     let { text, rate } = values;
     const payload = {
       text,
@@ -54,10 +58,12 @@ export default function FormAssessmentHomestay({
 
     try {
       await dispatch(addCommentInHomestay(formData)).unwrap();
+      await handleSetCommentOrderId();
       await handleCancel();
+      dispatch(setLoadingApp(false));
     } catch (error) {
-      message.error(error.message);
       console.error(error);
+      dispatch(setLoadingApp(false));
     }
   };
 
@@ -246,7 +252,7 @@ export default function FormAssessmentHomestay({
         </Form.Item>
 
         <Form.Item>
-          <Button type="primary" htmlType="submit">
+          <Button loading={loadingApp} type="primary" htmlType="submit">
             Đăng bài
           </Button>
         </Form.Item>

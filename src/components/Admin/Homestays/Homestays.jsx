@@ -89,7 +89,7 @@ export default function AdminHomestaysPage(props) {
         },
       },
       {
-        title: 'description',
+        title: 'Mô tả',
         width: 250,
         dataIndex: 'description',
         key: 'description',
