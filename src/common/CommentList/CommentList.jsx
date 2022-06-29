@@ -68,7 +68,6 @@ export function CommentList() {
 
   const [paging, setPaging] = useState({ limit: 5, page: 1 });
   const [dataComments, setDataComments] = useState([]);
-  console.log({ dataComments });
   const dummy = useRef();
   const loadMoreComments = () => {
     // dummy?.current?.scrollIntoView({ behavior: 'smooth' });
@@ -215,153 +214,172 @@ export function CommentList() {
               header={`${dataComments.length} bình luận`}
               itemLayout="horizontal"
               dataSource={dataComments || []}
-              renderItem={(item) => (
-                <li key={Math.random()}>
-                  <Comment
-                    actions={
-                      checkOwnerHomestay() && [
-                        // !item?.replies?.length > 0 &&
-                        <span
-                          onClick={() => handleShowInputReplyComment(item._id)}
-                          key="comment-list-reply-to-0"
-                        >
-                          Trả lời
-                        </span>,
-                      ]
-                    }
-                    author={
-                      <span style={{ fontSize: '16px' }}>
-                        <span>{item.user_id?.name}</span>
-                        {item?.rate && (
-                          <Rate
-                            style={{
-                              paddingLeft: '10px',
-                              fontSize: '15px',
-                              position: 'relative',
-                              bottom: '2px',
-                            }}
-                            allowHalf
-                            disabled
-                            defaultValue={item?.rate}
-                          />
-                        )}
-                      </span>
-                    }
-                    avatar={item.user_id?.avatar || AvatarDefault}
-                    content={
-                      <div>
-                        {/* <div>{dataComments?.order_id?.order?.[0]} </div> */}
-                        {item.text}
+              renderItem={(item) => {
+                const order = item?.order_id?.order;
 
-                        {item?.images?.length > 0 && (
-                          <Fragment>
-                            <Image
-                              style={{ marginTop: '2rem' }}
-                              preview={{ visiblePreviewGroup: false }}
-                              width={200}
-                              src={item?.images[0]}
-                              alt="image preview"
-                              onClick={() => handleShowImagePreview(item?._id)}
-                            />
-
-                            <div style={{ display: 'none' }}>
-                              <Image.PreviewGroup
-                                preview={{
-                                  visible:
-                                    visiblePreviewGroup &&
-                                    idImagePreview === item?._id,
-                                  onVisibleChange: (vis) =>
-                                    setVisiblePreviewGroup(vis),
+                const arrNameHomestay = order
+                  ?.map((category) => category?.category_id?.name)
+                  .join(', ');
+                return (
+                  <li key={Math.random()}>
+                    <Comment
+                      actions={
+                        checkOwnerHomestay() && [
+                          // !item?.replies?.length > 0 &&
+                          <span
+                            onClick={() =>
+                              handleShowInputReplyComment(item._id)
+                            }
+                            key="comment-list-reply-to-0"
+                          >
+                            Trả lời
+                          </span>,
+                        ]
+                      }
+                      author={
+                        <div>
+                          {' '}
+                          <div style={{ fontSize: '16px' }}>
+                            <span>{item.user_id?.name}</span>
+                            {item?.rate && (
+                              <Rate
+                                style={{
+                                  paddingLeft: '10px',
+                                  fontSize: '15px',
+                                  position: 'relative',
+                                  bottom: '2px',
                                 }}
-                              >
-                                {item?.images?.map((image, index) => (
-                                  <Image
-                                    key={index}
-                                    src={image}
-                                    alt={`preview ${index}`}
-                                  />
-                                ))}
-                              </Image.PreviewGroup>
-                            </div>
-                          </Fragment>
-                        )}
-                      </div>
-                    }
-                    datetime={
-                      <Tooltip
-                        title={moment(item.updatedAt).format(
-                          'YYYY-MM-DD HH:mm:ss'
-                        )}
-                      >
-                        <span>{moment(item.updatedAt).fromNow()}</span>
-                      </Tooltip>
-                    }
-                    children={
-                      <>
-                        {item?.replies?.map((reply) => (
-                          <Comment
-                            author={currentUser?.data?.name}
-                            avatar={
-                              currentUser?.data?.avatar ||
-                              'https://joeschmoe.io/api/v1/random'
-                            }
-                            content={reply.text}
-                            datetime={
-                              <Tooltip
-                                title={moment(reply.updatedAt).format(
-                                  'YYYY-MM-DD HH:mm:ss'
-                                )}
-                              >
-                                <span>{moment(reply.updatedAt).fromNow()}</span>
-                              </Tooltip>
-                            }
-                          />
-                        ))}
-                        {checkOwnerHomestay() &&
-                          // !item?.replies.length > 0 &&
-                          showReplyComment === item._id && (
+                                allowHalf
+                                disabled
+                                defaultValue={item?.rate}
+                              />
+                            )}
+                          </div>
+                          <div style={{ margin: '5px 0' }}>
+                            Đã từng ở tại {arrNameHomestay}
+                          </div>
+                        </div>
+                      }
+                      avatar={item.user_id?.avatar || AvatarDefault}
+                      content={
+                        <div>
+                          {/* <div>{dataComments?.order_id?.order?.[0]} </div> */}
+                          {item.text}
+
+                          {item?.images?.length > 0 && (
+                            <Fragment>
+                              <Image
+                                style={{ marginTop: '2rem' }}
+                                preview={{ visiblePreviewGroup: false }}
+                                width={200}
+                                src={item?.images[0]}
+                                alt="image preview"
+                                onClick={() =>
+                                  handleShowImagePreview(item?._id)
+                                }
+                              />
+
+                              <div style={{ display: 'none' }}>
+                                <Image.PreviewGroup
+                                  preview={{
+                                    visible:
+                                      visiblePreviewGroup &&
+                                      idImagePreview === item?._id,
+                                    onVisibleChange: (vis) =>
+                                      setVisiblePreviewGroup(vis),
+                                  }}
+                                >
+                                  {item?.images?.map((image, index) => (
+                                    <Image
+                                      key={index}
+                                      src={image}
+                                      alt={`preview ${index}`}
+                                    />
+                                  ))}
+                                </Image.PreviewGroup>
+                              </div>
+                            </Fragment>
+                          )}
+                        </div>
+                      }
+                      datetime={
+                        <Tooltip
+                          title={moment(item.updatedAt).format(
+                            'YYYY-MM-DD HH:mm:ss'
+                          )}
+                        >
+                          <span>{moment(item.updatedAt).fromNow()}</span>
+                        </Tooltip>
+                      }
+                      children={
+                        <>
+                          {item?.replies?.map((reply) => (
                             <Comment
+                              author={currentUser?.data?.name}
                               avatar={
-                                <Avatar
-                                  src={
-                                    currentUser?.data?.avatar ||
-                                    'https://joeschmoe.io/api/v1/random'
-                                  }
-                                  alt={currentUser?.data?.name}
-                                />
+                                currentUser?.data?.avatar ||
+                                'https://joeschmoe.io/api/v1/random'
                               }
-                              content={
-                                <>
-                                  <Form
-                                    ref={formRef}
-                                    onFinish={handleSubmitReplyComment}
-                                  >
-                                    <Form.Item name="text">
-                                      <TextArea
-                                        rows={4}
-                                        // onChange={handleChangeReplyComment}
-                                        // value={valueReplyComment}
-                                      />
-                                    </Form.Item>
-                                    <Form.Item>
-                                      <Button
-                                        htmlType="submit"
-                                        // loading={loading}
-                                        type="primary"
-                                      >
-                                        Add Comment
-                                      </Button>
-                                    </Form.Item>
-                                  </Form>
-                                </>
+                              content={reply.text}
+                              datetime={
+                                <Tooltip
+                                  title={moment(reply.updatedAt).format(
+                                    'YYYY-MM-DD HH:mm:ss'
+                                  )}
+                                >
+                                  <span>
+                                    {moment(reply.updatedAt).fromNow()}
+                                  </span>
+                                </Tooltip>
                               }
                             />
-                          )}
-                      </>
-                    }
-                  />
-                </li>
-              )}
+                          ))}
+                          {checkOwnerHomestay() &&
+                            // !item?.replies.length > 0 &&
+                            showReplyComment === item._id && (
+                              <Comment
+                                avatar={
+                                  <Avatar
+                                    src={
+                                      currentUser?.data?.avatar ||
+                                      'https://joeschmoe.io/api/v1/random'
+                                    }
+                                    alt={currentUser?.data?.name}
+                                  />
+                                }
+                                content={
+                                  <>
+                                    <Form
+                                      ref={formRef}
+                                      onFinish={handleSubmitReplyComment}
+                                    >
+                                      <Form.Item name="text">
+                                        <TextArea
+                                          rows={4}
+                                          // onChange={handleChangeReplyComment}
+                                          // value={valueReplyComment}
+                                        />
+                                      </Form.Item>
+                                      <Form.Item>
+                                        <Button
+                                          htmlType="submit"
+                                          // loading={loading}
+                                          type="primary"
+                                        >
+                                          Add Comment
+                                        </Button>
+                                      </Form.Item>
+                                    </Form>
+                                  </>
+                                }
+                              />
+                            )}
+                        </>
+                      }
+                    />
+                  </li>
+                );
+              }}
             />
           </Fragment>
         ) : (
