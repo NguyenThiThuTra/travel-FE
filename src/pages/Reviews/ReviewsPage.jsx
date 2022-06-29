@@ -27,9 +27,9 @@ const ReviewsPage = () => {
 
   const orders = useSelector(useOrderSelector);
   const reviewDestination = useSelector(useReviewDestinationSelector);
-  useEffect(() => {
-    dispatch(getAllReviews());
-  }, []);
+  // useEffect(() => {
+  //   dispatch(getAllReviews());
+  // }, []);
 
   useEffect(() => {
     dispatch(getAllReviewDestination());

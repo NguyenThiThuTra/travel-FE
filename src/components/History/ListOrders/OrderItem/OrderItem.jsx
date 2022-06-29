@@ -191,6 +191,10 @@ export function OrderItem({
         <div style={{ fontWeight: 'bold' }}>
           Địa chỉ: {renderAddressHomestay()}{' '}
         </div>
+        <div style={{ fontWeight: 'bold' }}>
+          {moment(data?.start).format('DD/MM/YYYY')} -{' '}
+          {moment(data?.end).format('DD/MM/YYYY')}
+        </div>
         <Divider className="order-item__divider" />
         {data?.order?.map(({ category_id: category, select_room }, idx) => (
           <div
@@ -224,6 +228,7 @@ export function OrderItem({
         <div className="order-item__bottom-wrap">
           <div>
             {checkUserCommented() &&
+              Array.isArray(commentByOrderId) &&
               (!(commentByOrderId?.length > 0) ? (
                 <div
                   onClick={() => showModal(data?._id)}
@@ -238,6 +243,17 @@ export function OrderItem({
                   <span>Đã hoàn thành đánh giá </span>
                 </div>
               ))}
+            {!checkUserCommented() &&
+              !seller &&
+              orderStatus === ORDER_STATUS.approved.en && (
+                <div className="order-item__review">
+                  <AiFillStar size={25} color="#B15200" />
+                  <span>
+                    Đợi đến ngày {moment(data?.start).format('DD/MM/YYYY')} để
+                    được đánh giá
+                  </span>
+                </div>
+              )}
           </div>
           <div className="order-item__bottom">
             <div className="order-item__total">

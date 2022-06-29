@@ -307,7 +307,7 @@ export default function FormReview({
                   block
                   icon={<PlusOutlined />}
                 >
-                  Thêm review
+                  Thêm lịch trình
                 </Button>
               </Form.Item>
             </>

@@ -26,7 +26,7 @@ import { ChatMessage } from './ChatMessage';
 import ListHomestayChatBox from './ListHomestayChatBox';
 import './_PopupChat.scss';
 
-export default function PopupChat({ fixed = true }) {
+export default function PopupChat({ fixed = true, size }) {
   const location = useLocation();
   const dispatch = useDispatch();
 
@@ -171,7 +171,8 @@ export default function PopupChat({ fixed = true }) {
       <div
         onClick={() => dispatch(toggleOpenPopupChatBox())}
         className={classNames('icon-open-message ', {
-          'fixed': fixed,
+          fixed: fixed,
+          'size-small': size === 'small',
         })}
       >
         <img
@@ -185,10 +186,10 @@ export default function PopupChat({ fixed = true }) {
         <div
           ref={chatBoxRef}
           onMouseEnter={() => chatBoxRef?.current?.focus()}
-          className={classNames("chat-box fixed ", {
-            'fixed': fixed,
+          className={classNames('chat-box fixed ', {
+            fixed: fixed,
           })}
-      >
+        >
           {/* <div onClick={() => moreMessage()}> MORE MORE </div> */}
           <div className="chat-box__header">
             <BsChatFill color="#ee4d2d" fontSize={20} />

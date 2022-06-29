@@ -84,7 +84,7 @@ export function AdminMenu() {
         </SubMenu>
       </Menu>
       <div style={{ padding: '2rem',marginLeft: '2rem' }}>
-        <PopupChat fixed={false} />
+        <PopupChat fixed={false} size="small" />
       </div>
     </Fragment>
   );

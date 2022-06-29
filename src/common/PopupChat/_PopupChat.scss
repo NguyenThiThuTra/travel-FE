@@ -17,6 +17,14 @@
     box-shadow: 1px 1px 10px rgba(24, 144, 255, 0.4);
     cursor: pointer;
   }
+  .icon-open-message.size-small {
+    width: 4rem;
+    height: 4rem;
+    img {
+      width: 30px;
+      height: 30px;
+    }
+  }
   // chat-box
   .chat-box {
     // position: fixed;

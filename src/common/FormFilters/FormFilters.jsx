@@ -54,7 +54,7 @@ const FormFilters = () => {
     const from_date = moment(rangePickerValue[0]).format('YYYY-MM-DD');
     const to_date = moment(rangePickerValue[1]).format('YYYY-MM-DD');
     const query = {};
-    
+
     if (nameHomestayRef.current.value) {
       query.search = nameHomestayRef.current.value;
     }
@@ -112,6 +112,7 @@ const FormFilters = () => {
           <div className="form-filters__col">
             <div className="form-filters__title">Chọn địa điểm bạn muốn :</div>
             <Select
+              allowClear
               value={provinceCode}
               className="form-filters__input"
               onChange={onChangeProvince}

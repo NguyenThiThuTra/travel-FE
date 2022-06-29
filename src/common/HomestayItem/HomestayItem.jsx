@@ -117,7 +117,7 @@ const HomestayItem = ({ size, homestay, handleRedirectHomestayDetail }) => {
             />
 
             <div className="package-box__min-price">
-              {category?.price?.toLocaleString()}đ
+              {category?.price && `${category?.price?.toLocaleString()} đ`}
             </div>
           </div>
         </div>
