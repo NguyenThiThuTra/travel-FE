@@ -9,6 +9,7 @@ import {
 } from 'features/Auth/AuthSlice';
 import {
   setOpenPopupChatBox,
+  setReceiver,
   toggleOpenPopupChatBox,
 } from 'features/ChatBox/ChatBoxSlice';
 import { useLoadingAppSelector } from 'features/commonSlice';
@@ -35,6 +36,7 @@ export default function AppLayout({ children }) {
 
   useEffect(() => {
     dispatch(setOpenPopupChatBox(false));
+    dispatch(setReceiver(null));
   }, [isOwnerHomestay]);
 
   return (

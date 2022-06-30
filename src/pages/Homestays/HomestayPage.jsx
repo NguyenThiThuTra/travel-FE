@@ -18,13 +18,16 @@ const HomestayPage = () => {
   const querySearch = queryString.parse(location.search);
   const dispatch = useDispatch();
   const homestays = useSelector(useHomestaysSelector);
-  
+
   const pagingDefault = { limit: 9, page: 1 };
   useEffect(() => {
     dispatch(
       fetchAllHomestaySearch({
         limit: pagingDefault.limit,
         page: pagingDefault.page,
+        filters: {
+          active: true,
+        },
         ...querySearch,
       })
     );

@@ -192,8 +192,7 @@ export function OrderItem({
           Địa chỉ: {renderAddressHomestay()}{' '}
         </div>
         <div style={{ fontWeight: 'bold' }}>
-          {moment(data?.start).format('DD/MM/YYYY')} -{' '}
-          {moment(data?.end).format('DD/MM/YYYY')}
+        Thời gian : {moment(data?.start).format('DD/MM/YYYY')} - {moment(data?.end).format('DD/MM/YYYY')}
         </div>
         <Divider className="order-item__divider" />
         {data?.order?.map(({ category_id: category, select_room }, idx) => (
