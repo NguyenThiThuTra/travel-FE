@@ -21,7 +21,7 @@ function onSearch(val) {
 export function TableProduct({ nameHomestay, homestay_id, data }) {
   const location = useLocation();
   const querySearch = queryString.parse(location.search);
-
+  // console.log({ data });
   const dispatch = useDispatch();
 
   const renderOptionRoom = (record) => {
@@ -49,7 +49,6 @@ export function TableProduct({ nameHomestay, homestay_id, data }) {
     // message.error('Click on No');
     setVisiblePopupNotification(false);
   }
-  console.log({ currentUser });
 
   const showModalOrders = () => {
     if (!currentUser) {
@@ -188,6 +187,16 @@ export function TableProduct({ nameHomestay, homestay_id, data }) {
               )}
             </div>
           );
+        },
+      },
+      {
+        key: 'category.description',
+        title: 'Mô tả	',
+        width: 220,
+        dataIndex: 'category.description',
+        render: (n, record) => {
+          const category = record?.[0]?.category_id;
+          return <div className="room_seperator"> {category?.description} </div>;
         },
       },
       {

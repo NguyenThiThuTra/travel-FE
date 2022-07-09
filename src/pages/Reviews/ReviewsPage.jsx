@@ -7,9 +7,7 @@ import { useCurrentUserSelector } from 'features/Auth/AuthSlice';
 import { toggleModalLogin } from 'features/commonSlice';
 import { getAllOrder, useOrderSelector } from 'features/Order/OrderSlice';
 import {
-  getAllReviewDestination,
-  getAllReviews,
-  useReviewDestinationSelector,
+  getAllReviewDestination, useReviewDestinationSelector
 } from 'features/Reviews/ReviewsSlice';
 import { Fragment, useEffect, useMemo, useState } from 'react';
 import { AiFillPlusCircle } from 'react-icons/ai';

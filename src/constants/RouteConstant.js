@@ -1,26 +1,25 @@
 import NotFount from 'common/NotFount/NotFount';
-import DestinationsPage from 'pages/Admin/Destinations/Destinations';
+import AdminCategoryPage from 'components/Admin/Category/Category';
+import ActionFormHomestay from 'components/Admin/Homestays/ActionFormHomestay';
+import AdminHomestaysPage from 'components/Admin/Homestays/Homestays';
+import OrderDetail from 'components/Admin/Orders/OrderDetail';
+import OrdersPage from 'components/Admin/Orders/Orders';
+import ActionFormRoom from 'components/Admin/Rooms/ActionFormRoom';
+import ActionFormUser from 'components/Admin/Users/ActionFormUser';
+import UsersPage from 'components/Admin/Users/Users';
+import Admin from 'pages/Admin/AdminPage';
 import CartPage from 'pages/Cart/CartPage';
+import HistoryPage from 'pages/History/HistoryPage';
 import HomePage from 'pages/Home/HomePage';
 import HomestayDetailPage from 'pages/HomestayDetail/HomestayDetailPage';
 import HomestayPage from 'pages/Homestays/HomestayPage';
 import LoginPage from 'pages/Login/LoginPage';
-import RoomPage from 'pages/Room/RoomPage';
-import Admin from 'pages/Admin/AdminPage';
-import ProductsDetailsPage from 'pages/ProductsDetails/ProductDetailPage';
-import HistoryPage from 'pages/History/HistoryPage';
-import OrdersPage from 'components/Admin/Orders/Orders';
-import OrderDetail from 'components/Admin/Orders/OrderDetail';
-import ActionFormRoom from 'components/Admin/Rooms/ActionFormRoom';
-import AdminHomestaysPage from 'components/Admin/Homestays/Homestays';
-import ActionFormHomestay from 'components/Admin/Homestays/ActionFormHomestay';
-import UsersPage from 'components/Admin/Users/Users';
-import ActionFormUser from 'components/Admin/Users/ActionFormUser';
-import TestPage from 'pages/Test/TestPage';
-import AdminCategoryPage from 'components/Admin/Category/Category';
 import PaymentPage from 'pages/Payment/PaymentPage';
-import ReviewsPage from 'pages/Reviews/ReviewsPage';
+import ProductsDetailsPage from 'pages/ProductsDetails/ProductDetailPage';
 import ReviewDetailPage from 'pages/ReviewDetail/ReviewDetailPage';
+import ReviewsPage from 'pages/Reviews/ReviewsPage';
+import RoomPage from 'pages/Room/RoomPage';
+import TestPage from 'pages/Test/TestPage';
 
 export const RouteConstant = {
   TestPage: {
@@ -46,10 +45,6 @@ export const RouteConstant = {
   RoomDetailPage: {
     path: '/products/:id',
     component: <ProductsDetailsPage />,
-  },
-  DestinationPage: {
-    path: '/destinations',
-    component: <DestinationsPage />,
   },
   HomestayPage: {
     path: '/homestays',

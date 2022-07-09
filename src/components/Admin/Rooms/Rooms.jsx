@@ -230,7 +230,7 @@ export default function RoomsPage(props) {
           defaultCurrent: Number(querySearch?.page) || 1,
           defaultPageSize: Number(querySearch?.limit) || 10,
         }}
-        expandable={expandable}
+        // expandable={expandable}
         title={() => <CustomTitleTable title="Danh sách phòng" />}
         // footer={() => <CustomFooterTable title="Here is footer" />}
       />

@@ -267,7 +267,6 @@ export default function AdminHomestaysPage(props) {
         key: 'active',
         width: 150,
         render: (n, record) => {
-          console.log({ record });
           return (
             <Popconfirm
               // huỷ đơn hàng

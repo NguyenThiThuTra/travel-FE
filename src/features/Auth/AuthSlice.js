@@ -105,7 +105,6 @@ export const getCurrentUser = createAsyncThunk(
           dispatch(setLoadingApp(false));
           return false;
         }
-        console.log({ response });
         dispatch(setLoadingApp(false));
         return response;
       }

@@ -1,20 +1,18 @@
 import NotFount from 'common/NotFount/NotFount';
 import Admin from 'pages/Admin/AdminPage';
 import CartPage from 'pages/Cart/CartPage';
-import DestinationsPage from 'pages/Destinations/DestinationPage';
-import DestinationsDetailsPage from 'pages/DestinationsDetail/DestinationDetailPage';
 import HistoryPage from 'pages/History/HistoryPage';
 import HomePage from 'pages/Home/HomePage';
-import LoginPage from 'pages/Login/LoginPage';
-import HomestayPage from 'pages/Homestays/HomestayPage';
 import HomestayDetailPage from 'pages/HomestayDetail/HomestayDetailPage';
-import RoomPage from 'pages/Room/RoomPage';
-import ProductsDetailsPage from 'pages/ProductsDetails/ProductDetailPage';
-import TestPage from 'pages/Test/TestPage';
-import PaymentVnPayReturn from 'pages/PaymentVnPayReturn/PaymentVnPayReturn';
+import HomestayPage from 'pages/Homestays/HomestayPage';
+import LoginPage from 'pages/Login/LoginPage';
 import PaymentPage from 'pages/Payment/PaymentPage';
-import ReviewsPage from 'pages/Reviews/ReviewsPage';
+import PaymentVnPayReturn from 'pages/PaymentVnPayReturn/PaymentVnPayReturn';
+import ProductsDetailsPage from 'pages/ProductsDetails/ProductDetailPage';
 import ReviewDetailPage from 'pages/ReviewDetail/ReviewDetailPage';
+import ReviewsPage from 'pages/Reviews/ReviewsPage';
+import RoomPage from 'pages/Room/RoomPage';
+import TestPage from 'pages/Test/TestPage';
 
 export const appRoutes = {
   ADMIN_ROUTES: [{ id: 0, path: '/admin', component: <Admin /> }],
@@ -59,16 +57,6 @@ export const appRoutes = {
       component: <HomestayDetailPage />,
     },
     { id: 7, path: '/homestays', component: <HomestayPage /> },
-    {
-      id: 6,
-      path: '/destinations/:id',
-      component: <DestinationsDetailsPage />,
-    },
-    {
-      id: 5,
-      path: '/destinations',
-      component: <DestinationsPage />,
-    },
     {
       id: 4,
       path: '/products/:id',

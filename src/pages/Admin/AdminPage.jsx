@@ -1,19 +1,16 @@
 import { Col, Row } from 'antd';
-import React from 'react';
-import { Route, Switch, useRouteMatch } from 'react-router-dom';
+import { PrivateRoute } from 'common/PrivateRoute';
 import { AdminMenu } from 'components/Admin/AdminMenu';
-import ActionFormDestination from 'components/Admin/Destinations/ActionFormDestination';
-import DestinationsPage from 'components/Admin/Destinations/Destinations';
+import AdminCategoryPage from 'components/Admin/Category/Category';
 import ActionFormHomestay from 'components/Admin/Homestays/ActionFormHomestay';
 import HomestaysPage from 'components/Admin/Homestays/Homestays';
+import OrderDetail from 'components/Admin/Orders/OrderDetail';
+import OrdersPage from 'components/Admin/Orders/Orders';
 import ActionFormRoom from 'components/Admin/Rooms/ActionFormRoom';
 import RoomsPage from 'components/Admin/Rooms/Rooms';
 import ActionFormUser from 'components/Admin/Users/ActionFormUser';
 import UsersPage from 'components/Admin/Users/Users';
-import OrdersPage from 'components/Admin/Orders/Orders';
-import OrderDetail from 'components/Admin/Orders/OrderDetail';
-import { PrivateRoute } from 'common/PrivateRoute';
-import AdminCategoryPage from 'components/Admin/Category/Category';
+import { Switch, useRouteMatch } from 'react-router-dom';
 export const MENU_ADMIN_ROUTES = [
   { id: 1, element: <UsersPage />, path: 'users' },
   { id: 2, element: <ActionFormUser />, path: 'users/:action' },
@@ -21,20 +18,6 @@ export const MENU_ADMIN_ROUTES = [
   { id: 4, element: <HomestaysPage />, path: 'homestays' },
   { id: 4, element: <ActionFormHomestay />, path: 'homestays/:action' },
   { id: 5, element: <ActionFormHomestay />, path: 'homestays/:action/:id' },
-  { id: 6, element: <DestinationsPage />, path: 'destinations' },
-  { id: 7, element: <ActionFormDestination />, path: 'destinations/:action' },
-  {
-    id: 8,
-    element: <ActionFormDestination />,
-    path: 'destinations/:action/:id',
-  },
-  { id: 9, element: <DestinationsPage />, path: 'destinations' },
-  { id: 10, element: <ActionFormDestination />, path: 'destinations/:action' },
-  {
-    id: 11,
-    element: <ActionFormDestination />,
-    path: 'destinations/:action/:id',
-  },
   { id: 12, element: <RoomsPage />, path: 'rooms' },
   { id: 13, element: <ActionFormRoom />, path: 'rooms/:action' },
   {

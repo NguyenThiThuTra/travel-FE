@@ -22,10 +22,14 @@ const RoomPage = () => {
     history.push(`${match.path}?${queryString.stringify(query)}`);
   };
   React.useEffect(() => {
-    dispatch(fetchAllRooms(querySearch));
+    dispatch(
+      fetchAllRooms({
+        ...querySearch,
+        // activeCategory: true,
+      })
+    );
     /* eslint-disable */
   }, [location]);
-
 
   return (
     <div className="ProductsPage">

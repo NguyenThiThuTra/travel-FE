@@ -289,7 +289,7 @@ export default function OrdersPage(props) {
           defaultCurrent: Number(querySearch?.page) || 1,
           defaultPageSize: Number(querySearch?.limit) || 10,
         }}
-        expandable={expandable}
+        // expandable={expandable}
         title={() => (
           <CustomTitleTable hideAdd={true} title="Danh sách order" />
         )}

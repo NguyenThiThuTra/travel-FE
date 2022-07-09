@@ -8,15 +8,6 @@ const { SubMenu } = Menu;
 
 export function AdminMenu() {
   const [mode, setMode] = React.useState('inline');
-  const [theme, setTheme] = React.useState('light');
-
-  const changeMode = (value) => {
-    setMode(value ? 'vertical' : 'inline');
-  };
-
-  const changeTheme = (value) => {
-    setTheme(value ? 'dark' : 'light');
-  };
 
   const match = useRouteMatch();
   const location = useLocation();
@@ -55,23 +46,12 @@ export function AdminMenu() {
         <Switch onChange={changeMode} /> Thay đổi chế dộ
       </div> */}
       <Divider type="vertical" />
-      <div
-        style={{
-          padding: '0 1rem',
-          position: 'relative',
-          top: '-1rem',
-          marginBottom: '1rem',
-        }}
-      >
-        <Switch onChange={changeTheme} /> Thay đổi phong cách
-      </div>
 
       <Menu
         style={{ width: 256 }}
         defaultSelectedKeys={[defaultSelectedKeys?.path || 'orders']}
         defaultOpenKeys={['sub1']}
         mode={mode}
-        theme={theme}
       >
         <SubMenu key="sub1" icon={<AppstoreOutlined />} title="Danh mục">
           {ListMenuCategory.map((item) => {
