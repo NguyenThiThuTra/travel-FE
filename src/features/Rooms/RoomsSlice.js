@@ -152,6 +152,23 @@ export const updateCategory = createAsyncThunk(
   }
 );
 
+export const handleActiveCategory = createAsyncThunk(
+  'category/handleActiveCategory',
+  async (payload, { rejectWithValue, dispatch }) => {
+    try {
+      dispatch(setLoadingApp(true));
+      const response = await roomApi.handleActiveCategory(payload);
+      message.success('Cập nhật thành công');
+      dispatch(setLoadingApp(false));
+      return response;
+    } catch (error) {
+      dispatch(setLoadingApp(false));
+      message.success('Cập nhật thất bại');
+      return rejectWithValue(error?.response.data);
+    }
+  }
+);
+
 const initialState = {
   category: null,
   categoryUpdated: null,
@@ -162,6 +179,7 @@ const initialState = {
   error: undefined,
   filters: {},
   roomRemoved: null,
+  roomUpdated: null,
 };
 const roomsSlices = createSlice({
   name: 'rooms',
@@ -250,6 +268,7 @@ const roomsSlices = createSlice({
     [updateRoom.fulfilled]: (state, action) => {
       state.error = undefined;
       state.loading = false;
+      state.roomUpdated = action.payload;
     },
     [updateRoom.rejected]: (state, action) => {
       state.loading = false;
@@ -266,11 +285,26 @@ const roomsSlices = createSlice({
       state.loading = false;
     },
     [updateCategory.rejected]: (state, action) => {
-      state.categoryUpdated = null
+      state.categoryUpdated = null;
       state.loading = false;
       state.error = action.payload;
     },
     [updateCategory.pending]: (state, action) => {
+      state.loading = true;
+      state.error = undefined;
+    },
+    //update category active
+    [handleActiveCategory.fulfilled]: (state, action) => {
+      state.categoryUpdated = action.payload;
+      state.error = undefined;
+      state.loading = false;
+    },
+    [handleActiveCategory.rejected]: (state, action) => {
+      state.categoryUpdated = null;
+      state.loading = false;
+      state.error = action.payload;
+    },
+    [handleActiveCategory.pending]: (state, action) => {
       state.loading = true;
       state.error = undefined;
     },
@@ -283,9 +317,9 @@ export const roomsActions = roomsSlices.actions;
 export const useCategorySelector = (state) => state.room.category;
 export const useRoomsSelector = (state) => state.room.rooms;
 export const useRoomRemovedSelector = (state) => state.room.roomRemoved;
+export const useRoomUpdatedSelector = (state) => state.room.roomUpdated;
 export const useRoomsLoadingSelector = (state) => state.room.loading;
-export const useCategoryUpdatedSelector = (state) =>
-  state.room.categoryUpdated;
+export const useCategoryUpdatedSelector = (state) => state.room.categoryUpdated;
 
 //reducer
 const roomsReducer = roomsSlices.reducer;

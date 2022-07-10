@@ -89,6 +89,7 @@ export function OrderItem({
   // total payment
   const totalPayment = useMemo(
     () =>
+      data?.total_payment ||
       data?.order?.reduce((acc, item) => {
         return acc + item?.select_room * item?.category_id?.price;
       }, 0),
@@ -192,7 +193,8 @@ export function OrderItem({
           Địa chỉ: {renderAddressHomestay()}{' '}
         </div>
         <div style={{ fontWeight: 'bold' }}>
-        Thời gian : {moment(data?.start).format('DD/MM/YYYY')} - {moment(data?.end).format('DD/MM/YYYY')}
+          Thời gian : {moment(data?.start).format('DD/MM/YYYY')} -{' '}
+          {moment(data?.end).format('DD/MM/YYYY')}
         </div>
         <Divider className="order-item__divider" />
         {data?.order?.map(({ category_id: category, select_room }, idx) => (

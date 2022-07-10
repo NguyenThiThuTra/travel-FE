@@ -23,9 +23,12 @@ export default function OrderDetail() {
     }
   }, [id, updateOrderStatus]);
   const totalPayment = (data) => {
-    return data?.order?.reduce((acc, item) => {
-      return acc + item?.select_room * item?.category_id?.price;
-    }, 0);
+    return (
+      data?.total_payment ||
+      data?.order?.reduce((acc, item) => {
+        return acc + item?.select_room * item?.category_id?.price;
+      }, 0)
+    );
   };
   return (
     <div>

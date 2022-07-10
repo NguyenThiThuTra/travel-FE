@@ -59,7 +59,7 @@ const HomestayDetailPage = () => {
         filters: {
           homestay_id: id,
         },
-        // activeCategory: true,
+        activeCategory: true,
       };
       dispatch(fetchAllRooms(payload));
       dispatch(getHomestay(id));

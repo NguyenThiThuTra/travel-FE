@@ -4,11 +4,17 @@ import CustomTable from 'common/Table/CustomTable';
 import CustomTitleTable from 'common/Table/CustomTitleTable';
 import { PERMISSIONS } from 'constants/permissions';
 import { useCurrentUserSelector } from 'features/Auth/AuthSlice';
+import { AiFillEye } from 'react-icons/ai';
 import {
   deleteRoom,
-  fetchAllCategory, updateCategory, useCategorySelector, useCategoryUpdatedSelector, useRoomRemovedSelector,
+  fetchAllCategory,
+  handleActiveCategory,
+  updateCategory,
+  useCategorySelector,
+  useCategoryUpdatedSelector,
+  useRoomRemovedSelector,
   useRoomsLoadingSelector,
-  useRoomsSelector
+  useRoomsSelector,
 } from 'features/Rooms/RoomsSlice';
 import moment from 'moment';
 import queryString from 'query-string';
@@ -60,6 +66,10 @@ export default function AdminCategoryPage(props) {
       limit: pagination.pageSize,
     };
     history.push(`${match.path}?${queryString.stringify(query)}`);
+  };
+
+  const showListRoomInHomestay = (category_id) => {
+    return history.push(`${match.path}/detail/${category_id}/rooms`);
   };
   const columns = useMemo(
     () => [
@@ -168,7 +178,6 @@ export default function AdminCategoryPage(props) {
         render: (n, record) => {
           const visiblePreviewImageGallery = () => {
             if (record?.images?.length > 1) {
-              console.log('hihi');
               setImageGallery(record.images);
               setVisiblePreviewGroup(true);
             }
@@ -292,7 +301,6 @@ export default function AdminCategoryPage(props) {
         key: 'active',
         width: 150,
         render: (n, record) => {
-          console.log('hoat dong : ', record);
           return (
             <Popconfirm
               // huỷ đơn hàng
@@ -303,7 +311,7 @@ export default function AdminCategoryPage(props) {
               }
               onConfirm={() =>
                 dispatch(
-                  updateCategory({
+                  handleActiveCategory({
                     id: record?._id,
                     category: { active: !record?.active },
                   })
@@ -333,6 +341,15 @@ export default function AdminCategoryPage(props) {
             dataDetail={category}
             funcDelete={deleteRoom}
             showActionDelete={false}
+            showActionCustom={
+              <AiFillEye
+                onClick={() => showListRoomInHomestay(r._id)}
+                style={{ marginRight: '15px' }}
+                cursor="pointer"
+                fontSize="20px"
+                color="#1890ff"
+              />
+            }
           />
         ),
       },

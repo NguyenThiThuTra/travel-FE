@@ -24,7 +24,7 @@ export const AddCartForm = ({ orders, onCloseModal }) => {
     querySearch.from_date,
     querySearch.to_date,
   ]);
-  
+
   // default filter query search
   useEffect(() => {
     if (!querySearch) return;
@@ -68,7 +68,9 @@ export const AddCartForm = ({ orders, onCloseModal }) => {
       homestay_id,
       user_id,
       order: booking,
-      orders
+      orders,
+      total_payment: orders.totalPriceOrders,
+      total_rooms: orders.totalSelectedRooms,
     };
     try {
       // await dispatch(addOrder(orderDataForm)).unwrap();

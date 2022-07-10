@@ -34,10 +34,6 @@ export const RouteConstant = {
     path: '/',
     component: <HomePage />,
   },
-  CartPage: {
-    path: '/cart',
-    component: <CartPage />,
-  },
   RoomPage: {
     path: '/rooms',
     component: <RoomPage />,

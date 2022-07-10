@@ -70,7 +70,7 @@ const PaymentPage = () => {
           };
           const response = await dispatch(createVNPayment(payload)).unwrap();
           setBookingStatus(true);
-          window.location.href = response?.vnpUrl
+          window.location.href = response?.vnpUrl;
           // window.open(response?.vnpUrl);
         } catch (error) {
           console.log(error);

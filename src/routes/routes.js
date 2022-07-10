@@ -63,7 +63,6 @@ export const appRoutes = {
       component: <ProductsDetailsPage />,
     },
     { id: 3, path: '/rooms', component: <RoomPage /> },
-    { id: 2, path: '/cart', component: <CartPage /> },
     { id: 1, path: '/', component: <HomePage /> },
     { id: 0, path: '*', component: <NotFount /> },
   ],

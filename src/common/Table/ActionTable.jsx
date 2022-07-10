@@ -14,6 +14,7 @@ export function ActionTable({
   showActionDelete = true,
   showActionEdit = true,
   showActionView = false,
+  showActionCustom = null,
 }) {
   let history = useHistory();
   let match = useRouteMatch();
@@ -77,6 +78,7 @@ export function ActionTable({
           <ImBin cursor="pointer" fontSize="20px" />
         </Popconfirm>
       )}
+      {showActionCustom}
     </Fragment>
   );
 }
