@@ -1,20 +1,18 @@
 import { Col, Dropdown, Menu, Row, Tooltip } from 'antd';
 import { resetAction } from 'app/store';
 import { HEADER } from 'constants/header';
-import { HEADER_BACKGROUND_DARK } from 'constants/pathnameSpecial';
 import { PERMISSIONS } from 'constants/permissions';
 import { RouteConstant } from 'constants/RouteConstant';
-import { getCurrentUser, logout } from 'features/Auth/AuthSlice';
+import { logout } from 'features/Auth/AuthSlice';
 import {
   toggleModalLogin,
   useVisibleModalLoginSelector,
 } from 'features/commonSlice';
 import { useDetectScroll } from 'hooks/useDetectScroll';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { HiOutlineMenu } from 'react-icons/hi';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
-import { flagPathname } from 'utils/flagPathname';
 import NavbarItem from '../NavbarItem/NavbarItem';
 import ModalLogin from './ModalLogin/ModalLogin';
 import UserProfile from './UserProfile/UserProfile';
@@ -26,9 +24,15 @@ const Header = () => {
   let dispatch = useDispatch();
   const currentUser = useSelector((state) => state.auth.currentUser);
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
-
   const loading = useSelector((state) => state.auth.loading);
-  const [isActive, setIsActive] = useState(1);
+  const [isActiveMenuMobile, setIsActiveMenuMobile] = useState(false);
+  const handleCloseMenuMobile = () => {
+    setIsActiveMenuMobile(false);
+  };
+  const handleToggleMenuMobile = () => {
+    setIsActiveMenuMobile(!isActiveMenuMobile);
+  };
+
   //show info
   const [visibleUserProfile, setVisibleUserProfile] = useState(false);
   const showUserProfile = () => {
@@ -115,32 +119,48 @@ const Header = () => {
       style={{
         backgroundColor:
           // flagPathname(HEADER_BACKGROUND_DARK, location.pathname) &&
-          'rgb(11 47 78 / 85%)',
+          isActiveMenuMobile ? 'rgb(11 47 78 / 100%)' : 'rgb(11 47 78 / 85%)',
+        zIndex: isActiveMenuMobile ? 10000 : 99,
       }}
       onMouseEnter={() => setTop(false)}
       onMouseLeave={() => setTop(true)}
     >
       <Row style={{ flex: 1 }}>
         <Col xs={6} sm={6} md={6} lg={10} span={10}>
-          <div className="toggle_menu">
-            <HiOutlineMenu
-              color={`${!top ? '#000' : '#fff'}`}
-              fontSize="2rem"
-            />
+          <div onClick={handleToggleMenuMobile} className="toggle_menu">
+            <HiOutlineMenu color="#fff" fontSize="2rem" />
           </div>
+          {isActiveMenuMobile && (
+            <div className="menu-mobile">
+              <ul className="navbar-mobile">
+                {HEADER.ListItemNavbar.map((item) => (
+                  <li
+                    key={item.id}
+                    className="navbar__item"
+                    onClick={handleCloseMenuMobile}
+                  >
+                    <NavbarItem
+                      isActive={handleActiveNavItem(item)}
+                      item={item}
+                    />
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
           <div className="navbarMain">
             <ul className="navbar">
               {HEADER.ListItemNavbar.map((item) => (
-                <div
+                <li
                   key={item.id}
                   className="navbar__item"
-                  onClick={() => item.id}
+                  onClick={handleCloseMenuMobile}
                 >
                   <NavbarItem
                     isActive={handleActiveNavItem(item)}
                     item={item}
                   />
-                </div>
+                </li>
               ))}
             </ul>
           </div>
@@ -158,7 +178,11 @@ const Header = () => {
         <Col xs={6} sm={6} md={6} lg={10} span={10}>
           <ul className="navbar_icon">
             {HEADER.ListItemIcon.map((item) => (
-              <li key={item.id} className="navbar_icon__item">
+              <li
+                onClick={handleCloseMenuMobile}
+                key={item.id}
+                className="navbar_icon__item"
+              >
                 {item.id !== 2 ? (
                   <Tooltip key={item.id} placement="bottom" title={item.text}>
                     <item.icon
@@ -167,7 +191,7 @@ const Header = () => {
                     />
                   </Tooltip>
                 ) : (
-                  <Dropdown overlay={menu} placement="bottomLeft" arrow>
+                  <Dropdown overlay={menu} placement="bottomRight" arrow>
                     <item.icon fontSize="2rem" />
                   </Dropdown>
                 )}

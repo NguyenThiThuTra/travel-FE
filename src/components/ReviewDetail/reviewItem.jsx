@@ -230,9 +230,14 @@ export function ReviewItem({ review, handleLikeReview }) {
               }
             >
               <Image
-                style={{ filter: 'brightness(80%)' }}
+                style={{
+                  filter: 'brightness(80%)',
+                  maxWidth: '300px',
+                  width: '300px'
+                  // width: 'fit-content',
+                }}
+                width="fit-content"
                 preview={{ visible: false }}
-                width={300}
                 src={review?.images?.[0]}
                 alt="image preview"
               />

@@ -29,13 +29,16 @@
   .chat-box {
     // position: fixed;
     border-radius: 5px;
-    right: 5rem;
     bottom: 0;
     z-index: 9999;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,
       rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
     min-width: 320px;
-    width: 510px;
+    @media screen and (min-width: 550px) {
+      width: 510px;
+      right: 5rem;
+    }
+    max-width: 510px;
     height: 400px;
     min-height: 400px;
     max-height: 405px;

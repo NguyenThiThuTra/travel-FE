@@ -26,6 +26,9 @@ body {
   // overflow-x: hidden;
   // margin: 0 !important;
 }
+.ant-dropdown.ant-dropdown-show-arrow{
+  z-index: 99999;
+}
 @media screen and (max-width: 991.98px) {
   .ant-row {
     // margin: 0 !important;

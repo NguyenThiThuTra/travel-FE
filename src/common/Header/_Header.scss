@@ -19,8 +19,8 @@
   display: flex;
   padding: 2rem 4rem;
   background: transparent;
-  z-index: 99;
   transition: 0.4s ease-in-out;
+  height: 65px;
   &:hover {
     // transition: .4s ease-in-out;
     background: #fff;
@@ -81,8 +81,32 @@
 //toggle_menu
 .toggle_menu {
   display: none;
+  max-width: 30px;
+  cursor: pointer;
 }
-@media only screen and (max-width: 1199.98px) {
+.menu-mobile {
+  position: fixed;
+  z-index: 10000;
+  top: 60px;
+  left: 0;
+  height: calc(100vh - 65px);
+  width: 100vw;
+  background-color: #fff;
+  padding: 20px;
+
+  .navbar-mobile {
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+  }
+  .navbar__item {
+    padding-bottom: 20px;
+  }
+  .navbar__item a {
+    color: #000 !important;
+  }
+}
+@media only screen and (max-width: 998px) {
   .navbarMain {
     display: none;
   }
