@@ -8,7 +8,6 @@ import ActionFormRoom from 'components/Admin/Rooms/ActionFormRoom';
 import ActionFormUser from 'components/Admin/Users/ActionFormUser';
 import UsersPage from 'components/Admin/Users/Users';
 import Admin from 'pages/Admin/AdminPage';
-import CartPage from 'pages/Cart/CartPage';
 import HistoryPage from 'pages/History/HistoryPage';
 import HomePage from 'pages/Home/HomePage';
 import HomestayDetailPage from 'pages/HomestayDetail/HomestayDetailPage';

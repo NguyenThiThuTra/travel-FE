@@ -1,6 +1,5 @@
 import NotFount from 'common/NotFount/NotFount';
 import Admin from 'pages/Admin/AdminPage';
-import CartPage from 'pages/Cart/CartPage';
 import HistoryPage from 'pages/History/HistoryPage';
 import HomePage from 'pages/Home/HomePage';
 import HomestayDetailPage from 'pages/HomestayDetail/HomestayDetailPage';
