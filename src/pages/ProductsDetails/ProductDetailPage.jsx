@@ -33,7 +33,7 @@ const ProductsDetailsPage = () => {
               filters: {
                 homestay_id: room.data?.homestay_id,
               },
-              // activeCategory: true,
+              activeCategory: true,
             })
           );
           const originalPromiseResult = await unwrapResult(resultAction);

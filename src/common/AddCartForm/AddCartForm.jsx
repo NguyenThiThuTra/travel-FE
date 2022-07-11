@@ -178,7 +178,7 @@ export const AddCartForm = ({ orders, onCloseModal }) => {
             ]}
             disabledDate={disabledDate}
             disabled={true}
-            placeholder={['Check-in date', 'Check-out date']}
+            placeholder={['Ngày check-in', 'Ngày check-out']}
             className="form-filters__input"
             ranges={{
               Today: [

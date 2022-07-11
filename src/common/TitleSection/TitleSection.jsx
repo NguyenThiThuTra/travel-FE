@@ -21,7 +21,7 @@ const TitleSection = ({
         }}
         className="h1"
       >
-        {title} <span>{title_ul || 'DESTINATIONS'}</span>
+        {title} <span>{title_ul || 'Điểm đến du lịch'}</span>
       </h1>
       <h3
         style={{

@@ -218,7 +218,7 @@ export default function FormReview({
             onSearch={onSearchProvince}
             showSearch
             style={{ width: 343 }}
-            placeholder="Search to Select "
+            placeholder="Tìm kiếm..."
             options={provinceBooking?.map((province) => ({
               value: province.code,
               label: province.name,

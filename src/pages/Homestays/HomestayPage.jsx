@@ -28,6 +28,7 @@ const HomestayPage = () => {
         filters: {
           active: true,
         },
+        activeCategory: true,
         ...querySearch,
       })
     );

@@ -25,7 +25,7 @@ const RoomPage = () => {
     dispatch(
       fetchAllRooms({
         ...querySearch,
-        // activeCategory: true,
+        activeCategory: true,
       })
     );
     /* eslint-disable */

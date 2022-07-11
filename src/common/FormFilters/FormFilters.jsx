@@ -121,7 +121,7 @@ const FormFilters = () => {
               onSearch={onSearchProvince}
               showSearch
               style={{ width: 200 }}
-              placeholder="Search to Select "
+              placeholder="Tìm kiếm... "
               options={provinces?.map((province) => ({
                 value: province.code,
                 label: province.name,
@@ -157,7 +157,7 @@ const FormFilters = () => {
             <RangePicker
               value={rangePickerValue}
               disabledDate={disabledDate}
-              placeholder={['Check-in date', 'Check-out date']}
+              placeholder={['Ngày check-in ', 'Ngày check-out ']}
               className="form-filters__input"
               ranges={{
                 Today: [moment(), moment()],

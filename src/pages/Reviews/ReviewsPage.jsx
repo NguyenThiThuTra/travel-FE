@@ -153,7 +153,7 @@ const ReviewsPage = () => {
               onSearch={onSearchProvince}
               showSearch
               style={{ width: 343 }}
-              placeholder="Search to Select "
+              placeholder="Tìm kiếm... "
               options={provinces?.map((province) => ({
                 value: province.code,
                 label: province.name,

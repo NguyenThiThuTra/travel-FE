@@ -91,7 +91,7 @@ export default function AdminHomestaysPage(props) {
       },
       {
         title: 'Mô tả',
-        width: 250,
+        width: 220,
         dataIndex: 'description',
         key: 'description',
       },
@@ -269,7 +269,6 @@ export default function AdminHomestaysPage(props) {
         render: (n, record) => {
           return (
             <Popconfirm
-              // huỷ đơn hàng
               title={
                 record.active
                   ? 'Bạn muốn dừng hoạt động của homestay?'

@@ -163,7 +163,10 @@ export function OrderItem({
   }, [currentUser, data?.homestay_id?._id]);
 
   const checkUserCommented = () => {
-    const isTimeAfterNow = moment(data?.start).isSameOrBefore(moment());
+    const isTimeAfterNow = moment(
+      moment(data?.start).format('YYYY-MM-DD'),
+      'YYYY-MM-DD'
+    ).isSameOrBefore(moment(moment().format('YYYY-MM-DD'), 'YYYY-MM-DD'));
     const isCheckConditionReview =
       !seller && orderStatus === ORDER_STATUS.approved.en && isTimeAfterNow;
     if (isCheckConditionReview) {
@@ -271,7 +274,6 @@ export function OrderItem({
                   <Button type="primary">Xác nhận</Button>
                 </Popconfirm>
                 <Popconfirm
-                  // huỷ đơn hàng
                   title="Bạn có chắc chắn muốn từ chối đơn hàng này?"
                   onConfirm={() => handleChangeStatus(ORDER_STATUS.rejected.en)}
                   okText="Đồng ý"

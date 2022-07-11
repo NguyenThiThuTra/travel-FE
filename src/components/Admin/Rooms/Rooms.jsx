@@ -128,15 +128,6 @@ export default function RoomsPage(props) {
         },
       },
       {
-        title: 'Giảm giá',
-        dataIndex: 'discount',
-        key: 'discount',
-        width: 100,
-        render: (n, record) => {
-          return <div>{record?.category_id?.discount}</div>;
-        },
-      },
-      {
         title: 'description',
         width: 250,
         dataIndex: 'description',
@@ -271,9 +262,8 @@ export default function RoomsPage(props) {
         render: (n, record) => {
           return (
             <Popconfirm
-              // huỷ đơn hàng
               title={
-                record.active
+                record.status
                   ? 'Bạn muốn dừng hoạt động của phòng này không?'
                   : 'Bạn muốn mở lại hoạt động của phòng này?'
               }
