@@ -54,7 +54,7 @@ const Editor = ({ onSubmit, submitting, onChange, value }) => {
   );
 };
 
-export function CommentList() {
+export function CommentList({ dataHomestay }) {
   let { id } = useParams();
   const dispatch = useDispatch();
 
@@ -95,7 +95,7 @@ export function CommentList() {
       }
     };
     getComments();
-  }, [id, commentPost, commentUpdate, paging]);
+  }, [id, commentPost, paging]);
 
   // get my order in homestay
   useEffect(() => {
@@ -156,12 +156,28 @@ export function CommentList() {
     const { text } = values;
     if (text) {
       try {
+        const comment = dataComments.find(
+          (comment) => comment._id === showReplyComment
+        );
+        const replies = comment?.replies;
+        const newReplies = [...replies, { text }];
         await dispatch(
           updateComment({
             id: showReplyComment,
-            comment: { replies: [{ text }] },
+            comment: { replies: newReplies },
           })
         ).unwrap();
+        const comments = JSON.parse(JSON.stringify(dataComments));
+        const value = comments.map((comment) => {
+          const newComment = comment;
+          if (newComment._id === showReplyComment) {
+            newComment['replies'] = newReplies;
+            return newComment;
+          }
+          return newComment;
+        });
+        setDataComments(value);
+
         formRef?.current?.resetFields();
       } catch (error) {
         message.error(error.message);
@@ -203,6 +219,8 @@ export function CommentList() {
     setVisiblePreviewGroup(false);
     setIdImageReview(null);
   };
+
+  console.log({ dataHomestay });
   return (
     <Fragment>
       <div>
@@ -315,9 +333,16 @@ export function CommentList() {
                         <>
                           {item?.replies?.map((reply) => (
                             <Comment
-                              author={currentUser?.data?.name}
+                              author={
+                                dataHomestay?.user_id === currentUser?.data?._id
+                                  ? dataHomestay?.name
+                                  : currentUser?.data?.name
+                              }
                               avatar={
-                                currentUser?.data?.avatar ||
+                                (dataHomestay?.user_id ===
+                                currentUser?.data?._id
+                                  ? dataHomestay?.avatar
+                                  : currentUser?.data?.avatar) ||
                                 'https://joeschmoe.io/api/v1/random'
                               }
                               content={reply.text}
@@ -341,7 +366,10 @@ export function CommentList() {
                                 avatar={
                                   <Avatar
                                     src={
-                                      currentUser?.data?.avatar ||
+                                      (dataHomestay?.user_id ===
+                                      currentUser?.data?._id
+                                        ? dataHomestay?.avatar
+                                        : currentUser?.data?.avatar) ||
                                       'https://joeschmoe.io/api/v1/random'
                                     }
                                     alt={currentUser?.data?.name}
@@ -390,7 +418,9 @@ export function CommentList() {
             avatar={
               <Avatar
                 src={
-                  currentUser?.data?.avatar ||
+                  (dataHomestay?.user_id === currentUser?.data?._id
+                    ? dataHomestay?.avatar
+                    : currentUser?.data?.avatar) ||
                   'https://joeschmoe.io/api/v1/random'
                 }
                 alt={currentUser?.data?.name}

@@ -117,7 +117,10 @@ const HomestayDetailPage = () => {
   };
 
   // render comments
-  const renderCommentList = useMemo(() => <CommentList />, []);
+  const renderCommentList = useMemo(
+    () => <CommentList dataHomestay={dataHomestay} />,
+    [dataHomestay]
+  );
 
   const renderAddressHomestay = () => {
     if (!homestay) {
