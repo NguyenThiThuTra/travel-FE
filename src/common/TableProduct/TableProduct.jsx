@@ -111,6 +111,7 @@ export function TableProduct({ nameHomestay, homestay_id, data }) {
         key: '123',
         title: 'Loại chỗ nghỉ	',
         dataIndex: '',
+        width: 230,
         align: 'left',
         render: (n, record) => {
           const category = record?.[0]?.category_id;
@@ -192,11 +193,13 @@ export function TableProduct({ nameHomestay, homestay_id, data }) {
       {
         key: 'category.description',
         title: 'Mô tả	',
-        width: 220,
+        width: 230,
         dataIndex: 'category.description',
         render: (n, record) => {
           const category = record?.[0]?.category_id;
-          return <div className="room_seperator"> {category?.description} </div>;
+          return (
+            <div className="room_seperator"> {category?.description} </div>
+          );
         },
       },
       {

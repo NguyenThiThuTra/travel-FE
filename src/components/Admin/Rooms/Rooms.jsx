@@ -271,7 +271,10 @@ export default function RoomsPage(props) {
                 dispatch(
                   updateRoom({
                     id: record?._id,
-                    room: { status: !record?.status },
+                    room: {
+                      status: !record?.status,
+                      category_id: record?.category_id?._id,
+                    },
                   })
                 )
               }
