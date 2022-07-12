@@ -9,6 +9,7 @@ import { ActionTable } from '../../../common/Table/ActionTable';
 import { useLocation, useHistory, useRouteMatch } from 'react-router-dom';
 import queryString from 'query-string';
 import { deleteUser } from '../../../features/Users/UsersSlice';
+import moment from 'moment';
 const expandable = {
   expandedRowRender: (record) => <p>description</p>,
 };
@@ -75,12 +76,18 @@ export default function UsersPage(props) {
         dataIndex: 'createdAt',
         key: 'createdAt',
         width: 150,
+        render: (time) => {
+          return <div>{moment(time).format('DD/MM/YYYY')} </div>;
+        },
       },
       {
         title: 'Ngày cập nhật',
         dataIndex: 'updatedAt',
         key: 'updatedAt',
         width: 150,
+        render: (time) => {
+          return <div>{moment(time).format('DD/MM/YYYY')} </div>;
+        },
       },
       {
         title: 'Role',

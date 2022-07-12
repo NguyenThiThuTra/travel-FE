@@ -335,6 +335,7 @@ export default function RoomsPage(props) {
               <div style={{ display: 'flex', justifyContent: 'center' }}>
                 <Button
                   onClick={() => history.goBack()}
+                  type="primary"
                   style={{
                     display: 'flex',
                     alignItems: 'center',
@@ -344,7 +345,6 @@ export default function RoomsPage(props) {
                   <IoChevronBackCircle
                     style={{ cursor: 'pointer', marginRight: '5px' }}
                     fontSize={20}
-                    color="#1890ff"
                   />
                   Quay lại
                 </Button>

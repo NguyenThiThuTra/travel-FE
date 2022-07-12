@@ -11,6 +11,7 @@ export default function CustomTitleTable({ hideAdd, title }) {
         <Button
           onClick={() => history.push(`${match.path}/add`)}
           style={{ display: 'flex', alignItems: 'center', marginRight: '20px' }}
+          type="primary"
         >
           <AiOutlinePlus />
           Thêm mới

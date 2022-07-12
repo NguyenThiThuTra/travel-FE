@@ -31,6 +31,7 @@ import React, { Fragment, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import AvatarDefault from 'assets/images/avatar_default.png';
+import { AiFillPlusCircle } from 'react-icons/ai';
 
 const { Title } = Typography;
 
@@ -46,8 +47,13 @@ const Editor = ({ onSubmit, submitting, onChange, value }) => {
           loading={submitting}
           onClick={onSubmit}
           type="primary"
+          icon={<AiFillPlusCircle style={{ marginRight: '5px' }} />}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+          }}
         >
-          Add Comment
+          Thêm bình luận
         </Button>
       </Form.Item>
     </>
@@ -69,6 +75,7 @@ export function CommentList({ dataHomestay }) {
   const [paging, setPaging] = useState({ limit: 5, page: 1 });
   const [dataComments, setDataComments] = useState([]);
   const dummy = useRef();
+
   const loadMoreComments = () => {
     // dummy?.current?.scrollIntoView({ behavior: 'smooth' });
     setPaging((prevState) => ({ ...prevState, page: prevState.page + 1 }));
@@ -220,7 +227,6 @@ export function CommentList({ dataHomestay }) {
     setIdImageReview(null);
   };
 
-  console.log({ dataHomestay });
   return (
     <Fragment>
       <div>
@@ -322,11 +328,11 @@ export function CommentList({ dataHomestay }) {
                       }
                       datetime={
                         <Tooltip
-                          title={moment(item.updatedAt).format(
+                          title={moment(item.createdAt).format(
                             'YYYY-MM-DD HH:mm:ss'
                           )}
                         >
-                          <span>{moment(item.updatedAt).fromNow()}</span>
+                          <span>{moment(item.createdAt).fromNow()}</span>
                         </Tooltip>
                       }
                       children={
@@ -346,17 +352,7 @@ export function CommentList({ dataHomestay }) {
                                 'https://joeschmoe.io/api/v1/random'
                               }
                               content={reply.text}
-                              datetime={
-                                <Tooltip
-                                  title={moment(reply.updatedAt).format(
-                                    'YYYY-MM-DD HH:mm:ss'
-                                  )}
-                                >
-                                  <span>
-                                    {moment(reply.updatedAt).fromNow()}
-                                  </span>
-                                </Tooltip>
-                              }
+                              datetime={null}
                             />
                           ))}
                           {checkOwnerHomestay() &&
@@ -393,8 +389,17 @@ export function CommentList({ dataHomestay }) {
                                           htmlType="submit"
                                           // loading={loading}
                                           type="primary"
+                                          icon={
+                                            <AiFillPlusCircle
+                                              style={{ marginRight: '5px' }}
+                                            />
+                                          }
+                                          style={{
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                          }}
                                         >
-                                          Add Comment
+                                          Thêm bình luận
                                         </Button>
                                       </Form.Item>
                                     </Form>

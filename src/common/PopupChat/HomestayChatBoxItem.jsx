@@ -8,6 +8,7 @@ import { useLocation } from 'react-router-dom';
 import { detectOwnerHomestay } from 'constants/detectOwnerHomestay';
 import homestayApi from 'api/homestayApi';
 import AvatarDefault from 'assets/images/avatar_default.png';
+import { Fragment } from 'react';
 
 export default function HomestayChatBox({
   onChangeCurrentConversation,
@@ -32,6 +33,7 @@ export default function HomestayChatBox({
     const friendId = conversation.members.find(
       (member) => member !== sender?._id
     );
+    console.log({ friendId, isOwnerHomestay });
     // get receiver
     if (!isOwnerHomestay) {
       homestayApi.getHomestay(friendId).then((res) => {
@@ -48,16 +50,21 @@ export default function HomestayChatBox({
     onChangeCurrentConversation(conversation_id);
     dispatch(setReceiver(receiver));
   };
+
   return (
-    <li
-      style={{
-        backgroundColor:
-          currentConversation?.id === conversation?.id ? '#f5f6f8' : '',
-      }}
-      onClick={() => onClick(conversation.id)}
-    >
-      <Avatar src={receiver?.avatar || AvatarDefault} />
-      <p>{receiver?.name}</p>
-    </li>
+    <Fragment>
+      {receiver && (
+        <li
+          style={{
+            backgroundColor:
+              currentConversation?.id === conversation?.id ? '#f5f6f8' : '',
+          }}
+          onClick={() => onClick(conversation.id)}
+        >
+          <Avatar src={receiver?.avatar || AvatarDefault} />
+          <p>{receiver?.name}</p>
+        </li>
+      )}
+    </Fragment>
   );
 }
