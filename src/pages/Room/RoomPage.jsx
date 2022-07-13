@@ -19,7 +19,7 @@ const RoomPage = () => {
       page: current,
       limit: pageSize,
     };
-    history.push(`${match.path}?${queryString.stringify(query)}`);
+    history.push(`${match.url}?${queryString.stringify(query)}`);
   };
   React.useEffect(() => {
     dispatch(

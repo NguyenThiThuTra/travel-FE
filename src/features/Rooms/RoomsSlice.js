@@ -100,7 +100,7 @@ export const addRoom = createAsyncThunk(
       return response;
     } catch (error) {
       dispatch(setLoadingApp(false));
-      message.success('Thêm thất bại');
+      message.error('Thêm thất bại');
       return rejectWithValue(error?.response.data);
     }
   }
@@ -130,7 +130,7 @@ export const updateRoom = createAsyncThunk(
       return response;
     } catch (error) {
       dispatch(setLoadingApp(false));
-      message.success('Cập nhật thất bại');
+      message.error('Cập nhật thất bại');
       return rejectWithValue(error?.response.data);
     }
   }
@@ -146,7 +146,7 @@ export const updateCategory = createAsyncThunk(
       return response;
     } catch (error) {
       dispatch(setLoadingApp(false));
-      message.success('Cập nhật thất bại');
+      message.error('Cập nhật thất bại');
       return rejectWithValue(error?.response.data);
     }
   }
@@ -163,7 +163,7 @@ export const handleActiveCategory = createAsyncThunk(
       return response;
     } catch (error) {
       dispatch(setLoadingApp(false));
-      message.success('Cập nhật thất bại');
+      message.error('Cập nhật thất bại');
       return rejectWithValue(error?.response.data);
     }
   }
@@ -264,7 +264,7 @@ const roomsSlices = createSlice({
       state.loading = true;
       state.error = undefined;
     },
-    //update one
+    //update room
     [updateRoom.fulfilled]: (state, action) => {
       state.error = undefined;
       state.loading = false;

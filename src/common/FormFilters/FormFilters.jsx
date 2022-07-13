@@ -67,7 +67,7 @@ const FormFilters = () => {
     }
 
     const searchParams = queryString.stringify(query);
-    if (match.path === RouteConstant.HomestayDetailPage.path) {
+    if (match.url === RouteConstant.HomestayDetailPage.path) {
       return window.open(RouteConstant.HomestayPage.path + '?' + searchParams);
     }
     history.push({

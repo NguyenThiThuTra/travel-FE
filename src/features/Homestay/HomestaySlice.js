@@ -85,7 +85,7 @@ export const updateHomestay = createAsyncThunk(
       return response;
     } catch (error) {
       dispatch(setLoadingApp(false));
-      message.success('Cập nhật thất bại');
+      message.error('Cập nhật thất bại');
       return rejectWithValue(error?.response.data);
     }
   }
@@ -102,7 +102,7 @@ export const handleActiveHomestay = createAsyncThunk(
       return response;
     } catch (error) {
       dispatch(setLoadingApp(false));
-      message.success('Cập nhật thất bại');
+      message.error('Cập nhật thất bại');
       return rejectWithValue(error?.response.data);
     }
   }

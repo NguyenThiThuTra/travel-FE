@@ -53,7 +53,7 @@ export default function AdminHomestaysPage(props) {
       page: pagination.current,
       limit: pagination.pageSize,
     };
-    history.push(`${match.path}?${queryString.stringify(query)}`);
+    history.push(`${match.url}?${queryString.stringify(query)}`);
   };
 
   const columns = useMemo(
@@ -338,7 +338,7 @@ export default function AdminHomestaysPage(props) {
                 currentUser?.data?.roles === PERMISSIONS.user &&
                 homestays?.data?.length > 0
               }
-              title="Danh sách homestays"
+              title="Danh sách homestay"
             />
           )}
           // footer={() => <CustomFooterTable title="Here is footer" />}

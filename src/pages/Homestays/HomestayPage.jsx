@@ -60,7 +60,7 @@ const HomestayPage = () => {
     };
     const searchParams = queryString.stringify(query);
     history.push({
-      pathname: match.path,
+      pathname: match.url,
       search: searchParams,
     });
   };

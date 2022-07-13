@@ -83,7 +83,7 @@ export default function OrdersPage(props) {
       page: pagination.current,
       limit: pagination.pageSize,
     };
-    history.push(`${match.path}?${queryString.stringify(query)}`);
+    history.push(`${match.url}?${queryString.stringify(query)}`);
   };
   const handleChangeStatus = async (status, record) => {
     // update status !rejected

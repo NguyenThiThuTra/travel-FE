@@ -24,10 +24,10 @@ export function ActionTable({
   let dispatch = useDispatch();
   const handleAction = (action) => {
     if (action === 'edit') {
-      return history.push(`${match.path}/edit/${id}`);
+      return history.push(`${match.url}/edit/${id}`);
     }
     if (action === 'detail') {
-      return history.push(`${match.path}/${id}`);
+      return history.push(`${match.url}/${id}`);
     }
   };
   async function confirmDelete() {
@@ -39,10 +39,10 @@ export function ActionTable({
           ...querySearch,
           page: Number(querySearch.page) - 1,
         };
-        history.push(`${match.path}?${queryString.stringify(query)}`);
+        history.push(`${match.url}?${queryString.stringify(query)}`);
       }
     } catch (e) {
-      message.success('Xóa thất bại');
+      message.error('Xóa thất bại');
     }
   }
 

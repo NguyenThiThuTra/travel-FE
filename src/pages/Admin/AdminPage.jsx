@@ -59,7 +59,7 @@ export default function AdminPage() {
                 <PrivateRoute
                   key={route.id}
                   exact
-                  path={`${match.path}/${route.path}`}
+                  path={`${match.url}/${route.path}`}
                 >
                   {route.element}
                 </PrivateRoute>

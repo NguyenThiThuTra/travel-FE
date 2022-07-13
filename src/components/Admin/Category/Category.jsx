@@ -65,12 +65,13 @@ export default function AdminCategoryPage(props) {
       page: pagination.current,
       limit: pagination.pageSize,
     };
-    history.push(`${match.path}?${queryString.stringify(query)}`);
+    history.push(`${match.url}?${queryString.stringify(query)}`);
   };
 
   const showListRoomInHomestay = (category_id) => {
-    return history.push(`${match.path}/detail/${category_id}/rooms`);
+    return history.push(`${match.url}/detail/${category_id}/rooms`);
   };
+  
   const columns = useMemo(
     () => [
       // {
@@ -366,7 +367,7 @@ export default function AdminCategoryPage(props) {
             defaultPageSize: Number(querySearch?.limit) || 10,
           }}
           // expandable={expandable}
-          title={() => <CustomTitleTable title="Danh sách phòng" />}
+          title={() => <CustomTitleTable title="Danh sách loại phòng" />}
           // footer={() => <CustomFooterTable title="Here is footer" />}
         />
       </div>
