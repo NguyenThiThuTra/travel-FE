@@ -339,16 +339,9 @@ export function CommentList({ dataHomestay }) {
                         <>
                           {item?.replies?.map((reply) => (
                             <Comment
-                              author={
-                                dataHomestay?.user_id === currentUser?.data?._id
-                                  ? dataHomestay?.name
-                                  : currentUser?.data?.name
-                              }
+                              author={dataHomestay?.name}
                               avatar={
-                                (dataHomestay?.user_id ===
-                                currentUser?.data?._id
-                                  ? dataHomestay?.avatar
-                                  : currentUser?.data?.avatar) ||
+                                dataHomestay?.avatar ||
                                 'https://joeschmoe.io/api/v1/random'
                               }
                               content={reply.text}
@@ -362,10 +355,7 @@ export function CommentList({ dataHomestay }) {
                                 avatar={
                                   <Avatar
                                     src={
-                                      (dataHomestay?.user_id ===
-                                      currentUser?.data?._id
-                                        ? dataHomestay?.avatar
-                                        : currentUser?.data?.avatar) ||
+                                      dataHomestay?.avatar ||
                                       'https://joeschmoe.io/api/v1/random'
                                     }
                                     alt={currentUser?.data?.name}
@@ -423,9 +413,7 @@ export function CommentList({ dataHomestay }) {
             avatar={
               <Avatar
                 src={
-                  (dataHomestay?.user_id === currentUser?.data?._id
-                    ? dataHomestay?.avatar
-                    : currentUser?.data?.avatar) ||
+                  currentUser?.data?.avatar ||
                   'https://joeschmoe.io/api/v1/random'
                 }
                 alt={currentUser?.data?.name}
