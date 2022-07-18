@@ -50,7 +50,6 @@ const FormFilters = () => {
   }
 
   function Search() {
-    console.log({ rangePickerValue, provinceCode });
     const from_date = moment(rangePickerValue[0]).format('YYYY-MM-DD');
     const to_date = moment(rangePickerValue[1]).format('YYYY-MM-DD');
     const query = {};

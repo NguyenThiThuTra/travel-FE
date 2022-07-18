@@ -1,7 +1,5 @@
-import { List, Typography } from 'antd';
 import { detectOwnerHomestay } from 'constants/detectOwnerHomestay';
-import { RouteConstant } from 'constants/RouteConstant';
-import React, { Fragment, useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import HomestayChatBox from './HomestayChatBoxItem';
 

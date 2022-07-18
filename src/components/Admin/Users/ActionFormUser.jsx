@@ -42,13 +42,13 @@ export default function ActionFormUser() {
           id: id,
           user: formData,
         })
-      );
+      ).unwrap();
       // if (currentUser?.data?._id === id) {
       //   await dispatch(getCurrentUser());
       // }
     }
     // form.resetFields();
-    // history.push('/admin/users');
+    history.push('/admin/users');
   };
   const [avatar, setAvatar] = useState('');
   React.useEffect(() => {

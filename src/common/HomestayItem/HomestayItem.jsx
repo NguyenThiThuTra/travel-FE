@@ -19,7 +19,7 @@ const HomestayItem = ({ size, homestay, handleRedirectHomestayDetail }) => {
             homestay_id: homestay?._id,
           },
           limit: 1,
-          sort: 'price',
+          sort: '-price',
         };
         const category = await dispatch(fetchAllCategory(payload)).unwrap();
         setCategory(category?.data?.[0]);

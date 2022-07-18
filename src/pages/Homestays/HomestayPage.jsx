@@ -5,11 +5,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useLocation, useRouteMatch } from 'react-router-dom';
 import HeaderImageLayout from 'common/HeaderImageLayout/HeaderImageLayout';
 import HomestayItem from 'common/HomestayItem/HomestayItem';
+import { DownOutlined } from '@ant-design/icons';
+import { Dropdown, Menu, Space } from 'antd';
 import {
   fetchAllHomestays,
   fetchAllHomestaySearch,
   useHomestaysSelector,
 } from 'features/Homestay/HomestaySlice';
+import { useState } from 'react';
+import { BiSortAlt2 } from 'react-icons/bi';
+
 const HomestayPage = () => {
   const history = useHistory();
   const match = useRouteMatch();
@@ -19,19 +24,61 @@ const HomestayPage = () => {
   const dispatch = useDispatch();
   const homestays = useSelector(useHomestaysSelector);
 
+  // SORT homestay
+  const [sortHomestay, setSortHomestay] = useState('');
+
+  const handleSortHomestay = (e) => {
+    setSortHomestay(e.key);
+    const query = {};
+    if (e.key) {
+      query.sort = e.key;
+    } else {
+      query = {};
+    }
+    const payload = { ...querySearch, ...query };
+    const searchParams = queryString.stringify(payload);
+    history.push({
+      pathname: match.url,
+      search: searchParams,
+    });
+  };
+
+  const SORT_HOMESTAY = [
+    {
+      label: 'Mặc định',
+      key: '',
+    },
+    {
+      label: 'Giá tăng dần',
+      key: 'minPrice',
+    },
+    {
+      label: 'Giá giảm dần',
+      key: '-minPrice',
+    },
+    {
+      label: 'Sao tăng dần',
+      key: 'rate',
+    },
+    {
+      label: 'Sao giảm dần',
+      key: '-rate',
+    },
+  ];
+  const menu = <Menu onClick={handleSortHomestay} items={SORT_HOMESTAY} />;
+
   const pagingDefault = { limit: 9, page: 1 };
   useEffect(() => {
-    dispatch(
-      fetchAllHomestaySearch({
-        limit: pagingDefault.limit,
-        page: pagingDefault.page,
-        filters: {
-          active: true,
-        },
-        activeCategory: true,
-        ...querySearch,
-      })
-    );
+    const payload = {
+      limit: pagingDefault.limit,
+      page: pagingDefault.page,
+      filters: {
+        active: true,
+      },
+      activeCategory: true,
+      ...querySearch,
+    };
+    dispatch(fetchAllHomestaySearch(payload));
     /* eslint-disable */
   }, [location]);
 
@@ -64,6 +111,7 @@ const HomestayPage = () => {
       search: searchParams,
     });
   };
+
   return (
     <div className="PackagesPage">
       <HeaderImageLayout />
@@ -75,6 +123,21 @@ const HomestayPage = () => {
           padding: '5rem 1.5rem',
         }}
       >
+        <div style={{ marginBottom: '1rem' }}>
+          <Dropdown overlay={menu} trigger={['click']}>
+            <Space>
+              <Space>
+                <BiSortAlt2 />
+                Sắp xếp theo : {!sortHomestay && 'Mặc định'}
+                {sortHomestay &&
+                  SORT_HOMESTAY.find((item) => item.key === sortHomestay)
+                    ?.label}
+              </Space>
+              <DownOutlined />
+            </Space>
+          </Dropdown>
+        </div>
+
         <Row gutter={[24, 24]}>
           {homestays?.data?.map((homestay) => (
             <Col
