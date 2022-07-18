@@ -111,14 +111,14 @@ const HomestayItem = ({ size, homestay, handleRedirectHomestayDetail }) => {
           <div className="package-box__bottom">
             <ButtonUI
               onClick={handleRedirectHomestayDetail}
-              text="Chi tiết"
+              text={`Chỉ từ ${
+                category?.price && `${category?.price?.toLocaleString()} đ`
+              }`}
               color="#fff"
               bg="#f76570"
             />
 
-            <div className="package-box__min-price">
-              {category?.price && `${category?.price?.toLocaleString()} đ`}
-            </div>
+            <div className="package-box__min-price">{}</div>
           </div>
         </div>
       </div>

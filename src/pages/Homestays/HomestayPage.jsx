@@ -29,13 +29,16 @@ const HomestayPage = () => {
 
   const handleSortHomestay = (e) => {
     setSortHomestay(e.key);
-    const query = {};
+    let query = { ...querySearch };
+    let payload = {};
     if (e.key) {
       query.sort = e.key;
+      payload = { ...query };
     } else {
-      query = {};
+      const { sort, ...rest } = query;
+      payload = { ...rest };
     }
-    const payload = { ...querySearch, ...query };
+
     const searchParams = queryString.stringify(payload);
     history.push({
       pathname: match.url,
