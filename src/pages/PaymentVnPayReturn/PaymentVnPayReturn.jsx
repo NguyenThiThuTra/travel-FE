@@ -5,7 +5,6 @@ import { useDispatch } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
 import { Typography, Alert, message } from 'antd';
 import { RouteConstant } from 'constants/RouteConstant';
-import { toast } from 'react-toastify';
 import { ORDER_STATUS } from 'constants/order';
 import { updateOrder } from 'features/Order/OrderSlice';
 const querystring = require('querystring');

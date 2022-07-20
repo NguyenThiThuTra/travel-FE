@@ -7,8 +7,10 @@ import { useCurrentUserSelector } from 'features/Auth/AuthSlice';
 import { toggleModalLogin } from 'features/commonSlice';
 import { getAllOrder, useOrderSelector } from 'features/Order/OrderSlice';
 import {
-  getAllReviewDestination, useReviewDestinationSelector
+  getAllReviewDestination,
+  useReviewDestinationSelector,
 } from 'features/Reviews/ReviewsSlice';
+import moment from 'moment';
 import { Fragment, useEffect, useMemo, useState } from 'react';
 import { AiFillPlusCircle } from 'react-icons/ai';
 import { useDispatch, useSelector } from 'react-redux';
@@ -43,6 +45,7 @@ const ReviewsPage = () => {
               status: ORDER_STATUS.approved.en,
             },
             limit: 1,
+            sort: '-start',
           })
         );
       }
@@ -119,11 +122,24 @@ const ReviewsPage = () => {
     if (!currentUser) {
       return setVisiblePopupNotification(true);
     }
+
     if (!(orders?.data?.length > 0)) {
       message.info('Bạn chưa từng đến địa điểm nào');
       return false;
     }
-    setVisibleFormReview(true);
+    const order = orders?.data?.[0];
+
+    const isTimeAfterNow = moment(
+      moment(order?.start).format('YYYY-MM-DD'),
+      'YYYY-MM-DD'
+    ).isSameOrBefore(moment(moment().format('YYYY-MM-DD'), 'YYYY-MM-DD'));
+    
+    if (isTimeAfterNow) {
+      setVisibleFormReview(true);
+    }else{
+      message.info(` Đợi đến ngày ${moment(order?.start).format('DD/MM/YYYY')} để
+      được review`);
+    }
   };
 
   const handleOk = () => {

@@ -18,13 +18,8 @@ import ProductsDetailsPage from 'pages/ProductsDetails/ProductDetailPage';
 import ReviewDetailPage from 'pages/ReviewDetail/ReviewDetailPage';
 import ReviewsPage from 'pages/Reviews/ReviewsPage';
 import RoomPage from 'pages/Room/RoomPage';
-import TestPage from 'pages/Test/TestPage';
 
 export const RouteConstant = {
-  TestPage: {
-    path: '/test',
-    component: <TestPage />,
-  },
   NotFount: {
     path: '*',
     component: <NotFount />,
