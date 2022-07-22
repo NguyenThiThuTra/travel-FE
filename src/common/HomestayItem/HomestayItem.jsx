@@ -1,32 +1,10 @@
 import { Image, Rate } from 'antd';
-import { fetchAllCategory } from 'features/Rooms/RoomsSlice';
-import React, { useEffect, useState } from 'react';
-import { BsFillHeartFill } from 'react-icons/bs';
 import { GoLocation } from 'react-icons/go';
-import { useDispatch } from 'react-redux';
 import ButtonUI from '../ButtonUI/ButtonUI';
 import './_HomestayItem.scss';
 
 const HomestayItem = ({ size, homestay, handleRedirectHomestayDetail }) => {
-  const dispatch = useDispatch();
 
-  const [category, setCategory] = useState(null);
-  useEffect(() => {
-    const getCategory = async () => {
-      if (homestay?._id) {
-        const payload = {
-          filters: {
-            homestay_id: homestay?._id,
-          },
-          limit: 1,
-          sort: 'price',
-        };
-        const category = await dispatch(fetchAllCategory(payload)).unwrap();
-        setCategory(category?.data?.[0]);
-      }
-    };
-    getCategory();
-  }, [homestay]);
   return (
     <div className="package-box">
       <div className="package-box__top">
@@ -107,20 +85,23 @@ const HomestayItem = ({ size, homestay, handleRedirectHomestayDetail }) => {
             {homestay?.description}
           </div>
         </div>
-        <div style={{ marginTop: 'auto', width: '100%' }}>
-          <div className="package-box__bottom">
-            <ButtonUI
-              onClick={handleRedirectHomestayDetail}
-              text={`Chỉ từ ${
-                category?.price && `${category?.price?.toLocaleString()} đ`
-              }`}
-              color="#fff"
-              bg="#f76570"
-            />
+        {homestay?.minPrice && (
+          <div style={{ marginTop: 'auto', width: '100%' }}>
+            <div className="package-box__bottom">
+              <ButtonUI
+                onClick={handleRedirectHomestayDetail}
+                text={`Chỉ từ ${
+                  homestay?.minPrice &&
+                  `${homestay?.minPrice?.toLocaleString()} đ`
+                }`}
+                color="#fff"
+                bg="#f76570"
+              />
 
-            <div className="package-box__min-price">{}</div>
+              <div className="package-box__min-price">{}</div>
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );
