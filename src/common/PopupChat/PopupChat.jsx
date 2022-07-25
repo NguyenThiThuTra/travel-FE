@@ -70,16 +70,40 @@ export default function PopupChat({ fixed = true, size }) {
 
   // get conversations
   const conversationsRef = firestore.collection('conversations');
-  const queryConversations = conversationsRef.where(
-    'members',
-    'array-contains',
-    sender?._id || ''
-  );
+  const queryConversations = conversationsRef
+    .where('members', 'array-contains', sender?._id || '')
+    .orderBy('updatedAt', 'desc');
 
-  const [conversations, loadingConversations] = useCollectionData(
-    queryConversations,
-    { idField: 'id' }
-  );
+  const [conversations] = useCollectionData(queryConversations, {
+    idField: 'id',
+  });
+  // const [conversations, setConversations] = useState([]);
+
+  // const getAllConversations = async () => {
+  //   const querySnapshot = await queryConversations.get();
+  //   const result = querySnapshot.docs.map((doc) => {
+  //     console.log('hihi')
+  //     // doc.data() is never undefined for query doc snapshots
+  //     const conversation = {
+  //       ...doc.data(),
+  //       doc_id: doc.id,
+  //     };
+  //     return conversation;
+  //   });
+  //   setConversations(result);
+  // };
+  // useEffect(() => {
+  //   // if (!sender) {
+  //   //   return;
+  //   // }
+  //   console.log('aaaaaaaaaa');
+  //   getAllConversations();
+  // }, [dataMessages, sender]);
+  // console.log({ conversations });
+
+  // useEffect(() => {
+  //   console.log('xin chao');
+  // }, [conversations]);
 
   const [currentConversation, setCurrentConversation] = useState(null);
 
@@ -127,12 +151,13 @@ export default function PopupChat({ fixed = true, size }) {
     setOnScroll(true);
 
     const conversation_id = uuidv4();
+    const currentTime = new Date().getTime();
     if (!currentConversation) {
       const conversation = {
         members: [sender?._id, receiver?._id],
         id: conversation_id,
-        createdAt: new Date().getTime(),
-        updatedAt: new Date().getTime(),
+        createdAt: currentTime,
+        updatedAt: currentTime,
       };
       conversationsRef.add(conversation);
     }
@@ -145,10 +170,13 @@ export default function PopupChat({ fixed = true, size }) {
       photoURL: sender?.avatar,
       name: sender?.name,
       // createdAt: new Date(),
-      createdAt: new Date().getTime(),
-      updatedAt: new Date().getTime(),
+      createdAt: currentTime,
+      updatedAt: currentTime,
     };
     messageRef.add(message);
+    conversationsRef
+      .doc(currentConversation?.doc_id)
+      .update({ updatedAt: currentTime });
     setFormValue('');
   };
 
