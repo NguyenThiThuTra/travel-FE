@@ -2,7 +2,7 @@ import { Select, Tag } from 'antd';
 import {
   ORDER_STATUS,
   ORDER_STATUS_COLOR,
-  ORDER_STATUS_VALUE
+  ORDER_STATUS_VALUE,
 } from 'constants/order';
 import { PERMISSIONS } from 'constants/permissions';
 import { useCurrentUserSelector } from 'features/Auth/AuthSlice';
@@ -11,11 +11,11 @@ import {
   getAllOrder,
   updateOrder,
   useDeleteOrderSelector,
-  useOrderSelector
+  useOrderSelector,
 } from 'features/Order/OrderSlice';
 import moment from 'moment';
 import queryString from 'query-string';
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useLocation, useRouteMatch } from 'react-router-dom';
 import { ActionTable } from '../../../common/Table/ActionTable';
@@ -38,7 +38,8 @@ export default function OrdersPage(props) {
   const loading = useSelector((state) => state.order.loading);
   const deleteOrder = useSelector(useDeleteOrderSelector);
 
-  console.log({ order });
+  const [filterStatus, setFilterStatus] = useState('');
+
   useEffect(() => {
     const getOrderHomestayById = async () => {
       const role = currentUser?.data?.roles;
@@ -55,13 +56,19 @@ export default function OrdersPage(props) {
         const homestay_id = resultAction?.data?.[0]?._id;
 
         if (role === PERMISSIONS.user && homestay_id) {
-          const payload = {
+          let payload = {
             ...querySearch,
             filters: {
               homestay_id: homestay_id,
             },
             sort: '-createdAt',
           };
+          if (filterStatus?.length > 0) {
+            payload = {
+              ...payload,
+              filters: { ...payload.filters, status: filterStatus },
+            };
+          }
           dispatch(getAllOrder(payload));
           return;
         }
@@ -76,9 +83,11 @@ export default function OrdersPage(props) {
     getOrderHomestayById();
 
     /* eslint-disable */
-  }, [location, deleteOrder, currentUser]);
+  }, [location, deleteOrder, currentUser, filterStatus]);
 
-  const onChangePagination = (pagination) => {
+  const onChangePagination = (pagination, filters) => {
+    setFilterStatus(filters?.status || []);
+
     let query = {
       ...querySearch,
       page: pagination.current,
@@ -236,29 +245,27 @@ export default function OrdersPage(props) {
             </>
           );
         },
-        // filters: [
-        //   {
-        //     text: ORDER_STATUS.pending.vi,
-        //     value: ORDER_STATUS.pending.en,
-        //   },
-        //   {
-        //     text: ORDER_STATUS.approved.vi,
-        //     value: ORDER_STATUS.approved.en,
-        //   },
-        //   {
-        //     text: ORDER_STATUS.rejected.vi,
-        //     value: ORDER_STATUS.rejected.en,
-        //   },
-        //   {
-        //     text: ORDER_STATUS.canceled.vi,
-        //     value: ORDER_STATUS.canceled.en,
-        //   },
-        // ],
-        // onFilter: (value, record) => record.status.startsWith(value),
-        // filterSearch: true,
+        filters: [
+          {
+            text: ORDER_STATUS.pending.vi,
+            value: ORDER_STATUS.pending.en,
+          },
+          {
+            text: ORDER_STATUS.approved.vi,
+            value: ORDER_STATUS.approved.en,
+          },
+          {
+            text: ORDER_STATUS.rejected.vi,
+            value: ORDER_STATUS.rejected.en,
+          },
+          {
+            text: ORDER_STATUS.canceled.vi,
+            value: ORDER_STATUS.canceled.en,
+          },
+        ],
+        filterSearch: true,
         sorter: (a, b) =>
           ORDER_STATUS_VALUE[a.status] - ORDER_STATUS_VALUE[b.status],
-        // defaultSortOrder: 'ascend',
       },
       {
         title: 'Thao tác',
