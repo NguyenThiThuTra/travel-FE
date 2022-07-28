@@ -60,6 +60,7 @@ const HomestayDetailPage = () => {
           homestay_id: id,
         },
         activeCategory: true,
+        limit: 9999,
       };
       dispatch(fetchAllRooms(payload));
       dispatch(getHomestay(id));
