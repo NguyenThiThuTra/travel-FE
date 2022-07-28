@@ -54,9 +54,11 @@ export default function ActionFormRoom() {
 
   const onChangeAvatar = ({ file, fileList }) => {
     setFileList((prev) => fileList);
-    let originFileObj = file.originFileObj;
-    originFileObj.preview = URL.createObjectURL(originFileObj);
-    setFileAvatar((prev) => originFileObj);
+    let originFileObj = file;
+    if (fileList?.length > 0) {
+      originFileObj.preview = URL.createObjectURL(originFileObj);
+      setFileAvatar((prev) => originFileObj);
+    }
   };
   const onChangeImageGallery = ({ file, fileList }) => {
     if (file.status !== 'removed') {
@@ -500,6 +502,7 @@ export default function ActionFormRoom() {
             listType="picture-card"
             onChange={onChangeAvatar}
             onPreview={onPreview}
+            beforeUpload={() => false}
           >
             {fileList.length < 1 && '+ Upload'}
           </Upload>
@@ -540,7 +543,7 @@ export default function ActionFormRoom() {
             <img
               alt="example"
               style={{ width: '100%' }}
-              src={fileAvatar?.thumbUrl}
+              src={fileAvatar?.preview}
             />
           </Modal>
         </Form.Item>

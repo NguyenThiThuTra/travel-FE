@@ -71,9 +71,10 @@ export default function ActionFormHomestay() {
   const onChangeAvatar = ({ file, fileList }) => {
     setFileList((prev) => fileList);
     let originFileObj = file;
-    originFileObj.preview = URL.createObjectURL(originFileObj);
-    setFileAvatar((prev) => originFileObj);
-    // setValue('avatar', originFileObj.preview);
+    if (fileList?.length > 0) {
+      originFileObj.preview = URL.createObjectURL(originFileObj);
+      setFileAvatar((prev) => originFileObj);
+    }
   };
   const onChangeImageGallery = ({ file, fileList }) => {
     if (file.status !== 'removed') {
@@ -635,7 +636,7 @@ export default function ActionFormHomestay() {
             <img
               alt="example"
               style={{ width: '100%' }}
-              src={fileAvatar?.thumbUrl}
+              src={fileAvatar?.preview}
             />
           </Modal>
         </Form.Item>
