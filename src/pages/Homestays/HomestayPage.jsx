@@ -23,7 +23,7 @@ const HomestayPage = () => {
   const querySearch = queryString.parse(location.search);
   const dispatch = useDispatch();
   const homestays = useSelector(useHomestaysSelector);
- 
+
   // SORT homestay
   const [sortHomestay, setSortHomestay] = useState('');
 
@@ -102,7 +102,7 @@ const HomestayPage = () => {
   };
 
   const onShowSizeChange = (current, pageSize) => {
-    console.log({ current, pageSize });
+    // console.log({ current, pageSize, querySearch });
     const query = {
       ...querySearch,
       page: current,

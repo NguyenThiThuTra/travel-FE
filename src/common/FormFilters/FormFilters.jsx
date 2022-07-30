@@ -5,6 +5,7 @@ import moment from 'moment';
 import queryString from 'query-string';
 import React, { useEffect, useRef, useState } from 'react';
 import { useHistory, useLocation, useRouteMatch } from 'react-router-dom';
+import { openInNewTab } from 'utils/openInNewTab';
 import './_FormFilters.scss';
 const { RangePicker } = DatePicker;
 const FormFilters = () => {
@@ -50,10 +51,10 @@ const FormFilters = () => {
   }
 
   function Search() {
-    const { sort } = querySearch;
+    const { sort, limit, page } = querySearch;
     const from_date = moment(rangePickerValue[0]).format('YYYY-MM-DD');
     const to_date = moment(rangePickerValue[1]).format('YYYY-MM-DD');
-    const query = { sort };
+    const query = { sort, limit, page };
 
     if (nameHomestayRef.current.value) {
       query.search = nameHomestayRef.current.value;
@@ -70,11 +71,17 @@ const FormFilters = () => {
     if (match.url === RouteConstant.HomestayDetailPage.path) {
       return window.open(RouteConstant.HomestayPage.path + '?' + searchParams);
     }
-    history.push({
-      pathname: match.url,
-      search: searchParams,
-    });
-    // history.push(`${match.url}?${queryString.stringify(query)}`);
+
+    if (match.path === RouteConstant.HomestayDetailPage.path) {
+      const url = `${match.url}?${searchParams}`;
+      openInNewTab(url);
+    } else {
+      history.push({
+        pathname: match.url,
+        search: searchParams,
+      });
+    }
+    
   }
 
   function onBlurProvince() {

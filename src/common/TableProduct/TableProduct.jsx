@@ -104,6 +104,11 @@ export function TableProduct({ nameHomestay, homestay_id, data }) {
 
   // visiblePreviewGroup
   const [visiblePreviewGroup, setVisiblePreviewGroup] = useState(false);
+  const [categoryImages, setCategoryImages] = useState([]);
+  const handleVisiblePreviewGroup = (images) => {
+    setVisiblePreviewGroup(true);
+    setCategoryImages(images);
+  };
 
   const columns = React.useMemo(
     () => [
@@ -115,11 +120,15 @@ export function TableProduct({ nameHomestay, homestay_id, data }) {
         align: 'left',
         render: (n, record) => {
           const category = record?.[0]?.category_id;
+          let images = [...category.images];
+          if (category?.avatar) {
+            images = [category.avatar, ...images];
+          }
           return (
             <div>
               <Link to="#" className="room-type"></Link>
               <div className="bed-type">{category?.name}</div>
-              {(category?.avatar || category?.images?.length > 0) && (
+              {images?.length > 0 && (
                 <Fragment>
                   <div
                     style={{
@@ -128,18 +137,15 @@ export function TableProduct({ nameHomestay, homestay_id, data }) {
                       cursor: 'pointer',
                       maxWidth: '250px',
                     }}
-                    onClick={() =>
-                      // category?.images?.length > 1 &&
-                      setVisiblePreviewGroup(true)
-                    }
+                    onClick={() => handleVisiblePreviewGroup(images)}
                   >
                     <Image
                       style={{ filter: 'brightness(80%)' }}
                       preview={{ visible: false, mask: null }}
-                      src={category?.avatar || category?.images?.[0]}
+                      src={images?.[0]}
                       alt="image preview"
                     />
-                    {category?.images?.length > 1 && (
+                    {images?.length > 1 && (
                       <div
                         style={{
                           position: 'absolute',
@@ -162,27 +168,10 @@ export function TableProduct({ nameHomestay, homestay_id, data }) {
                             fontWeight: '500',
                           }}
                         >
-                          {category?.images?.length}
+                          {images?.length}
                         </span>
                       </div>
                     )}
-                  </div>
-
-                  <div style={{ display: 'none' }}>
-                    <Image.PreviewGroup
-                      preview={{
-                        visible: visiblePreviewGroup,
-                        onVisibleChange: (vis) => setVisiblePreviewGroup(vis),
-                      }}
-                    >
-                      {category?.images?.map((image, index) => (
-                        <Image
-                          key={index}
-                          src={image}
-                          alt={`preview ${index}`}
-                        />
-                      ))}
-                    </Image.PreviewGroup>
                   </div>
                 </Fragment>
               )}
@@ -344,6 +333,19 @@ export function TableProduct({ nameHomestay, homestay_id, data }) {
           onCloseModal={handleCancelOrders}
         />
       </Modal>
+
+      <div style={{ display: 'none' }}>
+        <Image.PreviewGroup
+          preview={{
+            visible: visiblePreviewGroup,
+            onVisibleChange: (vis) => setVisiblePreviewGroup(vis),
+          }}
+        >
+          {categoryImages?.map((image, index) => (
+            <Image key={index} src={image} alt={`preview ${index}`} />
+          ))}
+        </Image.PreviewGroup>
+      </div>
     </div>
   );
 }
