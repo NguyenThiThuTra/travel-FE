@@ -51,10 +51,10 @@ const FormFilters = () => {
   }
 
   function Search() {
-    const { sort, limit, page } = querySearch;
+    const { sort } = querySearch;
     const from_date = moment(rangePickerValue[0]).format('YYYY-MM-DD');
     const to_date = moment(rangePickerValue[1]).format('YYYY-MM-DD');
-    const query = { sort, limit, page };
+    const query = { sort };
 
     if (nameHomestayRef.current.value) {
       query.search = nameHomestayRef.current.value;
@@ -81,7 +81,6 @@ const FormFilters = () => {
         search: searchParams,
       });
     }
-    
   }
 
   function onBlurProvince() {

@@ -72,6 +72,7 @@ const HomestayPage = () => {
 
   const pagingDefault = { limit: 9, page: 1 };
   useEffect(() => {
+    // console.log({ querySearch });
     const payload = {
       limit: pagingDefault.limit,
       page: pagingDefault.page,
@@ -187,6 +188,8 @@ const HomestayPage = () => {
           total={homestays?.paging?.total || 1}
           defaultCurrent={Number(querySearch?.page) || pagingDefault.page}
           defaultPageSize={Number(querySearch?.limit) || pagingDefault.limit}
+          current={Number(querySearch?.page) || pagingDefault.page}
+          pageSize={Number(querySearch?.limit) || pagingDefault.limit}
         />
       </div>
     </div>

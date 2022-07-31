@@ -9,11 +9,11 @@ import moment from 'moment';
 export function ReviewItem({ review, handleLikeReview }) {
   const dispatch = useDispatch();
 
-  const user = review?.user_id;
+  const user = review?.user;
   const currentUser = useSelector(useCurrentUserSelector);
 
   const [orders, setOrders] = useState(null);
-  const homestays = review?.homestays;
+  const homestays = review?.orders?.homestays;
   const arrNameHomestay = useMemo(() => {
     return homestays?.map((homestay) => homestay?.name)?.join(', ');
   }, [homestays]);
@@ -233,7 +233,7 @@ export function ReviewItem({ review, handleLikeReview }) {
                 style={{
                   filter: 'brightness(80%)',
                   maxWidth: '300px',
-                  width: '300px'
+                  width: '300px',
                   // width: 'fit-content',
                 }}
                 width="fit-content"

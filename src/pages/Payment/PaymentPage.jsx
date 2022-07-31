@@ -59,7 +59,7 @@ const PaymentPage = () => {
               payment: 'vnpay',
             })
           ).unwrap();
-          console.log({ result });
+          // console.log({ result });
           const payload = {
             amount: orders.totalPriceOrders,
             bankCode,
