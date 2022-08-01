@@ -55,7 +55,7 @@ const PaymentPage = () => {
           const result = await dispatch(
             addOrder({
               ...payloadAddOrder,
-              status: ORDER_STATUS.pending.en,
+              status: ORDER_STATUS.holding.en,
               payment: 'vnpay',
             })
           ).unwrap();
