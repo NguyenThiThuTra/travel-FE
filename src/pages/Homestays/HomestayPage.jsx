@@ -96,9 +96,12 @@ const HomestayPage = () => {
       }
       return;
     }
+    const { page, limit, ...rest } = querySearch;
+    const searchParams = queryString.stringify(rest);
+
     history.push({
       pathname: `${match.url}/${id}`,
-      search: location.search,
+      search: searchParams,
     });
   };
 
