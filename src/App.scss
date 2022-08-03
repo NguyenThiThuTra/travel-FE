@@ -19,51 +19,18 @@ body {
   line-height: 1.7;
   font-family: 'Poppins', sans-serif;
   color: #23232c;
-  // overflow-x: hidden;
 }
 //ant -row
-.ant-row {
-  // overflow-x: hidden;
-  // margin: 0 !important;
-}
 .ant-dropdown.ant-dropdown-show-arrow{
   z-index: 99999;
 }
-@media screen and (max-width: 991.98px) {
-  .ant-row {
-    // margin: 0 !important;
-  }
-}
+
 @media screen and (max-width: 424.98px) {
   .ant-pagination {
     margin-left: -1rem;
     margin-right: -1rem;
   }
 }
-
-//end ant row
-/*
-::-webkit-scrollbar {
-  width: 1px;
-}
-
-::-webkit-scrollbar-track {
-  background: #f1f1f1;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #888;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #555;
-}
-a {
-  text-decoration: none;
-} */
-
-/* css  */
-/* form login_register   */
 
 .error_message {
   margin-top: 5px;

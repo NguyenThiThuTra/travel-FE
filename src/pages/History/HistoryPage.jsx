@@ -28,6 +28,7 @@ export default function HistoryPage() {
   const pagingDefault = { limit: 10, page: 1 };
   const [paging, setPaging] = useState(pagingDefault);
   const [dataOrder, setDataOrder] = useState([]);
+  
   useEffect(() => {
     async function getAllOrderByUserId() {
       if (currentUser?.data?._id) {
@@ -49,8 +50,7 @@ export default function HistoryPage() {
     if (currentUser?.data?._id && orderStatus) {
       getAllOrderByUserId();
     }
-    // getAllOrderByUserId();
-    // }, [currentUser, orderStatus, updateOrderStatus, commentPost]);
+    
   }, [currentUser, orderStatus]);
 
   const loadMore = async () => {

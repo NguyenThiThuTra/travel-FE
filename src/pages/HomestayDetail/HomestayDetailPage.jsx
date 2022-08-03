@@ -33,7 +33,7 @@ const HomestayDetailPage = () => {
   const homestay = useSelector(useHomestaySelector);
   const dataHomestay = useMemo(() => homestay?.data, [homestay]);
   const rooms = useSelector(useRoomsSelector);
-  // console.log({rooms});
+
   const [dataGroupByCategory, setDataGroupByCategory] = useState([]);
   // visiblePreviewGroup
   const [visiblePreviewGroup, setVisiblePreviewGroup] = useState(false);
@@ -99,13 +99,11 @@ const HomestayDetailPage = () => {
   const [visiblePopupNotification, setVisiblePopupNotification] =
     useState(false);
   function confirmNotification(e) {
-    // message.success('Click on Yes');
     setVisiblePopupNotification(false);
     dispatch(toggleModalLogin());
   }
 
   function cancelNotification(e) {
-    // message.error('Click on No');
     setVisiblePopupNotification(false);
   }
 

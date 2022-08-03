@@ -77,7 +77,6 @@ export function CommentList({ dataHomestay }) {
   const dummy = useRef();
 
   const loadMoreComments = () => {
-    // dummy?.current?.scrollIntoView({ behavior: 'smooth' });
     setPaging((prevState) => ({ ...prevState, page: prevState.page + 1 }));
   };
   // get all comments Homestay
@@ -206,12 +205,7 @@ export function CommentList({ dataHomestay }) {
     if (checkOwnerHomestay()) {
       return true;
     }
-    // const limitComment = order?.paging?.total;
-    // const length = comments?.data?.filter(
-    //   (comment) => comment?.user_id?._id === currentUser?.data?._id
-    // ).length;
 
-    // return length >= limitComment;x
     return true;
   };
 

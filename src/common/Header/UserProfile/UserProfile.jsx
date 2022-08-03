@@ -17,13 +17,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getBase64 } from 'utils/getBase64';
 import { getCurrentUser } from '../../../features/Auth/AuthSlice';
 import { updateUser } from '../../../features/Users/UsersSlice';
-//end upload avatar
+
 const UserProfile = (props) => {
   const [form] = Form.useForm();
   let dispatch = useDispatch();
-  // useEffect(() => {
-  //   dispatch(getCurrentUser());
-  // }, []);
+
   const currentUser = useSelector((state) => state.auth.currentUser);
 
   useEffect(() => {
@@ -80,7 +78,6 @@ const UserProfile = (props) => {
   const onFinish = async (values) => {
     try {
       const { gender, name, phone_number } = values;
-      // console.log({ fileListONE: fileList[0] });
       const formData = new FormData();
       fileAvatar && formData.append('avatar', fileAvatar);
       formData.append('gender', gender);
@@ -93,7 +90,6 @@ const UserProfile = (props) => {
         })
       );
       await dispatch(getCurrentUser());
-      // axiosClient.post('/test', formData);
     } catch (e) {
       console.log(e);
     }

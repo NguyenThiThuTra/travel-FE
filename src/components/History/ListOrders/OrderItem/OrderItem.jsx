@@ -29,7 +29,6 @@ import './_OrderItem.scss';
 
 const { Title } = Typography;
 
-//['single', 'double', 'family', 'big family'],
 const TYPE_ROOM = {
   single: 'Phòng đơn',
   double: 'Phòng đôi',
@@ -210,6 +209,7 @@ export function OrderItem({
               <img
                 className="order-item__img"
                 src={
+                  category?.avatar ||
                   category?.images?.[0] ||
                   'https://chieutour.com.vn/upload/images/tour-du-lich-tu-tphcm-di-da-nang.jpg'
                 }

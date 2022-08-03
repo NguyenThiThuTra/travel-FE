@@ -1,4 +1,3 @@
-// import { Link } from 'react-router-dom';
 import React from 'react';
 import './_BannerItem.scss';
 import ButtonUI from '../../../../common/ButtonUI/ButtonUI';
@@ -15,10 +14,6 @@ const BannerItem = (props) => {
         backgroundSize: 'cover',
       }}
     >
-      {/* <Link
-        to={props.banner.route || '/packages'}
-        className="banner_item__link"
-      > */}
       <h3 className="banner_item__text">
         {props.banner.text
           ? `0${props.index + 1} ${props.banner.text}`
@@ -34,7 +29,6 @@ const BannerItem = (props) => {
         borderRadius="5rem"
         text="details"
       />
-      {/* </Link> */}
     </div>
   );
 };

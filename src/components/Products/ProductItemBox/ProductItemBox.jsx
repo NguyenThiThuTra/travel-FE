@@ -27,7 +27,6 @@ const ProductItemBox = ({ room, href, getData }) => {
   };
   return (
     <Fragment>
-      {/* <Link to={href}> */}
       <div className="product-item">
         <div>
           <Image

@@ -43,7 +43,6 @@ export const AddCartForm = ({ orders, onCloseModal }) => {
         currentUser?.data?.phone_number?.length < 10
           ? `0${currentUser?.data?.phone_number} `
           : currentUser?.data?.phone_number,
-      // check_in_check_out: time,
     });
   });
 
@@ -88,9 +87,6 @@ export const AddCartForm = ({ orders, onCloseModal }) => {
     // console.log('Failed:', errorInfo);
   };
   function onChangeDate(dates, dateStrings) {
-    // console.log(dates);
-    // console.log('From: ', dates[0], ', to: ', dates[1]);
-    // console.log('From: ', dateStrings[0], ', to: ', dateStrings[1]);
   }
   function disabledDate(current) {
     return current && current < moment().startOf('day');

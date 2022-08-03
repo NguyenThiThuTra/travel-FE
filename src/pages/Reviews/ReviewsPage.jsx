@@ -27,9 +27,6 @@ const ReviewsPage = () => {
 
   const orders = useSelector(useOrderSelector);
   const reviewDestination = useSelector(useReviewDestinationSelector);
-  // useEffect(() => {
-  //   dispatch(getAllReviews());
-  // }, []);
 
   useEffect(() => {
     dispatch(getAllReviewDestination());
@@ -109,13 +106,11 @@ const ReviewsPage = () => {
   const [visiblePopupNotification, setVisiblePopupNotification] =
     useState(false);
   function confirmNotification(e) {
-    // message.success('Click on Yes');
     setVisiblePopupNotification(false);
     dispatch(toggleModalLogin());
   }
 
   function cancelNotification(e) {
-    // message.error('Click on No');
     setVisiblePopupNotification(false);
   }
   const showModal = () => {

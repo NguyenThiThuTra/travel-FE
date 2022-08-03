@@ -164,18 +164,7 @@ const PaymentPage = () => {
                               >
                                 <Input />
                               </Form.Item>
-                              {/* <Form.Item
-                              name="orderType"
-                              label="OrderType"
-                              // rules={[
-                              //   {
-                              //     required: true,
-                              //     message: 'Xin vui lòng nhập số tiền!',
-                              //   },
-                              // ]}
-                            >
-                              <Input />
-                            </Form.Item> */}
+          
                             </div>
                           )}
                         </Radio>

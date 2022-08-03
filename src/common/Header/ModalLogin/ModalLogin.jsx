@@ -10,8 +10,6 @@ import { useHistory, useLocation, useRouteMatch } from 'react-router-dom';
 import { login, signup } from '../../../features/Auth/AuthSlice';
 const { Option } = Select;
 const ModalLogin = (props) => {
-  // const store = useContext(AuthContext);
-  //end context
   const history = useHistory();
   const location = useLocation();
   const match = useRouteMatch();

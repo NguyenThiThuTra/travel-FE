@@ -82,7 +82,6 @@ export function ReviewItem({ review, handleLikeReview }) {
       getTotalReviewUser,
       reviewTextLength
     );
-    // console.log({ totalReviewUserIndex, reviewUserSplit });
 
     if (totalReviewUserIndex !== null) {
       return (
@@ -126,7 +125,6 @@ export function ReviewItem({ review, handleLikeReview }) {
                       style={{
                         color: '#1877F2',
                         cursor: 'pointer',
-                        // marginLeft: '10px',
                       }}
                     >
                       {readMore ? 'Thu gọn' : 'Xem thêm...'}
@@ -134,11 +132,6 @@ export function ReviewItem({ review, handleLikeReview }) {
                   );
                 }
                 return renderHTML;
-                // return (
-                //   <li>
-                //     {`Ngày ${index + 1} : `} {day}
-                //   </li>
-                // );
               })}
           </ul>
         </div>

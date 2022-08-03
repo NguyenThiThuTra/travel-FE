@@ -21,7 +21,7 @@ function onSearch(val) {
 export function TableProduct({ nameHomestay, homestay_id, data }) {
   const location = useLocation();
   const querySearch = queryString.parse(location.search);
-  // console.log({ data });
+
   const dispatch = useDispatch();
 
   const renderOptionRoom = (record) => {
@@ -40,13 +40,11 @@ export function TableProduct({ nameHomestay, homestay_id, data }) {
   const [visiblePopupNotification, setVisiblePopupNotification] =
     useState(false);
   function confirmNotification(e) {
-    // message.success('Click on Yes');
     setVisiblePopupNotification(false);
     dispatch(toggleModalLogin());
   }
 
   function cancelNotification(e) {
-    // message.error('Click on No');
     setVisiblePopupNotification(false);
   }
 
@@ -65,7 +63,6 @@ export function TableProduct({ nameHomestay, homestay_id, data }) {
     setIsModalOrdersVisible(false);
   };
   function handleSelectQuantityRoom(value, category) {
-    // return console.log({ value, category });
     setOrders((prevOrders) => {
       const index = prevOrders.findIndex((obj) => obj._id === category._id);
       if (index === -1 && value) {
@@ -217,23 +214,6 @@ export function TableProduct({ nameHomestay, homestay_id, data }) {
           );
         },
       },
-      // {
-      //   title: 'Các lựa chọn',
-      //   dataIndex: 'name',
-      //   render: (n, record) => {
-      //     return (
-      //       <div className="options">
-      //         <div className="options__eat">
-      //           <span>Bao gồm</span> bữa sáng tuyệt vời
-      //         </div>
-      //         <strong className="">Không hoàn tiền</strong>
-      //         <div className="options__description">
-      //           Chỉ còn 4 phòng trên trang của chúng tôi
-      //         </div>
-      //       </div>
-      //     );
-      //   },
-      // },
       {
         key: 'count_empty_room',
         title: 'Chọn phòng',
@@ -247,8 +227,6 @@ export function TableProduct({ nameHomestay, homestay_id, data }) {
               placeholder="Select a person"
               optionFilterProp="children"
               onSelect={(value) => handleSelectQuantityRoom(value, category)}
-              // onChange={onChange}
-              //  onSearch={onSearch}
               filterOption={(input, option) =>
                 option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
               }

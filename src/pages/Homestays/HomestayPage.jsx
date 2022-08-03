@@ -72,7 +72,6 @@ const HomestayPage = () => {
 
   const pagingDefault = { limit: 9, page: 1 };
   useEffect(() => {
-    // console.log({ querySearch });
     const payload = {
       limit: pagingDefault.limit,
       page: pagingDefault.page,
@@ -106,7 +105,6 @@ const HomestayPage = () => {
   };
 
   const onShowSizeChange = (current, pageSize) => {
-    // console.log({ current, pageSize, querySearch });
     const query = {
       ...querySearch,
       page: current,
@@ -185,8 +183,6 @@ const HomestayPage = () => {
         <Pagination
           style={{ marginTop: '5rem', textAlign: 'center' }}
           showQuickJumper
-          // defaultCurrent={2}
-          // total={500}
           onChange={onShowSizeChange}
           total={homestays?.paging?.total || 1}
           defaultCurrent={Number(querySearch?.page) || pagingDefault.page}

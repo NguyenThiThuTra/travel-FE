@@ -56,7 +56,7 @@ export default function PopupChat({ fixed = true, size }) {
     if (!isOwnerHomestay) {
       setSender(currentUser?.data);
     } else {
-      // console.log('role', role);
+
       async function fetchHomestayByUserId() {
         const payload = {
           filters: { user_id: currentUser?.data?._id },
@@ -77,33 +77,6 @@ export default function PopupChat({ fixed = true, size }) {
   const [conversations] = useCollectionData(queryConversations, {
     idField: 'id',
   });
-  // const [conversations, setConversations] = useState([]);
-
-  // const getAllConversations = async () => {
-  //   const querySnapshot = await queryConversations.get();
-  //   const result = querySnapshot.docs.map((doc) => {
-  //     console.log('hihi')
-  //     // doc.data() is never undefined for query doc snapshots
-  //     const conversation = {
-  //       ...doc.data(),
-  //       doc_id: doc.id,
-  //     };
-  //     return conversation;
-  //   });
-  //   setConversations(result);
-  // };
-  // useEffect(() => {
-  //   // if (!sender) {
-  //   //   return;
-  //   // }
-  //   console.log('aaaaaaaaaa');
-  //   getAllConversations();
-  // }, [dataMessages, sender]);
-  // console.log({ conversations });
-
-  // useEffect(() => {
-  //   console.log('xin chao');
-  // }, [conversations]);
 
   const [currentConversation, setCurrentConversation] = useState(null);
 
@@ -136,7 +109,6 @@ export default function PopupChat({ fixed = true, size }) {
     setDataMessages(messages);
   }, [messages]);
 
-  // console.log({ messages, receiver, conversations, currentConversation });
   const [formValue, setFormValue] = useState();
 
   const handleSwitchPopupChat = () => {
@@ -169,7 +141,6 @@ export default function PopupChat({ fixed = true, size }) {
       text: formValue,
       photoURL: sender?.avatar,
       name: sender?.name,
-      // createdAt: new Date(),
       createdAt: currentTime,
       updatedAt: currentTime,
     };

@@ -45,6 +45,5 @@ const ButtonUI = (props) => {
     </div>
   );
 };
-////////////////////////////////
 
 export default ButtonUI;

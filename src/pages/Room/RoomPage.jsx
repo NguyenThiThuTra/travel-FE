@@ -62,8 +62,6 @@ const RoomPage = () => {
         <Pagination
           style={{ marginTop: '5rem', textAlign: 'center' }}
           showQuickJumper
-          // defaultCurrent={2}
-          // total={500}
           onChange={onShowSizeChange}
           total={rooms?.paging?.total}
           defaultCurrent={Number(querySearch?.page) || 1}

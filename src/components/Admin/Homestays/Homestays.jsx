@@ -58,18 +58,6 @@ export default function AdminHomestaysPage(props) {
 
   const columns = useMemo(
     () => [
-      // {
-      //   title: 'ID',
-      //   dataIndex: '_id',
-      //   key: '_id',
-      //   width: 220,
-      // },
-      // {
-      //   title: 'Id người dùng',
-      //   dataIndex: 'user_id',
-      //   key: 'user_id',
-      //   width: 220,
-      // },
       {
         title: 'Tên ',
         width: 220,
@@ -231,18 +219,6 @@ export default function AdminHomestaysPage(props) {
         key: 'comments_count',
         width: 100,
       },
-      // {
-      //   title: 'Đánh giá',
-      //   dataIndex: 'rate',
-      //   key: 'rate',
-      //   width: 100,
-      // },
-      // {
-      //   title: 'Lượt xem',
-      //   dataIndex: 'view',
-      //   key: 'view',
-      //   width: 100,
-      // },
       {
         title: 'Ngày tạo',
         dataIndex: 'createdAt',
@@ -331,7 +307,6 @@ export default function AdminHomestaysPage(props) {
             defaultCurrent: Number(querySearch?.page) || 1,
             defaultPageSize: Number(querySearch?.limit) || 10,
           }}
-          // expandable={expandable}
           title={() => (
             <CustomTitleTable
               hideAdd={
@@ -341,7 +316,6 @@ export default function AdminHomestaysPage(props) {
               title="Danh sách homestay"
             />
           )}
-          // footer={() => <CustomFooterTable title="Here is footer" />}
         />
       </div>
 
