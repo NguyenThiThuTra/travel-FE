@@ -17,6 +17,7 @@ import {
 } from 'features/Homestay/HomestaySlice';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
+import { useCollectionData as useCollectionDataHook } from "hooks/useCollectionData";
 import { AiOutlineCloseCircle, AiOutlineSend } from 'react-icons/ai';
 import { BsChatFill } from 'react-icons/bs';
 import { useDispatch, useSelector } from 'react-redux';
@@ -74,12 +75,31 @@ export default function PopupChat({ fixed = true, size }) {
     .where('members', 'array-contains', sender?._id || '')
     .orderBy('updatedAt', 'desc');
 
-  const [conversations] = useCollectionData(queryConversations, {
-    idField: 'id',
-  });
+  // const [conversations] = useCollectionData(queryConversations, {
+  //   idField: 'id',
+  // });
+  const [conversations, setConversations] = useState([]);
+
+  const getAllConversations = async () => {
+    const querySnapshot = await queryConversations.get();
+    const result = querySnapshot.docs.map((doc) => {
+      // doc.data() is never undefined for query doc snapshots
+      const conversation = {
+        ...doc.data(),
+        doc_id: doc.id,
+      };
+      return conversation;
+    });
+    setConversations(result);
+  };
+  useEffect(() => {
+    // if (!sender) {
+    //   return;
+    // }
+    getAllConversations();
+  }, [dataMessages, sender]);
 
   const [currentConversation, setCurrentConversation] = useState(null);
-
   const onChangeCurrentConversation = (conversation_id) => {
     setCurrentConversation(
       conversations?.find((conversation) =>
