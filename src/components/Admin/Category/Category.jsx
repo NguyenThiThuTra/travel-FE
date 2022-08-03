@@ -48,6 +48,7 @@ export default function AdminCategoryPage(props) {
         filters: {
           user_id: currentUser?.data?._id,
         },
+        sort: "-createdAt"
       };
       dispatch(fetchAllCategory(payload));
     }
@@ -66,7 +67,7 @@ export default function AdminCategoryPage(props) {
   const showListRoomInHomestay = (category_id) => {
     return history.push(`${match.url}/detail/${category_id}/rooms`);
   };
-  
+
   const columns = useMemo(
     () => [
       {

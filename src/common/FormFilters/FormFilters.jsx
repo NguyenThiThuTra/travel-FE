@@ -73,7 +73,7 @@ const FormFilters = () => {
     }
 
     if (match.path === RouteConstant.HomestayDetailPage.path) {
-      const url = `${match.url}?${searchParams}`;
+      const url = `${RouteConstant.HomestayPage.path}?${searchParams}`;
       openInNewTab(url);
     } else {
       history.push({
