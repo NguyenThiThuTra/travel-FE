@@ -143,6 +143,7 @@ const homestaysSlices = createSlice({
       state.loading = false;
     },
     [fetchAllHomestaySearch.rejected]: (state, action) => {
+      state.homestays = [];
       state.loading = false;
       state.error = action.payload;
     },

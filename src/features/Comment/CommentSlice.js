@@ -68,6 +68,7 @@ const commentSlices = createSlice({
       state.loading = false;
     },
     [getAllCommentInHomestay.rejected]: (state, action) => {
+      state.comments = null;
       state.loading = false;
       state.error = action.payload;
     },
