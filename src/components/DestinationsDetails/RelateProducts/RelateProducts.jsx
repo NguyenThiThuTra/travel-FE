@@ -38,7 +38,7 @@ const RelateProducts = ({ data }) => {
               }}
             >
               <Alert
-                message="Hiện tại không có review ở địa điểm này"
+                message="Hiện tại không có data"
                 type="info"
                 showIcon
               />

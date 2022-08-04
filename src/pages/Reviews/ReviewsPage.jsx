@@ -1,4 +1,4 @@
-import { Button, Col, message, Popconfirm, Row, Select } from 'antd';
+import { Alert, Button, Col, message, Popconfirm, Row, Select } from 'antd';
 import provincesOpenApi from 'api/provincesOpenApi';
 import TravelDestinationBox from 'common/TravelDestinationBox/TravelDestinationBox';
 import FormReview from 'components/Reviews/FormReview/FormReview';
@@ -227,6 +227,21 @@ const ReviewsPage = () => {
         </div>
       </div>
 
+      {destinationsFilter?.length === 0 && (
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                width: '100%',
+              }}
+            >
+              <Alert
+                message="Hiện tại không có review ở địa điểm này"
+                type="info"
+                showIcon
+              />
+            </div>
+          )}
       {/* modal */}
       {visibleFormReview && (
         <FormReview
