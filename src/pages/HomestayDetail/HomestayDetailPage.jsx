@@ -239,52 +239,7 @@ const HomestayDetailPage = () => {
               </div>
             </div>
           </TabPane>
-          {/* <TabPane tab="Reviews (2)" key="3">
-            <div className="reviews tabPane tab3">
-              <div className="tabPane__title">Đánh Giá Homestay</div>
-
-              {new Array(3).fill(null).map((item) => (
-                <Comment
-                  key={item}
-                  actions={actions}
-                  author={
-                    <div>
-                      <h3>Han Solo</h3>
-                      <div className="reviews__rate">
-                        <Rate
-                          style={{ fontSize: '1.6rem' }}
-                          disabled
-                          defaultValue={4}
-                        />
-                      </div>
-                    </div>
-                  }
-                  avatar={
-                    <Avatar
-                      src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-                      alt="Han Solo"
-                    />
-                  }
-                  content={
-                    <p>
-                      Không gian lại khá đẹp và lãng mạn, view đồi núi, thung
-                      lũng phòng nghỉ tương đối rộng. Dịch vụ siêu tốt nha các
-                      bạn 💛💛💛
-                    </p>
-                  }
-                  datetime={
-                    <Tooltip
-                      title={moment(1622201687266).format(
-                        'YYYY-MM-DD HH:mm:ss'
-                      )}
-                    >
-                      <span>{moment(1622201687266).fromNow()}</span>
-                    </Tooltip>
-                  }
-                />
-              ))}
-            </div>
-          </TabPane> */}
+        
         </Tabs>
         <div className="related">
           <h1 className="related__title">Các phòng của Homestay</h1>
@@ -293,23 +248,6 @@ const HomestayDetailPage = () => {
             nameHomestay={rooms?.data?.[0]?.homestay_id?.name}
             homestay_id={id}
           />
-          {/* <Row gutter={[24, 24]}>
-            {rooms?.data?.length === 0 && (
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  width: '100%',
-                }}
-              >
-                <Alert
-                  message="Hiện tại không còn phòng khác của homestay"
-                  type="info"
-                  showIcon
-                />
-              </div>
-            )}
-          </Row> */}
         </div>
         {renderCommentList}
       </div>

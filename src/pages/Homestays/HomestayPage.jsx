@@ -173,7 +173,7 @@ const HomestayPage = () => {
               }}
             >
               <Alert
-                message="Hiện tại có homestay trong khu vực hoặc trong thời gian này hoạt động"
+                message="Hiện tại không có homestay trong khu vực hoặc trong thời gian này hoạt động"
                 type="info"
                 showIcon
               />
