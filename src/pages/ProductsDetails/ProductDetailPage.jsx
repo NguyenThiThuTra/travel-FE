@@ -50,7 +50,7 @@ const ProductsDetailsPage = () => {
 
   const [quantity, setQuantity] = useState(1);
   function callback(key) {
-    console.log(key);
+    // console.log(key);
   }
   //review
   const [likes, setLikes] = useState(0);

@@ -141,7 +141,7 @@ export const AddCartForm = ({ orders, onCloseModal }) => {
           rules={[
             {
               required: true,
-              pattern: new RegExp(/(84|0[3|5|7|8|9])+([0-9]{8})\b/g),
+              pattern: new RegExp(/^(0?)(3[2-9]|5[6|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])[0-9]{7}$/),
               message: 'Vui lòng nhập số điện thoại',
             },
           ]}

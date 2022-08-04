@@ -83,20 +83,20 @@ const ReviewsPage = () => {
 
   function onChangeProvince(value) {
     if (provinceCode === value) return;
-    console.log(`selected ${value}`);
+    // console.log(`selected ${value}`);
     setProvinceCode(value);
   }
 
   function onBlurProvince() {
-    console.log('blur');
+    // console.log('blur');
   }
 
   function onFocusProvince() {
-    console.log('focus');
+    // console.log('focus');
   }
 
   function onSearchProvince(val) {
-    console.log('search:', val);
+    // console.log('search:', val);
   }
 
   const [loading, setLoading] = useState(false);
@@ -171,7 +171,7 @@ const ReviewsPage = () => {
               }))}
               optionFilterProp="children"
               filterOption={(input, option) => {
-                console.log({ option });
+                // console.log({ option });
                 return (
                   option?.label?.toLowerCase()?.indexOf(input?.toLowerCase()) >=
                   0

@@ -277,7 +277,7 @@ export default function ActionFormUser() {
             <Option value="other">Khác</Option>
           </Select>
         </Form.Item>
-       
+
         <Form.Item
           label="Ảnh đại diện"
           rules={[

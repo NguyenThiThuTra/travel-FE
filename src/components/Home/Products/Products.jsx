@@ -8,7 +8,7 @@ const { TabPane } = Tabs;
 
 const Products = () => {
   const getKey = (key) => {
-    console.log('key:', key);
+    // console.log('key:', key);
   };
   return (
     <div className="product">

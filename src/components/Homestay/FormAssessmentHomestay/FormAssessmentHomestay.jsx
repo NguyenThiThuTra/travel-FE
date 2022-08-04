@@ -113,23 +113,6 @@ export default function FormAssessmentHomestay({
     setProvinceBooking(dataProvinceBooking);
   }, [provinces, destinationOrderByUser]);
 
-  function onChangeProvince(value) {
-    console.log(`selected ${value}`);
-    setProvinceCode(value);
-  }
-
-  function onBlurProvince() {
-    console.log('blur');
-  }
-
-  function onFocusProvince() {
-    console.log('focus');
-  }
-
-  function onSearchProvince(val) {
-    console.log('search:', val);
-  }
-
   // upload file
   const [previewVisibleImageReview, setPreviewVisibleImageReview] =
     useState(false);

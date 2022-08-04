@@ -59,7 +59,6 @@ const PaymentPage = () => {
               payment: 'vnpay',
             })
           ).unwrap();
-          // console.log({ result });
           const payload = {
             amount: orders.totalPriceOrders,
             bankCode,
@@ -73,7 +72,7 @@ const PaymentPage = () => {
           window.location.href = response?.vnpUrl;
           // window.open(response?.vnpUrl);
         } catch (error) {
-          console.log(error);
+          // console.log(error);
         }
         break;
 

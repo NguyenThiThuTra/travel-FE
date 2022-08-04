@@ -29,6 +29,7 @@ const FormFilters = () => {
   // default value
   const [provinceCode, setProvinceCode] = useState(null);
   const [rangePickerValue, setRangePickerValue] = useState([null, null]);
+  const [textSearch, setTextSearch] = useState('');
 
   // default filter query search
   useEffect(() => {
@@ -42,6 +43,9 @@ const FormFilters = () => {
         moment(querySearch.from_date),
         moment(querySearch.to_date),
       ]);
+    }
+    if (querySearch?.search) {
+      setTextSearch(querySearch?.search)
     }
   }, [location]);
   // end default value
@@ -182,6 +186,8 @@ const FormFilters = () => {
             <input
               className="form-filters__search"
               ref={nameHomestayRef}
+              value={textSearch}
+              onChange={(e) => setTextSearch(e.target.value)}
               placeholder="Tìm kiếm homestay ?"
             />
           </div>

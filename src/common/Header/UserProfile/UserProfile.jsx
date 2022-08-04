@@ -88,10 +88,9 @@ const UserProfile = (props) => {
           id: currentUser?.data?._id,
           user: formData,
         })
-      );
+      ).unwrap();
       await dispatch(getCurrentUser());
     } catch (e) {
-      console.log(e);
     }
   };
 

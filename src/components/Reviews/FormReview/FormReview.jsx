@@ -116,20 +116,20 @@ export default function FormReview({
   }, [provinces, destinationOrderByUser]);
 
   function onChangeProvince(value) {
-    console.log(`selected ${value}`);
+    // console.log(`selected ${value}`);
     setProvinceCode(value);
   }
 
   function onBlurProvince() {
-    console.log('blur');
+    // console.log('blur');
   }
 
   function onFocusProvince() {
-    console.log('focus');
+    // console.log('focus');
   }
 
   function onSearchProvince(val) {
-    console.log('search:', val);
+    // console.log('search:', val);
   }
 
   // upload file
@@ -203,7 +203,6 @@ export default function FormReview({
             }))}
             optionFilterProp="children"
             filterOption={(input, option) => {
-              console.log({ option });
               return (
                 option?.label?.toLowerCase()?.indexOf(input?.toLowerCase()) >= 0
               );

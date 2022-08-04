@@ -20,7 +20,7 @@ const ProductItemBox = ({ room, href, getData }) => {
     }
   }, [id]);
   function onChange(value) {
-    console.log('changed', value);
+    // console.log('changed', value);
   }
   const redirectRoute = () => {
     // history.push(href);

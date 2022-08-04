@@ -6,18 +6,12 @@ import { firestore } from 'configs/firebase/config';
 import { detectOwnerHomestay } from 'constants/detectOwnerHomestay';
 import { useCurrentUserSelector } from 'features/Auth/AuthSlice';
 import {
-  setOpenPopupChatBox,
   toggleOpenPopupChatBox,
   useOpenPopupChatBoxSelector,
-  useReceiverChatBoxSelector,
+  useReceiverChatBoxSelector
 } from 'features/ChatBox/ChatBoxSlice';
-import {
-  fetchAllHomestays,
-  useHomestaysSelector,
-} from 'features/Homestay/HomestaySlice';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
-import { useCollectionData as useCollectionDataHook } from "hooks/useCollectionData";
 import { AiOutlineCloseCircle, AiOutlineSend } from 'react-icons/ai';
 import { BsChatFill } from 'react-icons/bs';
 import { useDispatch, useSelector } from 'react-redux';
