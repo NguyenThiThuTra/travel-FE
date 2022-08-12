@@ -74,6 +74,8 @@ export function CommentList({ dataHomestay }) {
 
   const [paging, setPaging] = useState({ limit: 5, page: 1 });
   const [dataComments, setDataComments] = useState([]);
+  const [totalComment, setTotalComment] = useState(0);
+
   const dummy = useRef();
 
   const loadMoreComments = () => {
@@ -94,6 +96,7 @@ export function CommentList({ dataHomestay }) {
             params: { limit: paging.limit, page: paging.page },
           })
         ).unwrap();
+        setTotalComment(response?.paging?.total || 0)
         setDataComments((preState) => [...dataComments, ...response?.data]);
       } catch (error) {
         message.error(error.message);
@@ -229,7 +232,7 @@ export function CommentList({ dataHomestay }) {
           <Fragment>
             <List
               className="comment-list"
-              header={`${dataComments.length} bình luận`}
+              header={`${totalComment} bình luận`}
               itemLayout="horizontal"
               dataSource={dataComments || []}
               renderItem={(item) => {
@@ -364,8 +367,8 @@ export function CommentList({ dataHomestay }) {
                                       <Form.Item name="text">
                                         <TextArea
                                           rows={4}
-                                          // onChange={handleChangeReplyComment}
-                                          // value={valueReplyComment}
+                                        // onChange={handleChangeReplyComment}
+                                        // value={valueReplyComment}
                                         />
                                       </Form.Item>
                                       <Form.Item>
