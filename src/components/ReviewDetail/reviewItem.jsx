@@ -1,22 +1,28 @@
 import { UserOutlined } from '@ant-design/icons';
-import { Avatar, Image } from 'antd';
-import { useCurrentUserSelector } from 'features/Auth/AuthSlice';
+import { Avatar, Image, Popover } from 'antd';
+import moment from 'moment';
 import { Fragment, useCallback, useMemo, useState } from 'react';
 import { AiOutlineLike, AiOutlinePlus } from 'react-icons/ai';
-import { useDispatch, useSelector } from 'react-redux';
-import moment from 'moment';
 
 export function ReviewItem({ review, handleLikeReview }) {
-  const dispatch = useDispatch();
 
   const user = review?.user;
-  const currentUser = useSelector(useCurrentUserSelector);
 
-  const [orders, setOrders] = useState(null);
   const homestays = review?.orders?.homestays;
+  const limitShowHomestay = homestays?.length > 3 ? homestays.slice(0, 3) : homestays
+
   const arrNameHomestay = useMemo(() => {
-    return homestays?.map((homestay) => homestay?.name)?.join(', ');
+    return limitShowHomestay?.map((homestay) => homestay?.name)?.join(', ');
   }, [homestays]);
+
+  const hoverNameContent = () => {
+    return <div
+      className="review-box__location"
+      style={{ maxWidth: '620px' }}
+    >
+      {homestays?.map((homestay) => homestay?.name)?.join(', ')}
+    </div>
+  }
 
   // visiblePreviewGroup
   const [visiblePreviewGroup, setVisiblePreviewGroup] = useState(false);
@@ -44,7 +50,7 @@ export function ReviewItem({ review, handleLikeReview }) {
               <ul className="review-box__list-schedule">
                 {review &&
                   Object.values(review?.schedule || [])?.map((day, index) => (
-                    <li>
+                    <li key={index}>
                       {`Ngày ${index + 1} : `} {day}
                     </li>
                   ))}
@@ -145,7 +151,7 @@ export function ReviewItem({ review, handleLikeReview }) {
         <ul className="review-box__list-schedule">
           {review &&
             Object.values(review?.schedule || [])?.map((day, index) => (
-              <li>
+              <li key={index}>
                 {`Ngày ${index + 1} : `} {day}
               </li>
             ))}
@@ -199,11 +205,14 @@ export function ReviewItem({ review, handleLikeReview }) {
           </div>
           {moment(review.createdAt).format('DD/MM/YYYY HH:mm ')}
         </div>
-        {arrNameHomestay && (
-          <div className="review-box__location">
-            Đã từng ở tại {arrNameHomestay}...
-          </div>
-        )}
+        <Popover placement="bottomLeft" content={hoverNameContent} trigger="hover">
+          {arrNameHomestay && (
+            <div className="review-box__location">
+              Đã từng ở tại {arrNameHomestay} {homestays.length > 3 && "..."}
+            </div>
+          )}
+        </Popover>
+
 
         {renderReviewContent()}
 
