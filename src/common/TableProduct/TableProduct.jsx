@@ -4,6 +4,7 @@ import { toggleModalLogin } from 'features/commonSlice';
 import queryString from 'query-string';
 import React, { Fragment, useState } from 'react';
 import { AiOutlinePlus } from 'react-icons/ai';
+import { BsCheck2 } from 'react-icons/bs';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
 import { AddCartForm } from '../AddCartForm/AddCartForm';
@@ -183,8 +184,15 @@ export function TableProduct({ nameHomestay, homestay_id, data }) {
         dataIndex: 'category.description',
         render: (n, record) => {
           const category = record?.[0]?.category_id;
+          const amenities = category?.amenities;
+          console.log({ record });
           return (
-            <div className="room_seperator"> {category?.description} </div>
+            <div>
+              <div className="room_seperator"> {category?.description} </div>
+              {!!amenities.length && <div style={{ display: 'flex', flexWrap: 'wrap', fontSize: '14px' }}>
+                {amenities?.map((item, index) => <div style={{ paddingRight: '12px', display: 'flex' }} key={index}><BsCheck2 color='green' style={{ marginTop: '5px', marginRight: '5px' }} /> {item}</div>)}
+              </div>}
+            </div>
           );
         },
       },
