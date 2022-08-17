@@ -185,7 +185,6 @@ export function TableProduct({ nameHomestay, homestay_id, data }) {
         render: (n, record) => {
           const category = record?.[0]?.category_id;
           const amenities = category?.amenities;
-          console.log({ record });
           return (
             <div>
               <div className="room_seperator"> {category?.description} </div>

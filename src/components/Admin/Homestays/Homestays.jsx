@@ -141,7 +141,6 @@ export default function AdminHomestaysPage(props) {
         render: (n, record) => {
           const visiblePreviewImageGallery = () => {
             if (record?.images?.length > 1) {
-              console.log('hihi');
               setImageGallery(record.images);
               setVisiblePreviewGroup(true);
             }

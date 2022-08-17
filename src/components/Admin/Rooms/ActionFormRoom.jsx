@@ -144,6 +144,7 @@ export default function ActionFormRoom() {
           avatar,
           homestay_id,
           user_id,
+          amenities
         } = originalPromiseResult?.data;
         reset({
           user_id,
@@ -155,6 +156,7 @@ export default function ActionFormRoom() {
           description,
           images,
           avatar,
+          amenities
         });
         set_url_avatar(avatar);
         setImageGallery(images);

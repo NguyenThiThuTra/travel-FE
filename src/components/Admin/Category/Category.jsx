@@ -22,6 +22,7 @@ import { Fragment, useEffect, useMemo, useState } from 'react';
 import { AiOutlinePlus } from 'react-icons/ai';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useLocation, useRouteMatch } from 'react-router-dom';
+import { BsCheck2 } from 'react-icons/bs';
 const expandable = {
   expandedRowRender: (record) => <p>description</p>,
 };
@@ -114,7 +115,13 @@ export default function AdminCategoryPage(props) {
         dataIndex: 'description',
         key: 'description',
         render: (n, record) => {
-          return <div>{record?.description}</div>;
+          const amenities = record?.amenities;
+          return <div>
+            <div>{record?.description}</div>
+            {!!amenities.length && <div style={{ display: 'flex', flexWrap: 'wrap', fontSize: '14px' }}>
+              {amenities?.map((item, index) => <div style={{ paddingRight: '12px', display: 'flex' }} key={index}><BsCheck2 color='green' style={{ marginTop: '5px', marginRight: '5px' }} /> {item}</div>)}
+            </div>}
+          </div>
         },
       },
       {
